@@ -20,3 +20,13 @@ html {
 body {
   margin-bottom: 60px;
 }
+.contact-body {
+    display: flex;
+    justify-content: space-between
+}
+#contact-address {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
