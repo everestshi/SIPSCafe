@@ -19,3 +19,28 @@
     align-items:center;
 
 }
+
+/*about page style****************************/
+.about-page{
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+}
+/*Admin page style****************************/
+.admin-buttons {
+    width: 200px;
+    height: 200px;
+    border: 200px;
+    background-color:paleturquoise;
+}
+
+#admin-page{
+    display:flex;
+    flex-direction:row;
+    gap:20px;
+    justify-content:center;
+    /*justify-content:space-around;*/
+    align-content:center;
+    align-items:center;
+
+}
