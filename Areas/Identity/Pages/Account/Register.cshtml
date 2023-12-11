@@ -7,9 +7,10 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="sip-reg-container">
+    <h2>Register</h2>
     <div>
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Register</h2>
+            
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
