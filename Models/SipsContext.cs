@@ -53,7 +53,6 @@ public partial class SipsContext : DbContext
             entity.Property(e => e.AddInName)
                 .HasColumnType("VARCHAR(30)")
                 .HasColumnName("addInName");
-            entity.Property(e => e.Image).HasColumnName("image");
             entity.Property(e => e.PriceModifier)
                 .HasColumnType("DECIMAL(10, 2)")
                 .HasColumnName("priceModifier");
@@ -147,7 +146,6 @@ public partial class SipsContext : DbContext
             entity.Property(e => e.Ice)
                 .HasColumnType("VARCHAR(10)")
                 .HasColumnName("ice");
-            entity.Property(e => e.Image).HasColumnName("image");
             entity.Property(e => e.Inventory).HasColumnName("inventory");
             entity.Property(e => e.ItemType)
                 .HasColumnType("VARCHAR(30)")

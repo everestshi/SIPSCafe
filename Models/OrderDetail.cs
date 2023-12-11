@@ -5,21 +5,21 @@ namespace Sips.Models;
 
 public partial class OrderDetail
 {
-    public long PkOrderDetailId { get; set; }
+    public int PkOrderDetailId { get; set; }
 
-    public byte[] Price { get; set; } = null!;
+    public decimal Price { get; set; }
 
-    public long Quantity { get; set; }
+    public int Quantity { get; set; }
 
     public string IsBirthdayDrink { get; set; } = null!;
 
-    public byte[] PromoValue { get; set; } = null!;
+    public decimal PromoValue { get; set; }
 
-    public long FkItemId { get; set; }
+    public int FkItemId { get; set; }
 
-    public long FkTransactionId { get; set; }
+    public int FkTransactionId { get; set; }
 
-    public long FkSizeId { get; set; }
+    public int FkSizeId { get; set; }
 
     public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
 

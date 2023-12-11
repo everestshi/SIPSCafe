@@ -1,4 +1,11 @@
 ﻿body {
+    font-family: 'Quicksand', 'sans-serif';
+}
+html {
+    
+}
+h1,h2,h3,h5,h6{
+    font-weight:700;
 }
 .sips-nav {
     background: #E4F2EE;
@@ -17,8 +24,92 @@
     flex-direction:row;
     justify-content:center;
     align-items:center;
-
+    margin:10px auto;
+    width:600px;
 }
+.banner-container{
+    background:url('/images/home-bg.jpg');
+    width:100%;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    height:350px;
+    justify-content:center;
+}
+.banner-heading{
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    justify-content:center;
+    align-items:center;
+}
+.contact-body {
+    display: flex;
+    justify-content: space-between
+}
+
+#contact-address {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.banner-cta{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    margin: 0 5px;
+    border:none;
+    width:180px;
+    height:45px;
+    border-radius: 5px;
+    color:#fff;
+    font-weight:700;
+}
+.register-btn {
+    background: #B090C5;
+}
+.learn-more-btn {
+    background: #A3CCFF;
+}
+.our-teas{
+    display:flex;
+    flex-direction:row;
+    width:90%;
+    margin:10vh auto;
+    justify-content:center;
+    align-content:center;
+    height:200px;
+}
+.tea{
+    display:flex;
+    flex-direction:row;
+    width:33%;
+    margin: 0 5vh;
+    text-align:center;
+    background:#efefef;
+    align-items:center;
+    justify-content:center;
+}
+.subheading{
+    display:flex;
+    flex-direction:row;
+    width:100%;
+    margin: 5vh auto;
+    text-align:center;
+    justify-content:center;
+    align-items:center;
+}
+.home-about-container{
+    display:flex;
+    flex-direction:row-reverse;
+    width:85%;
+    justify-content:center;
+    align-items:center;
+    margin:0 auto;
+}
+
 
 /*about page style****************************/
 .about-page{
@@ -42,5 +133,39 @@
     /*justify-content:space-around;*/
     align-content:center;
     align-items:center;
+
+
+.home-boba-img{
+    display:flex;
+    flex-direction:column;
+    width:300px;
+}
+.home-copy{
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+}
+.sip-reg{
+    display:flex;
+    flex-direction:column;
+    width:33%;
+    margin: 0 20px;
+}
+.sip-reg-container{
+    display:flex;
+    flex-direction:column;
+    width:85%;
+    margin:0 auto;
+}
+.container-sips{
+    display:flex;
+    flex-direction:column;
+    margin:0 auto;
+    text-align:center;
+}
+#registerForm{
+    display:flex;
+    flex-direction:row;
+    margin:10px 0;
 
 }

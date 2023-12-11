@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Sips Menu";
+}
+
+<div class="container">
+    <div class="menu-description">
+        <h2>SIPS BUBBLE TEA MENU</h2>
+        <p>
+            Welcome to Sips, where refreshment meets innovation. Dive into the creamy allure of our Milk Tea, savor the
+            natural burst of flavors in our Fruit Tea, or indulge in the frosty goodness of our Slush offerings. Customize
+            your experience with a range of toppings, from chewy boba pearlsto fruity bubbles. At Sips, your perfect
+            blend awaits – join us for a taste adventure!
+        </p>
+    </div>
+
+    <h1 class="text-center">Discover</h1>
+
+    <div class="drink-images">
+        <div class="row">
+            <div class="col-md-4">
+                <a href="@Url.Action("MilkTea", "Menu")">
+                    <img src="milk_tea_image_url_here" alt="Milk Tea" class="img-fluid">
+                    <p>Milk Tea</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="@Url.Action("FruitTea", "Menu")">
+                    <img src="fruit_tea_image_url_here" alt="Fruit Tea" class="img-fluid">
+                    <p>Fruit Tea</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="@Url.Action("Slush", "Menu")">
+                    <img src="slush_image_url_here" alt="Slush" class="img-fluid">
+                    <p>Slush</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="customize-order">
+        <h2 class="text-center">Customize your order however you'd like</h2>
+        <img src="large_image_url_here" alt="Customize Your Order" class="img-fluid">
+    </div>
+</div>

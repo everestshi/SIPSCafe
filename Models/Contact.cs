@@ -5,7 +5,7 @@ namespace Sips.Models;
 
 public partial class Contact
 {
-    public long PkUserId { get; set; }
+    public int PkUserId { get; set; }
 
     public string FirstName { get; set; } = null!;
 
@@ -15,7 +15,7 @@ public partial class Contact
 
     public string Email { get; set; } = null!;
 
-    public long Unit { get; set; }
+    public int Unit { get; set; }
 
     public string Street { get; set; } = null!;
 
@@ -25,11 +25,11 @@ public partial class Contact
 
     public string PostalCode { get; set; } = null!;
 
-    public byte[]? BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
 
     public string IsDrinkRedeemed { get; set; } = null!;
 
-    public long FkUserTypeId { get; set; }
+    public int FkUserTypeId { get; set; }
 
     public virtual Credential FkUserType { get; set; } = null!;
 
