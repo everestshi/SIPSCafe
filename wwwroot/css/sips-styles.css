@@ -21,7 +21,24 @@ html {
     flex-direction:row;
     justify-content:center;
     align-items:center;
-
+    margin:10px auto;
+    width:600px;
+}
+.banner-container{
+    background:url('/images/home-bg.jpg');
+    width:100%;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    height:350px;
+    justify-content:center;
+}
+.banner-heading{
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    justify-content:center;
+    align-items:center;
 }
 .contact-body {
     display: flex;
@@ -33,4 +50,32 @@ html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.banner-cta{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    margin: 0 5px;
+    border:none;
+    width:180px;
+    height:45px;
+    border-radius: 5px;
+    color:#fff;
+    font-weight:700;
+}
+.register-btn {
+    background: #B090C5;
+}
+.learn-more-btn {
+    background: #A3CCFF;
+}
+.our-teas{
+    display:flex;
+    flex-direction:row;
+    width:90%;
+    margin:0 auto;
+    justify-content:center;
+    align-content:center;
+    height:200px;
 }
