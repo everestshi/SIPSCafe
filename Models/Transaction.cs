@@ -5,15 +5,15 @@ namespace Sips.Models;
 
 public partial class Transaction
 {
-    public long PkTransactionId { get; set; }
+    public int PkTransactionId { get; set; }
 
-    public byte[] DateOrdered { get; set; } = null!;
+    public DateTime DateOrdered { get; set; }
 
-    public long FkStoreId { get; set; }
+    public int FkStoreId { get; set; }
 
-    public long FkUserId { get; set; }
+    public int FkUserId { get; set; }
 
-    public long FkStatusId { get; set; }
+    public int FkStatusId { get; set; }
 
     public virtual OrderStatus FkStatus { get; set; } = null!;
 

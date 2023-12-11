@@ -5,9 +5,9 @@ namespace Sips.Models;
 
 public partial class Credential
 {
-    public long PkUserTypeId { get; set; }
+    public int PkUserTypeId { get; set; }
 
-    public long UserType { get; set; }
+    public int UserType { get; set; }
 
     public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 }

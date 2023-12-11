@@ -5,17 +5,17 @@ namespace Sips.Models;
 
 public partial class Rating
 {
-    public long PkRatingId { get; set; }
+    public int PkRatingId { get; set; }
 
     public string Rating1 { get; set; } = null!;
 
-    public byte[] Date { get; set; } = null!;
+    public DateTime Date { get; set; }
 
     public string Comment { get; set; } = null!;
 
-    public long FkStoreId { get; set; }
+    public int FkStoreId { get; set; }
 
-    public long FkUserId { get; set; }
+    public int FkUserId { get; set; }
 
     public virtual Store FkStore { get; set; } = null!;
 

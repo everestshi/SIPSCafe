@@ -5,7 +5,7 @@ namespace Sips.Models;
 
 public partial class OrderStatus
 {
-    public long PkStatusId { get; set; }
+    public int PkStatusId { get; set; }
 
     public string IsOrdered { get; set; } = null!;
 

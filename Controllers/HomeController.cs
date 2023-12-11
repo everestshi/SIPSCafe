@@ -6,6 +6,7 @@ namespace Sips.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly SipsContext _context;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -17,6 +18,9 @@ namespace Sips.Controllers
         {
             return View();
         }
+
+
+
 
         public IActionResult Privacy()
         {
