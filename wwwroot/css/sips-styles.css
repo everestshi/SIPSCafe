@@ -4,6 +4,9 @@
 html {
     
 }
+h1,h2,h3,h5,h6{
+    font-weight:700;
+}
 .sips-nav {
     background: #E4F2EE;
 }
@@ -110,4 +113,32 @@ html {
     display:flex;
     flex-direction:column;
     width:300px;
+}
+.home-copy{
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+}
+.sip-reg{
+    display:flex;
+    flex-direction:column;
+    width:33%;
+    margin: 0 20px;
+}
+.sip-reg-container{
+    display:flex;
+    flex-direction:column;
+    width:85%;
+    margin:0 auto;
+}
+.container-sips{
+    display:flex;
+    flex-direction:column;
+    margin:0 auto;
+    text-align:center;
+}
+#registerForm{
+    display:flex;
+    flex-direction:row;
+    margin:10px 0;
 }
