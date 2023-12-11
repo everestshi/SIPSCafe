@@ -1,0 +1,36 @@
+﻿body {
+    font-family: 'Quicksand', 'sans-serif';
+}
+html {
+    
+}
+.sips-nav {
+    background: #E4F2EE;
+}
+.sips-logo-nav{
+    width:100px;
+}
+.logo-container-nav{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+}
+.banner-btns{
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+
+}
+.contact-body {
+    display: flex;
+    justify-content: space-between
+}
+
+#contact-address {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

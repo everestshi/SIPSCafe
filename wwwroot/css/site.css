@@ -20,13 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
-.contact-body {
-    display: flex;
-    justify-content: space-between
+<<<<<<< HEAD
+
+=======
+
+.sips-nav {
+    background: #E4F2EE;
 }
-#contact-address {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+>>>>>>> ce20e16b0d31c294693b2d09bdbf52371655f5bd
