@@ -34,3 +34,14 @@ html {
     justify-content: center;
     align-items: center;
 }
+
+.sip-reg {
+    display: flex;
+    flex-direction: column;
+    width: 33%
+}
+
+.sip-reg-container {
+    display: flex;
+    flex-direction: column;
+}

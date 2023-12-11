@@ -89,7 +89,9 @@ namespace Sips.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Birthday")]
-            public string Birthday { get; set; }
+            [DataType(DataType.Date)] // Specify that the property is a date
+            [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
+            public DateTime Birthday { get; set; }
 
             [Required]
             [Display(Name = "Phone Number")]
