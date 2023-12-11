@@ -1,4 +1,8 @@
 ﻿body {
+    font-family: 'Quicksand', 'sans-serif';
+}
+html {
+    
 }
 .sips-nav {
     background: #E4F2EE;
@@ -18,4 +22,15 @@
     justify-content:center;
     align-items:center;
 
+}
+.contact-body {
+    display: flex;
+    justify-content: space-between
+}
+
+#contact-address {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
