@@ -5,7 +5,7 @@ namespace Sips.Models;
 
 public partial class Store
 {
-    public long PkStoreId { get; set; }
+    public int PkStoreId { get; set; }
 
     public string StoreHours { get; set; } = null!;
 

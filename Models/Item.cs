@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace Sips.Models;
 
 public partial class Item
 {
-    public long PkItemId { get; set; }
+    public int PkItemId { get; set; }
 
     public string Name { get; set; } = null!;
-
-    public byte[]? Image { get; set; }
 
     public string Description { get; set; } = null!;
 
@@ -17,9 +16,9 @@ public partial class Item
 
     public string Sweetness { get; set; } = null!;
 
-    public byte[] BasePrice { get; set; } = null!;
+    public decimal BasePrice { get; set; }
 
-    public long Inventory { get; set; }
+    public int Inventory { get; set; }
 
     public string ItemType { get; set; } = null!;
 

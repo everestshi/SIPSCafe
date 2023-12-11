@@ -62,7 +62,6 @@ CREATE TABLE [Transaction] ( pkTransactionID INTEGER CONSTRAINT Transaction_PK P
 		
 CREATE TABLE Item ( pkItemID INTEGER CONSTRAINT Item_PK PRIMARY KEY AUTOINCREMENT
 						, name					VARCHAR(255)	NOT NULL
-						, image					BLOB			
 						, description			VARCHAR(255)	NOT NULL
 						, ice					VARCHAR(10)		NOT NULL
 						, sweetness				VARCHAR(10)		NOT NULL
@@ -79,8 +78,7 @@ CREATE TABLE ItemSize ( pkSizeID INTEGER CONSTRAINT Size_PK PRIMARY KEY AUTOINCR
 						
 CREATE TABLE AddIn ( pkAddInID INTEGER CONSTRAINT AddIn_PK PRIMARY KEY AUTOINCREMENT
 						, addInName				VARCHAR(30)		NOT NULL
-						, priceModifier			DECIMAL(10, 2)	NOT NULL
-						, image					BLOB			);
+						, priceModifier			DECIMAL(10, 2)	NOT NULL);
 				
 				
 CREATE TABLE OrderDetail ( pkOrderDetailID INTEGER CONSTRAINT OrderDetail_PK PRIMARY KEY AUTOINCREMENT
@@ -102,3 +100,46 @@ CREATE TABLE AddIn_OrderDetail ( fkAddInID 		INTEGER			NOT NULL
 							, CONSTRAINT FK_AddIn FOREIGN KEY (fkAddInID) REFERENCES AddIn(pkAddInID) ON UPDATE CASCADE ON DELETE CASCADE
 							, CONSTRAINT FK_OrderDetail FOREIGN KEY (fkOrderDetailID) REFERENCES OrderDetail(pkOrderDetailID) ON UPDATE CASCADE ON DELETE CASCADE
 							, CONSTRAINT PK_AddIn_OrderDetail PRIMARY KEY (fkAddInID, fkOrderDetailID));
+
+
+
+
+
+-- Milk Teas
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Matcha Milk Tea', '', 'Regular', 'Regular', '2.99', '100', 'Milk Tea');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Taro Milk Tea', '', 'Regular', 'Regular', '2.99', '100', 'Milk Tea');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Brown Sugar Milk Tea', '', 'Regular', 'Regular', '3.49', '100', 'Milk Tea');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Sips Milk Tea', '', 'Regular', 'Regular', '2.99', '100', 'Milk Tea');
+
+-- Fruit Teas
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('PassionFruit Tea', '', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Peach Kiwi Tea', '', 'Regular', 'Regular', '3.49', '100', 'Fruit Tea');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Mango Tea', '', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Wintermelon Tea', '', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea');
+
+-- Slushes
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Lychee Slush', '', 'Regular', 'Regular', '4.49', '100', 'Slush');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Taro Slush', '', 'Regular', 'Regular', '4.29', '100', 'Slush');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Strawberry Slush', '', 'Regular', 'Regular', '4.29', '100', 'Slush');
+
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
+VALUES ('Coffee Slush', '', 'Regular', 'Regular', '4.49', '100', 'Slush');
