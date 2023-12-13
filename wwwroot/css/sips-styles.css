@@ -125,14 +125,15 @@ h1,h2,h3,h5,h6{
     background-color:paleturquoise;
 }
 
-#admin-page{
-    display:flex;
-    flex-direction:row;
-    gap:20px;
-    justify-content:center;
+#admin-page {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
     /*justify-content:space-around;*/
-    align-content:center;
-    align-items:center;
+    align-content: center;
+    align-items: center;
+}
 
 
 .home-boba-img{
@@ -145,6 +146,8 @@ h1,h2,h3,h5,h6{
     flex-direction:column;
     text-align:left;
 }
+
+/*REG page style****************************/
 .sip-reg{
     display:flex;
     flex-direction:column;
