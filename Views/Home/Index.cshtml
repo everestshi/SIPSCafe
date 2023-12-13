@@ -16,24 +16,17 @@
 
 <h2 class="subheading">Our Teas</h2>
 <div class="our-teas">
-   
-    <div class="tea milk-tea">
-        <a asp-area="" asp-controller="Menu" asp-action="MilkTea">
-            <button type="button" class="btn btn-info admin-buttons"><h3 class="our-teas-title">Milk Tea</h3></button>
-        </a>
-    </div>
-    <div class="tea fruit-tea">
-        <a asp-area="" asp-controller="Menu" asp-action="FruitTea">
-            <button type="button" class="btn btn-info admin-buttons"><h3 class="our-teas-title">Fruit Tea</h3></button>
-        </a>
-    </div>
-    <div class="tea slush-tea">
-        <a asp-area="" asp-controller="Menu" asp-action="Slush">
-            <button type="button" class="btn btn-info admin-buttons"><h3 class="our-teas-title">Slush</h3></button>
-        </a>
-    </div>
-
+    <a asp-area="" asp-controller="Menu" asp-action="MilkTea" class="tea-link">
+        <button type="button" class="btn btn-info tea-index-button">Milk Tea</button> 
+    </a>
+    <a asp-area="" asp-controller="Menu" asp-action="FruitTea" class="tea-link">
+        <button type="button" class="btn btn-info tea-index-button">Fruit Tea</button>
+    </a>
+    <a asp-area="" asp-controller="Menu" asp-action="Slush" class="tea-link">
+        <button type="button" class="btn btn-info tea-index-button">Slush</button>
+    </a>
 </div>
+
 
 <div class="home-about-container">
     <div class="home-boba-img">

@@ -73,7 +73,7 @@ h1,h2,h3,h5,h6{
 .learn-more-btn {
     background: #A3CCFF;
 }
-.our-teas{
+/*.our-teas{
     display:flex;
     flex-direction:row;
     width:90%;
@@ -91,7 +91,37 @@ h1,h2,h3,h5,h6{
     background:#efefef;
     align-items:center;
     justify-content:center;
+}*/
+
+.our-teas {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 10vh auto;
+    justify-content: center;
+    align-content: center;
+    height: 200px;
 }
+
+.tea {
+    display: flex;
+    flex-direction: row;
+    width: 33%;
+    margin: 0 5vh;
+    text-align: center;
+    background: #efefef;
+    align-items: center;
+    justify-content: center;
+}
+
+.tea-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+
+
 .subheading{
     display:flex;
     flex-direction:row;
@@ -171,4 +201,24 @@ h1,h2,h3,h5,h6{
     flex-direction:row;
     margin:10px 0;
 
+}
+
+/* Removes the underline for all anchor tags */
+a {
+    text-decoration: none; 
+}
+
+.tea-link {
+    text-decoration: none;
+    margin: 0 5vh;
+    display: inline-block;
+}
+
+.tea-index-button {
+    background-color: #5bc0de;
+    color: #fff;
+    padding: 15px 30px; /* Adjusted padding for a bigger button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
