@@ -32,7 +32,7 @@ namespace Sips.Controllers
             var viewModel = new MilkTeaViewModel
             {
                 title = "Milk Tea Menu",
-                Items = milkTeas.ToList() // Assuming GetMilkTeas() returns IEnumerable<Item>
+                Items = milkTeas.ToList()
             };
 
             return View(viewModel);
