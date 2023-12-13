@@ -280,7 +280,7 @@ footer{
     width: max-content;
     padding: 1.25rem 1rem;
     border-radius: 0.25rem;
-    background-color: #0b0c14;
+    background-color: #A3CCFF;
     color: #fff;
     visibility: hidden; /* Initially hidden */
     pointer-events: none;
