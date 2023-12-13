@@ -273,3 +273,49 @@ footer{
 .footer-copy a:hover {
     color: #fff;
 }
+
+/* Banner Animation */
+
+.banner {
+    position: absolute;
+    bottom: 3.125rem;
+    left: 3.125rem;
+    width: max-content;
+    padding: 1.25rem 1rem;
+    border-radius: 0.25rem;
+    background-color: #0b0c14;
+    color: #fff;
+    visibility: hidden; /* Initially hidden */
+    pointer-events: none;
+    animation: fade-in 4s forwards;
+}
+
+.progress {
+    position: absolute;
+    inset: auto 0.625rem 0.375rem;
+    height: 0.25rem;
+    background-color: #7c87f7;
+    transform: scaleX(0);
+    transform-origin: left;
+    border-radius: 0.5rem;
+    animation: load 3s 0.25s linear forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        visibility: visible; /* Make visible when animation starts */
+        opacity: 0;
+        transform: translateY(2rem);
+    }
+
+    5%, 90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes load {
+    100% {
+        transform: scaleX(1);
+    }
+}
