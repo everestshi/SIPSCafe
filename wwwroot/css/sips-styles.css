@@ -119,6 +119,39 @@ h1,h2,h3,h5,h6{
     cursor: pointer;
 }
 
+/*index menu styles*/
+.index-image-container {
+    position: relative;
+    overflow: hidden; /* Ensure overflow is hidden to contain the scaled h4 */
+}
+
+.index-image-container h4 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    margin: 0;
+    color: white; 
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Add transition for smooth effect */
+}
+
+.index-image-container img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease; /* Add transition for smooth effect */
+}
+
+    .index-image-container:hover img {
+        opacity: 0.7; /* Adjust the opacity level as needed */
+    }
+
+.index-image-container:hover h4 {
+    opacity: 0.9; /* Adjust the opacity level as needed */
+    transform: translate(-50%, -50%) scale(1.2); /* Adjust the scale factor as needed */
+}
+
+
+
 
 
 .subheading{
@@ -338,3 +371,4 @@ a {
 .drink-images img {
     border-radius: 10px;
 }
+

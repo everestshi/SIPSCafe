@@ -17,7 +17,7 @@
 
 
 <h2 class="subheading">Our Teas</h2>
-<div class="our-teas">
+@* <div class="our-teas">
     <a asp-area="" asp-controller="Menu" asp-action="MilkTea" class="tea-link">
         <button type="button" class="btn btn-info tea-index-button">Milk Tea</button> 
     </a>
@@ -27,7 +27,31 @@
     <a asp-area="" asp-controller="Menu" asp-action="Slush" class="tea-link">
         <button type="button" class="btn btn-info tea-index-button">Slush</button>
     </a>
+</div> *@
+<div class="drink-images">
+    <div class="row">
+        <div class="col-md-4">
+            <a href="@Url.Action("MilkTea", "Menu")" class="index-image-container">
+                <img src="~/images/milk-tea.jpeg" alt="Milk Tea" class="img-fluid">
+                <h4>Milk Teas</h4>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="@Url.Action("FruitTea", "Menu")" class="index-image-container">
+                <img src="~/images/fruit-tea.jpeg" alt="Fruit Tea" class="img-fluid">
+                <h4>Fruit Teas</h4>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="@Url.Action("Slush", "Menu")" class="index-image-container">
+                <img src="~/images/slush.jpeg" alt="Slush" class="img-fluid">
+                <h4>Slushes</h4>
+            </a>
+        </div>
+    </div>
 </div>
+
+
 
 
 <div class="home-about-container">
