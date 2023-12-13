@@ -3,13 +3,12 @@
 
     cursor: url('/images/resize-cursor.png')16 16, auto;
     margin-bottom:0;
-
 }
 
-body:hover {
-    cursor: url('/images/resize-cursor.png') 16 16, auto;
-
-}
+ body .button {
+        /* Additional styles for buttons if needed */
+    cursor: inherit; /* Inherit the cursor from the body */
+ }
 
 html {
     
