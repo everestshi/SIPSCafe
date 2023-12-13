@@ -1,0 +1,60 @@
+﻿@model Sips.Models.Item
+
+@{
+    ViewData["Title"] = "ItemDetails";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>@Model.Name </h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ice)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ice)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Sweetness)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sweetness)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BasePrice)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BasePrice)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Inventory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Inventory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ItemType)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="ItemEdit" asp-route-id="@Model?.PkItemId">Edit</a> |
+    <a asp-action="ItemIndex">Back to List</a>
+</div>
