@@ -1,6 +1,13 @@
 ﻿body {
     font-family: 'Quicksand', 'sans-serif';
+    cursor: url('/images/resize-cursor.png')16 16, auto;
 }
+
+body:hover {
+    cursor: url('/images/resize-cursor.png') 16 16, auto;
+
+}
+
 html {
     
 }
