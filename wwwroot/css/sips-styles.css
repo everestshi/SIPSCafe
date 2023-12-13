@@ -73,25 +73,6 @@ h1,h2,h3,h5,h6{
 .learn-more-btn {
     background: #A3CCFF;
 }
-/*.our-teas{
-    display:flex;
-    flex-direction:row;
-    width:90%;
-    margin:10vh auto;
-    justify-content:center;
-    align-content:center;
-    height:200px;
-}
-.tea{
-    display:flex;
-    flex-direction:row;
-    width:33%;
-    margin: 0 5vh;
-    text-align:center;
-    background:#efefef;
-    align-items:center;
-    justify-content:center;
-}*/
 
 .our-teas {
     display: flex;
