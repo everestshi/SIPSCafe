@@ -65,7 +65,10 @@ h1,h2,h3,h5,h6{
 }
 .contact-body {
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
+    align-items: center;
+    margin: 5vh auto;
+    width: 85%;
 }
 
 #contact-address {
@@ -165,7 +168,6 @@ h1,h2,h3,h5,h6{
     align-content: center;
     align-items: center;
 }
-
 
 .home-boba-img{
     display:flex;
