@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sips.Models;
 
 public partial class Contact
 {
+    [Display(Name = "Custome Id")]
+
     public int PkUserId { get; set; }
+    [Display(Name = "First Name")]
 
     public string FirstName { get; set; } = null!;
+    [Display(Name = "Last Name")]
 
     public string? LastName { get; set; }
+    [Display(Name = "Phone Number")]
 
     public string PhoneNumber { get; set; } = null!;
 
@@ -22,8 +28,10 @@ public partial class Contact
     public string City { get; set; } = null!;
 
     public string Province { get; set; } = null!;
+    [Display(Name = "Postal Code")]
 
     public string PostalCode { get; set; } = null!;
+    [Display(Name = "Birth Date")]
 
     public DateTime? BirthDate { get; set; }
 

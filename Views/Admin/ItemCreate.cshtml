@@ -1,0 +1,69 @@
+﻿@model Sips.Models.Item
+
+@{
+    ViewData["Title"] = "ItemCreate";
+}
+
+<h1>Add New Product</h1>
+
+@* <h4>Item</h4> *@
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ItemCreate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ice" class="control-label"></label>
+                <select asp-for="Ice" class="form-control" asp-items="ViewBag.Ice">
+                    <option value="">Select from Ice options</option>
+                </select>                
+                <span asp-validation-for="Ice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sweetness" class="control-label"></label>
+                <select asp-for="Sweetness" class="form-control" asp-items="ViewBag.Sweetness">
+                    <option value="">Select from Sweetness options</option>
+                </select>                
+                <span asp-validation-for="Sweetness" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BasePrice" class="control-label"></label>
+                <input asp-for="BasePrice" class="form-control" />
+                <span asp-validation-for="BasePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory" class="control-label"></label>
+                <input asp-for="Inventory" class="form-control" />
+                <span asp-validation-for="Inventory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemType" class="control-label"></label>
+                <select asp-for="ItemType" class="form-control" asp-items="ViewBag.ItemType">
+                    <option value="">Select from Item Type options</option>
+                </select>  
+                <span asp-validation-for="ItemType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="ItemIndex">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
