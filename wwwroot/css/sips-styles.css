@@ -5,10 +5,6 @@
     margin-bottom:0;
 }
 
- body .button {
-        /* Additional styles for buttons if needed */
-    cursor: inherit; /* Inherit the cursor from the body */
- }
 
 html {
     
