@@ -12,5 +12,7 @@ public partial class AddIn
 
     public decimal PriceModifier { get; set; }
 
+    public string urlString { get; set; } = null!;
+
     public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
 }

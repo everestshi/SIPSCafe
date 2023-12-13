@@ -28,7 +28,14 @@ namespace Sips.Controllers
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var milkTeas = menuRepo.GetMilkTeas();
-            return View(milkTeas);
+
+            var viewModel = new MilkTeaViewModel
+            {
+                title = "Milk Tea Menu",
+                Items = milkTeas.ToList() // Assuming GetMilkTeas() returns IEnumerable<Item>
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult FruitTea()

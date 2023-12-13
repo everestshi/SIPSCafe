@@ -125,14 +125,15 @@ h1,h2,h3,h5,h6{
     background-color:paleturquoise;
 }
 
-#admin-page{
-    display:flex;
-    flex-direction:row;
-    gap:20px;
-    justify-content:center;
+#admin-page {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
     /*justify-content:space-around;*/
-    align-content:center;
-    align-items:center;
+    align-content: center;
+    align-items: center;
+}
 
 
 .home-boba-img{
@@ -168,4 +169,53 @@ h1,h2,h3,h5,h6{
     flex-direction:row;
     margin:10px 0;
 
+}
+
+
+/*menu styles*/
+.menu-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.menuindex-description {
+    background-color: #E4F2EE;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.drink-images img {
+    border-radius: 10px;
+}
+
+.drink-images p {
+
+}
+
+.drink-images .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.drink-images .col-md-4 {
+    flex: 0 0 30%;
+}
+
+.customize-order-text {
+    color: white;
+}
+
+.customize-order {
+    background-image: url('/images/boba-toppings.jpeg');
+    height: 10rem;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Add padding to contain the content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }

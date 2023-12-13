@@ -68,6 +68,7 @@ CREATE TABLE Item ( pkItemID INTEGER CONSTRAINT Item_PK PRIMARY KEY AUTOINCREMEN
 						, basePrice				DECIMAL(10, 2)	NOT NULL
 						, inventory				INTEGER			NOT NULL
 						, itemType				VARCHAR(30)		NOT NULL
+						, urlString				VARCHAR(255) 	NOT NULL
 						, CONSTRAINT UniqueName UNIQUE (name));
 						
 						
@@ -78,7 +79,8 @@ CREATE TABLE ItemSize ( pkSizeID INTEGER CONSTRAINT Size_PK PRIMARY KEY AUTOINCR
 						
 CREATE TABLE AddIn ( pkAddInID INTEGER CONSTRAINT AddIn_PK PRIMARY KEY AUTOINCREMENT
 						, addInName				VARCHAR(30)		NOT NULL
-						, priceModifier			DECIMAL(10, 2)	NOT NULL);
+						, priceModifier			DECIMAL(10, 2)	NOT NULL
+						, urlString				VARCHAR(255)	NOT NULL);
 				
 				
 CREATE TABLE OrderDetail ( pkOrderDetailID INTEGER CONSTRAINT OrderDetail_PK PRIMARY KEY AUTOINCREMENT
@@ -106,40 +108,40 @@ CREATE TABLE AddIn_OrderDetail ( fkAddInID 		INTEGER			NOT NULL
 
 
 -- Milk Teas
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Matcha Milk Tea', '', 'Regular', 'Regular', '2.99', '100', 'Milk Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Matcha Milk Tea', 'A delightful blend of matcha and creamy milk.', 'Regular', 'Regular', '2.99', '100', 'Milk Tea', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Taro Milk Tea', '', 'Regular', 'Regular', '2.99', '100', 'Milk Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Taro Milk Tea', 'Experience the unique flavor of taro in a refreshing milk tea.', 'Regular', 'Regular', '2.99', '100', 'Milk Tea', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Brown Sugar Milk Tea', '', 'Regular', 'Regular', '3.49', '100', 'Milk Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Brown Sugar Milk Tea', 'Indulge in the rich taste of brown sugar infused in milk tea.', 'Regular', 'Regular', '3.49', '100', 'Milk Tea', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Sips Milk Tea', '', 'Regular', 'Regular', '2.99', '100', 'Milk Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Sips Milk Tea', 'Our classic and flavorful Sips Milk Tea.', 'Regular', 'Regular', '2.99', '100', 'Milk Tea', '');
 
 -- Fruit Teas
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('PassionFruit Tea', '', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('PassionFruit Tea', 'A tropical burst of passion fruit in a refreshing tea.', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Peach Kiwi Tea', '', 'Regular', 'Regular', '3.49', '100', 'Fruit Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Peach Kiwi Tea', 'Experience the perfect harmony of peach and kiwi in tea.', 'Regular', 'Regular', '3.49', '100', 'Fruit Tea', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Mango Tea', '', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Mango Tea', 'Enjoy the sweetness of mango in our delightful tea blend.', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Wintermelon Tea', '', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Wintermelon Tea', 'Refresh yourself with the cooling taste of wintermelon tea.', 'Regular', 'Regular', '3.29', '100', 'Fruit Tea', '');
 
 -- Slushes
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Lychee Slush', '', 'Regular', 'Regular', '4.49', '100', 'Slush');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Watermelon Raspberry Slush', 'Savor the unique and sweet taste of watermelon and raspberry in a slush.', 'Regular', 'Regular', '4.49', '100', 'Slush', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Taro Slush', '', 'Regular', 'Regular', '4.29', '100', 'Slush');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Taro Slush', 'Experience the rich and creamy taro in a delightful slush.', 'Regular', 'Regular', '4.29', '100', 'Slush', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Strawberry Slush', '', 'Regular', 'Regular', '4.29', '100', 'Slush');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Strawberry Slush', 'Enjoy the freshness of strawberry in a chilled slush drink.', 'Regular', 'Regular', '4.29', '100', 'Slush', '');
 
-INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType)
-VALUES ('Coffee Slush', '', 'Regular', 'Regular', '4.49', '100', 'Slush');
+INSERT INTO Item (Name, Description, Ice, Sweetness, BasePrice, Inventory, ItemType, urlString)
+VALUES ('Coffee Slush', 'A delightful mix of coffee flavor in a frosty slush.', 'Regular', 'Regular', '4.49', '100', 'Slush', '');

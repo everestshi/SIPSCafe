@@ -21,6 +21,8 @@ public partial class Item
     public int Inventory { get; set; }
 
     public string ItemType { get; set; } = null!;
+    
+    public string urlString { get; set; } = null!;
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }
