@@ -317,6 +317,11 @@ footer{
     }
 }
 
+/* Removes the underline for all anchor tags */
+a {
+    text-decoration: none;
+}
+
 /*menu styles*/
 .menu-container {
     padding: 20px;
