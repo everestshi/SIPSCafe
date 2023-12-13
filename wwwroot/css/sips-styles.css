@@ -73,25 +73,36 @@ h1,h2,h3,h5,h6{
 .learn-more-btn {
     background: #A3CCFF;
 }
-.our-teas{
-    display:flex;
-    flex-direction:row;
-    width:90%;
-    margin:10vh auto;
-    justify-content:center;
-    align-content:center;
-    height:200px;
+
+.our-teas {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 10vh auto;
+    justify-content: center;
+    align-content: center;
+    height: 200px;
 }
-.tea{
-    display:flex;
-    flex-direction:row;
-    width:33%;
+
+.tea {
+    display: flex;
+    flex-direction: row;
+    width: 33%;
     margin: 0 5vh;
-    text-align:center;
-    background:#efefef;
-    align-items:center;
-    justify-content:center;
+    text-align: center;
+    background: #efefef;
+    align-items: center;
+    justify-content: center;
 }
+
+.tea-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+
+
 .subheading{
     display:flex;
     flex-direction:row;
@@ -125,14 +136,15 @@ h1,h2,h3,h5,h6{
     background-color:paleturquoise;
 }
 
-#admin-page{
-    display:flex;
-    flex-direction:row;
-    gap:20px;
-    justify-content:center;
+#admin-page {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
     /*justify-content:space-around;*/
-    align-content:center;
-    align-items:center;
+    align-content: center;
+    align-items: center;
+}
 
 
 .home-boba-img{
@@ -145,6 +157,8 @@ h1,h2,h3,h5,h6{
     flex-direction:column;
     text-align:left;
 }
+
+/*REG page style****************************/
 .sip-reg{
     display:flex;
     flex-direction:column;
@@ -168,4 +182,24 @@ h1,h2,h3,h5,h6{
     flex-direction:row;
     margin:10px 0;
 
+}
+
+/* Removes the underline for all anchor tags */
+a {
+    text-decoration: none; 
+}
+
+.tea-link {
+    text-decoration: none;
+    margin: 0 5vh;
+    display: inline-block;
+}
+
+.tea-index-button {
+    background-color: #5bc0de;
+    color: #fff;
+    padding: 15px 30px; /* Adjusted padding for a bigger button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
