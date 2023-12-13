@@ -33,6 +33,10 @@ namespace Sips.Migrations
                         .HasColumnType("DECIMAL(10, 2)")
                         .HasColumnName("priceModifier");
 
+                    b.Property<string>("urlString")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("PkAddInId");
 
                     b.ToTable("AddIn", (string)null);
@@ -187,6 +191,10 @@ namespace Sips.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(10)")
                         .HasColumnName("sweetness");
+
+                    b.Property<string>("urlString")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PkItemId");
 

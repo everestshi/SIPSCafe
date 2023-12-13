@@ -5,8 +5,8 @@
     ViewData["Title"] = "Sips Menu";
 }
 
-<div class="container">
-    <div class="menu-description">
+<div class="menu-container">
+    <div class="menuindex-description">
         <h2>SIPS BUBBLE TEA MENU</h2>
         <p>
             Welcome to Sips, where refreshment meets innovation. Dive into the creamy allure of our Milk Tea, savor the
@@ -22,27 +22,26 @@
         <div class="row">
             <div class="col-md-4">
                 <a href="@Url.Action("MilkTea", "Menu")">
-                    <img src="milk_tea_image_url_here" alt="Milk Tea" class="img-fluid">
-                    <p>Milk Tea</p>
+                    <h4>Milk Teas</h4>
+                    <img src="~/images/milk-tea.jpeg" alt="Milk Tea" class="img-fluid">
                 </a>
             </div>
             <div class="col-md-4">
                 <a href="@Url.Action("FruitTea", "Menu")">
-                    <img src="fruit_tea_image_url_here" alt="Fruit Tea" class="img-fluid">
-                    <p>Fruit Tea</p>
+                    <h4>Fruit Teas</h4>
+                    <img src="~/images/fruit-tea.jpeg" alt="Fruit Tea" class="img-fluid">
                 </a>
             </div>
             <div class="col-md-4">
                 <a href="@Url.Action("Slush", "Menu")">
-                    <img src="slush_image_url_here" alt="Slush" class="img-fluid">
-                    <p>Slush</p>
+                    <h4>Slushes</h4>
+                    <img src="~/images/slush.jpeg" alt="Slush" class="img-fluid">
                 </a>
             </div>
         </div>
     </div>
 
     <div class="customize-order">
-        <h2 class="text-center">Customize your order however you'd like</h2>
-        <img src="large_image_url_here" alt="Customize Your Order" class="img-fluid">
+        <h2 class="customize-order-text">Customize your order however you'd like</h2>
     </div>
 </div>

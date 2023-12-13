@@ -321,3 +321,20 @@ footer{
         transform: scaleX(1);
     }
 }
+
+/*menu styles*/
+.menu-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.menuindex-description {
+    background-color: #E4F2EE;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.drink-images img {
+    border-radius: 10px;
+}

@@ -1,12 +1,12 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model IEnumerable<Item>
+@model Sips.Models.MilkTeaViewModel
 
-<h1>Milk Teas</h1>
+<h1>@Model.title</h1>
 
 <div class="milk-tea-list">
-    @foreach (var tea in Model)
+    @foreach (var tea in Model.Items)
     {
         <div class="milk-tea-item">
             <h2>@tea.Name</h2>
@@ -18,3 +18,4 @@
         </div>
     }
 </div>
+<img src="~/images/boba-02.png" />
