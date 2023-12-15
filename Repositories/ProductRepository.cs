@@ -50,6 +50,7 @@ namespace Sips.Repositories
                 item.ItemType = editingItem.ItemType;
                 item.BasePrice = editingItem.BasePrice;
                 item.Inventory = editingItem.Inventory;
+                //item.urlString = editingItem.urlString;
                 
                 _db.SaveChanges();
                 message = $"Product {editingItem.Name} updated successfully";

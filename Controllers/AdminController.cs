@@ -129,20 +129,7 @@ namespace Sips.Controllers
             return View(customerrepo.GetById(id));
         }
 
-        public IActionResult Customer()
-        {
-            return View();
-        }
-
-        public IActionResult Order()
-        {
-            return View();
-        }
-
-        public IActionResult Report()
-        {
-            return View();
-        }
+        
 
 
     }
