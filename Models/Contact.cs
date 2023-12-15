@@ -32,14 +32,14 @@ public partial class Contact
 
     public string PostalCode { get; set; } = null!;
     [Display(Name = "Birth Date")]
-
+    [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = false)]
     public DateTime? BirthDate { get; set; }
 
     public string IsDrinkRedeemed { get; set; } = null!;
 
     public int FkUserTypeId { get; set; }
 
-    public virtual Credential FkUserType { get; set; } = null!;
+    public virtual Credential? FkUserType { get; set; } = null!;
 
     public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 

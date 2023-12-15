@@ -118,8 +118,11 @@ namespace Sips.Controllers
 
 
         //Customer CRUD**********************************************
-        public IActionResult CustomerIndex()
+        public IActionResult CustomerIndex(string message)
         {
+            message = message ?? string.Empty;
+
+            ViewData["Message"] = message; 
             CustomerRepository customerrepo = new CustomerRepository(_context);
             return View(customerrepo.GetAll());
         }
@@ -129,7 +132,69 @@ namespace Sips.Controllers
             return View(customerrepo.GetById(id));
         }
 
-        
+        public IActionResult CustomerCreate()
+        {
+            Contact contact = new Contact();
+            contact.FkUserTypeId = 1;
+            contact.IsDrinkRedeemed = "no";
+            //contact.FkUserType = new Credential();
+            return View(contact);
+        }
+
+        [HttpPost]
+        public IActionResult CustomerCreate(Contact contact)
+        {
+            CustomerRepository customerRepository = new CustomerRepository(_context);
+            contact.FkUserType = new Credential();//how to add this to customer
+            if (ModelState.IsValid)
+            {
+
+                string repoMessage = customerRepository.Add(contact);
+
+                return RedirectToAction("CustomerIndex", new { message = repoMessage });
+            }
+
+            return View(contact);
+        }
+
+        public IActionResult CustomerEdit(int id)
+        {
+            CustomerRepository customerRepository = new CustomerRepository(_context);
+            Contact contact = customerRepository.GetById(id);
+            return View(contact);
+        }
+
+        [HttpPost]
+        public IActionResult CustomerEdit(Contact contact)
+        {
+            CustomerRepository customerRepository = new CustomerRepository(_context);
+            if (ModelState.IsValid)
+            {
+                string repoMessage = customerRepository.Update(contact);
+                return RedirectToAction("CustomerIndex", new { message = repoMessage });
+            }
+            return View(contact);
+        }
+
+        public IActionResult CustomerDelete(int id)
+        {
+            CustomerRepository customerRepository = new CustomerRepository(_context);
+
+            return View(customerRepository.GetById(id));
+        }
+
+        [HttpPost]
+        public IActionResult CustomerDelete(Contact contact)
+        {
+            CustomerRepository customerRepository = new CustomerRepository(_context);
+
+            string repoMessage = customerRepository.Delete(contact.PkUserId);
+
+            return RedirectToAction("ItemIndex", new { message = repoMessage });
+        }
+
+
+
 
 
     }
