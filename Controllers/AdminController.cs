@@ -24,7 +24,7 @@ namespace Sips.Controllers
             return View();
         }
         //Product CRUD**********************************************
-        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 4)
+        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
         {
             message = message ?? string.Empty;
             ViewData["Message"] = message;

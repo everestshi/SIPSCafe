@@ -1,4 +1,4 @@
-﻿using Sips.Models;
+﻿using Sips.SipsModels;
 
 namespace Sips.Interfaces
 {

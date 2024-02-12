@@ -1,4 +1,6 @@
-﻿namespace Sips.SipsModels
+﻿using Sips.SipsModels;
+
+namespace Sips.SipsModels
 {
     public class PaginatedList<T> : List<T>
     {

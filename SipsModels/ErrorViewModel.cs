@@ -1,9 +1,8 @@
-namespace Sips.Models
+﻿namespace Sips.SipsModels
 {
     public class ErrorViewModel
     {
         public string? RequestId { get; set; }
-
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
 }

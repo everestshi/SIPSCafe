@@ -1,4 +1,4 @@
-﻿@model Sips.Models.Contact
+﻿@model Sips.SipsModels.Contact
 
 @{
     ViewData["Title"] = "CustomerDetails";
@@ -85,6 +85,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="CustomerEdit" asp-route-id="@Model?.PkUserId">Edit</a> |
+    <a asp-action="CustomerEdit" asp-route-id="@Model?.UserId">Edit</a> |
     <a asp-action="CustomerIndex">Back to List</a>
 </div>

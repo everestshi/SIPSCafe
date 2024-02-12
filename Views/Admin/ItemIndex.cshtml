@@ -1,12 +1,13 @@
-﻿@* @model IEnumerable<Sips.Models.Item> *@
-@model PaginatedList<Item>
+﻿@* @model IEnumerable<Sips.SipsModels.Item> *@
+
+    @model PaginatedList<Item>
 
 @{
     ViewData["Title"] = "ItemIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Products</h1>
-@ViewBag.Message
 
 <form asp-action="ItemIndex" method="get">
     <div class="form-actions no-color">
@@ -25,30 +26,27 @@
     </div>
 </form>
 
-
 <p>
-    <a asp-action="ItemCreate">Create New Product</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.ActionLink("Product ID", "ItemIndex", new { sortOrder = ViewBag.IDSortParm })
+
+                @* Product ID *@
+                @* @Html.DisplayNameFor(model => model.Name) *@
             </th>
             <th>
                 @Html.ActionLink("Name", "ItemIndex", new { sortOrder = ViewBag.NameSortParm })
+
+                @* Name *@
+                @* @Html.DisplayNameFor(model => model.Name) *@
             </th>
             <th>
                 Description
                 @* @Html.DisplayNameFor(model => model.Description) *@
-            </th>
-            <th>
-                Ice
-                @* @Html.DisplayNameFor(model => model.Ice) *@
-            </th>
-            <th>
-                Sweetness
-                @* @Html.DisplayNameFor(model => model.Sweetness) *@
             </th>
             <th>
                 Base Price
@@ -59,8 +57,20 @@
                 @* @Html.DisplayNameFor(model => model.Inventory) *@
             </th>
             <th>
+                Url String
+                @* @Html.DisplayNameFor(model => model.UrlString) *@
+            </th>
+            <th>
+                Ice
+                @* @Html.DisplayNameFor(model => model.Ice) *@
+            </th>
+            <th>
                 Item Type
                 @* @Html.DisplayNameFor(model => model.ItemType) *@
+            </th>
+            <th>
+                Sweetness
+                @* @Html.DisplayNameFor(model => model.Sweetness) *@
             </th>
             <th></th>
         </tr>
@@ -68,20 +78,14 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PkItemId)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemId)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sweetness)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BasePrice)
@@ -90,18 +94,27 @@
                 @Html.DisplayFor(modelItem => item.Inventory)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ItemType)
+                @Html.DisplayFor(modelItem => item.UrlString)
             </td>
             <td>
-                <a asp-action="ItemEdit" asp-route-id="@item.PkItemId">Edit</a> |
-                <a asp-action="ItemDetails" asp-route-id="@item.PkItemId">Details</a> |
-                <a asp-action="ItemDelete" asp-route-id="@item.PkItemId">Delete</a>
+                @Html.DisplayFor(modelItem => item.Ice.IceId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemType.ItemTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sweetness.SweetnessId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
             </td>
         </tr>
 }
     </tbody>
+    
 </table>
-
 <nav>
     <ul class="pagination">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
@@ -118,7 +131,3 @@
         </li>
     </ul>
 </nav>
-
-<a asp-area="" asp-controller="Admin" asp-action="Index">
-    <button type="button" class="btn btn-info">Back</button>
-</a>

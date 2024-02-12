@@ -1,4 +1,4 @@
-﻿@model Sips.Models.Contact
+﻿@model Sips.SipsModels.Contact
 
 @{
     ViewData["Title"] = "CustomerDelete";
@@ -77,16 +77,16 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IsDrinkRedeemed)
         </dd>
-        <dt class = "col-sm-2">
+@*         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FkUserType)
-        </dt>
-        <dd class = "col-sm-10">
+        </dt> *@
+@*         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FkUserType.PkUserTypeId)
-        </dd>
+        </dd> *@
     </dl>
     
     <form asp-action="CustomerDelete">
-        <input type="hidden" asp-for="PkUserId" />
+        <input type="hidden" asp-for="UserId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="CustomerIndex">Back to List</a>
     </form>

@@ -1,13 +1,13 @@
 ﻿using Sips.Data;
-using Sips.Models;
+using Sips.SipsModels;
 
 namespace Sips.Repositories
 {
     public class ContactRepo
     {
-        private readonly SipsContext _db;
+        private readonly SipsdatabaseContext _db;
 
-        public ContactRepo(SipsContext db)
+        public ContactRepo(SipsdatabaseContext db)
         {
             this._db = db;
         }

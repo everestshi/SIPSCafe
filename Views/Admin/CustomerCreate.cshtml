@@ -1,4 +1,4 @@
-﻿@model Sips.Models.Contact
+﻿@model Sips.SipsModels.Contact
 
 @{
     ViewData["Title"] = "CustomerCreate";
@@ -63,7 +63,7 @@
                 <span asp-validation-for="BirthDate" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="IsDrinkRedeemed" />
-            <input type="hidden" asp-for="FkUserTypeId" />
+            @* <input type="hidden" asp-for="FkUserTypeId" /> *@
 @*             <div class="form-group">
                 <label asp-for="IsDrinkRedeemed" class="control-label"></label>
                 <input asp-for="IsDrinkRedeemed" class="form-control" />
