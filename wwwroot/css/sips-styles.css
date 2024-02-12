@@ -177,7 +177,7 @@ h1,h2,h3,h5,h6{
 width:100%;
 background-repeat:no-repeat;
 background-size:cover;
-background-position:top;
+background-position:center;
 }
 .about-header{
 display:flex;
@@ -420,5 +420,36 @@ a {
 .tea-container{
     display:flex;
     flex-direction:column;
+}
+
+.tea-list{
+    display:flex;
+    flex-direction:column;
+justify-content:center;
+}
+.tea-item{
+display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    margin:10px 0;
+}
+.tea-item img{
+    width:200px;
+}
+.tea-copy{
+    text-align:left;
+    width:500px;
+}
+
+.tea-btns{
+display:flex;
+    flex-direction:column;
+    gap:1vh;
+}
+.tea-btns button{
+    width:100px;
+    border:0;
+    padding:10px;
 }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sips.Interfaces;
 using Sips.Repositories;
-using Sips.Models;
+using Sips.SipsModels;
 using Sips.Data;
 
 namespace Sips.Controllers
@@ -9,11 +9,11 @@ namespace Sips.Controllers
     public class MenuController : Controller
     {
         //private readonly IRepository _menuRepo;
-        private readonly SipsContext _db;
+        private readonly SipsdatabaseContext _db;
 
 
 
-        public MenuController(SipsContext db)
+        public MenuController(SipsdatabaseContext db)
         {
             _db = db;
         }
@@ -29,7 +29,7 @@ namespace Sips.Controllers
 
             var milkTeas = menuRepo.GetMilkTeas();
 
-            var viewModel = new MilkTeaViewModel
+            var viewModel = new MilkTeaVM
             {
                 title = "Milk Tea Menu",
                 Items = milkTeas.ToList()
