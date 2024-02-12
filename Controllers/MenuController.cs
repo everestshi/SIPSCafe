@@ -29,7 +29,7 @@ namespace Sips.Controllers
 
             var milkTeas = menuRepo.GetMilkTeas();
 
-            var viewModel = new MilkTeaViewModel
+            var viewModel = new MilkTeaVM
             {
                 title = "Milk Tea Menu",
                 Items = milkTeas.ToList()

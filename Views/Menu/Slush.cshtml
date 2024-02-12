@@ -3,18 +3,25 @@
 *@
 @model IEnumerable<Item>
 
-<h1>Slushes</h1>
+<div class="tea-container">
+    <h1>Slushes</h1>
+</div>
 
-<div class="slush-list">
+<div class="tea-list">
     @foreach (var tea in Model)
     {
-        <div class="slush-item">
-            <h2>@tea.Name</h2>
+        <div class="tea-item">
             <img src="" alt="@tea.Name" class="img-fluid">
+            <div class="tea-copy">
+            <h2>@tea.Name</h2>
+ 
             <p>Description: @tea.Description</p>
             <p>Price: $@tea.BasePrice.ToString()</p>
-@*             <button>Add to Cart</button>
-            <button>Customize</button> *@
+            </div>
+            <div class="tea-btns">
+            <button>Add to Cart</button>
+            <button>Customize</button>
+            </div>
         </div>
     }
 </div>

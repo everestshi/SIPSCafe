@@ -151,9 +151,6 @@ h1,h2,h3,h5,h6{
 }
 
 
-
-
-
 .subheading{
     display:flex;
     flex-direction:row;
@@ -166,18 +163,61 @@ h1,h2,h3,h5,h6{
 .home-about-container{
     display:flex;
     flex-direction:row-reverse;
-    width:85%;
+    width:100%;
     justify-content:center;
     align-items:center;
     margin:0 auto;
+    padding:40px;
 }
 
 
 /*about page style****************************/
+.about-banner {
+ background:url('/images/about-banner.jpg');
+width:100%;
+background-repeat:no-repeat;
+background-size:cover;
+background-position:center;
+}
+.about-header{
+display:flex;
+    flex-direction:column;
+    text-align:center;
+    margin:0 auto;
+    padding:40px;
+}
 .about-page{
     display:flex;
     flex-direction:row;
     justify-content: space-between;
+    margin:0 auto;
+    padding:80px 40px;
+}
+
+.about-container{
+    display:flex;
+    flex-direction:column;
+    margin:0 auto;
+    justify-content:center;
+    align-items:center;
+    width:60%;
+    gap:2vh;
+}
+
+.about-images{
+    display:flex;
+    flex-direction:column;
+    width:20%;
+    justify-content:flex-end;
+}
+.about-images:nth-child(1){
+    justify-content:flex-start;
+}
+.about-info{
+    display:flex;
+flex-direction:column;
+text-align:left;
+width:100%;
 }
 /*Admin page style****************************/
 .admin-buttons {
@@ -370,5 +410,46 @@ a {
 
 .drink-images img {
     border-radius: 10px;
+}
+
+.drink-images{
+    padding:20px;
+}
+
+/* tea pages styling*/
+.tea-container{
+    display:flex;
+    flex-direction:column;
+}
+
+.tea-list{
+    display:flex;
+    flex-direction:column;
+justify-content:center;
+}
+.tea-item{
+display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    margin:10px 0;
+}
+.tea-item img{
+    width:200px;
+}
+.tea-copy{
+    text-align:left;
+    width:500px;
+}
+
+.tea-btns{
+display:flex;
+    flex-direction:column;
+    gap:1vh;
+}
+.tea-btns button{
+    width:100px;
+    border:0;
+    padding:10px;
 }
 
