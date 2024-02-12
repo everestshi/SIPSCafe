@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using Sips.Models;
+using Sips.SipsModels;
 
 namespace Sips.Repositories
 {
     public class ProductRepository
     {
-        private readonly SipsContext _db;
+        private readonly SipsdatabaseContext _db;
 
-        public ProductRepository(SipsContext db)
+        public ProductRepository(SipsdatabaseContext db)
         {
             _db = db;
         }
@@ -18,7 +18,7 @@ namespace Sips.Repositories
         }
         public Item GetById(int id)
         {
-            return _db.Items.FirstOrDefault(p => p.PkItemId == id);
+            return _db.Items.FirstOrDefault(p => p.ItemId == id);
         }
 
         public string Add(Item item)
@@ -42,7 +42,7 @@ namespace Sips.Repositories
             string message = string.Empty;
             try
             {
-                Item item = GetById(editingItem.PkItemId);
+                Item item = GetById(editingItem.ItemId);
                 item.Sweetness = editingItem.Sweetness;
                 item.Description = editingItem.Description;
                 item.Ice = editingItem.Ice;

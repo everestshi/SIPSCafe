@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using Sips.Models;
+using Sips.SipsModels;
 
 namespace Sips.Repositories
 {
     public class CustomerRepository
     {
-        private readonly SipsContext _db;
+        private readonly SipsdatabaseContext _db;
 
-        public CustomerRepository(SipsContext db)
+        public CustomerRepository(SipsdatabaseContext db)
         {
             _db = db;
         }
@@ -18,7 +18,7 @@ namespace Sips.Repositories
         }
         public Contact GetById(int id)
         {
-            return _db.Contacts.FirstOrDefault(p => p.PkUserId == id);
+            return _db.Contacts.FirstOrDefault(p => p.UserId == id);
         }
 
         public string Add(Contact contact)
@@ -42,7 +42,7 @@ namespace Sips.Repositories
             string message = string.Empty;
             try
             {
-                Contact contact = GetById(edittingcontact.PkUserId);
+                Contact contact = GetById(edittingcontact.UserId);
                 contact.Email = edittingcontact.Email;
                 contact.FirstName = edittingcontact.FirstName;
                 contact.LastName = edittingcontact.LastName;
@@ -63,19 +63,19 @@ namespace Sips.Repositories
             return message;
         }
 
-        public string Delete(int id)
+        public string Delete(Contact contact)
         {
             string message = string.Empty;
             try
             {
-                Contact contact = GetById(id);
+                //Contact contact = GetById(id);
                 _db.Contacts.Remove(contact);
                 _db.SaveChanges();
                 message = $"{contact.Email} deleted successfully";
             }
             catch (Exception e)
             {
-                message = $" Error deleting customer-{id}: {e.Message}";
+                message = $" Error deleting customer: {e.Message}";
             }
             return message;
         }

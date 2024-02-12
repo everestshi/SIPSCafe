@@ -6,7 +6,7 @@ namespace Sips.Models;
 
 public partial class Contact
 {
-    [Display(Name = "Custome Id")]
+    [Display(Name = "Customer Id")]
 
     public int PkUserId { get; set; }
     [Display(Name = "First Name")]
