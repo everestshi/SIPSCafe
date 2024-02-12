@@ -18,6 +18,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Sips.Data;
+using Sips.Models;
+using Sips.Repositories;
+using static Sips.Services.ReCAPTCHA;
 
 namespace Sips.Areas.Identity.Pages.Account
 {
@@ -29,13 +33,19 @@ namespace Sips.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IConfiguration _configuration;
+        private readonly SipsContext _db;
+
+
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IConfiguration configuration,
+            SipsContext db)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +53,8 @@ namespace Sips.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _configuration = configuration;
+            _db = db;
         }
 
         /// <summary>
@@ -99,7 +111,7 @@ namespace Sips.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Unit Number")]
-            public string UnitNumber { get; set; }
+            public int UnitNumber { get; set; }
 
             [Required]
             [Display(Name = "Street")]
@@ -112,6 +124,11 @@ namespace Sips.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Province")]
             public string Province { get; set; }
+
+
+            [Required]
+            [Display(Name = "Postal Code")]
+            public string PostalCode { get; set; }
 
 
             /// <summary>
@@ -137,14 +154,29 @@ namespace Sips.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/RegisteredCustomer/Index");
+            returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            string captchaResponse = Request.Form["g-Recaptcha-Response"];
+            string secret = _configuration["Recaptcha:SecretKey"];
+            ReCaptchaValidationResult resultCaptcha =
+                ReCaptchaValidator.IsValid(secret, captchaResponse);
+
+            // Invalidate the form if the captcha is invalid.
+            if (!resultCaptcha.Success)
+            {
+                ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
+                ModelState.AddModelError(string.Empty,
+                    "The ReCaptcha is invalid.");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -156,6 +188,26 @@ namespace Sips.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
 
+                    ContactRepo regUserRepo = new ContactRepo(_db);
+
+                    Contact registerUser = new Contact()
+                    {
+                        Email = Input.Email,
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        BirthDate = Input.Birthday,
+                        PhoneNumber = Input.PhoneNumber,
+                        Street = Input.Street,
+                        City = Input.City,
+                        Unit = Input.UnitNumber,
+                        Province = Input.Province,
+                        PostalCode = Input.PostalCode,
+                        IsDrinkRedeemed = "no",
+                        //FkUserTypeId = 1
+
+                    };
+
+                    regUserRepo.RegisterUser(registerUser);
 
 
                     _logger.LogInformation("User created a new account with password.");

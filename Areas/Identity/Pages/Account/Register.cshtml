@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Welcome To Sips";
 }
-
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <h1>@ViewData["Title"]</h1>
 
 <div class="sip-reg-container">
@@ -13,7 +13,7 @@
             
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-
+            <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div><br />
             <div class ="sip-reg">
                 <div class="form-floating mb-3">
                     <input asp-for="Input.FirstName" class="form-control"  aria-required="true" placeholder="First Name" />
@@ -57,6 +57,11 @@
                     <input asp-for="Input.Province" class="form-control"  aria-required="true" placeholder="Province" />
                     <label asp-for="Input.Province"></label>
                     <span asp-validation-for="Input.Province" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.PostalCode" class="form-control" aria-required="true" placeholder="Postal Code" />
+                    <label asp-for="Input.PostalCode"></label>
+                    <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                 </div>
             </div>
             
