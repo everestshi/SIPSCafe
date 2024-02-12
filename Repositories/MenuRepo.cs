@@ -1,15 +1,15 @@
 ﻿using Sips.Data;
-using Sips.Models;
+using Sips.SipsModels;
 
 namespace Sips.Repositories
 {
     public class MenuRepo
     {
-        private readonly SipsContext _db;
+        private readonly SipsdatabaseContext _db;
 
 
 
-        public MenuRepo(SipsContext db)
+        public MenuRepo(SipsdatabaseContext db)
         {
             _db = db;
         }

@@ -204,7 +204,6 @@ namespace Sips.Areas.Identity.Pages.Account
                         PostalCode = Input.PostalCode,
                         IsDrinkRedeemed = "no",
                         //FkUserTypeId = 1
-
                     };
 
                     regUserRepo.RegisterUser(registerUser);
