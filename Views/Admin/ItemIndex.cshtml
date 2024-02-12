@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Sips.Models.Item>
+﻿@* @model IEnumerable<Sips.Models.Item> *@
+@model PaginatedList<Item>
 
 @{
     ViewData["Title"] = "ItemIndex";
@@ -6,6 +7,25 @@
 
 <h1>Products</h1>
 @ViewBag.Message
+
+<form asp-action="ItemIndex" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group" style="display: inline-block">
+                <span>Search on Product Name or Description:</span>
+                <input type="text" name="SearchString"
+                       value="@ViewData["currentFilter"]" required />
+            </div>
+            <div class="form-group" style="display: inline-block">
+                <input type="submit" value="Search"
+                       class="btn btn-primary" />
+            </div>
+            <a asp-action="ItemIndex">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+
 <p>
     <a asp-action="ItemCreate">Create New Product</a>
 </p>
@@ -13,25 +33,34 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.ActionLink("Product ID", "ItemIndex", new { sortOrder = ViewBag.IDSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.ActionLink("Name", "ItemIndex", new { sortOrder = ViewBag.NameSortParm })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ice)
+                Description
+                @* @Html.DisplayNameFor(model => model.Description) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Sweetness)
+                Ice
+                @* @Html.DisplayNameFor(model => model.Ice) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BasePrice)
+                Sweetness
+                @* @Html.DisplayNameFor(model => model.Sweetness) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Inventory)
+                Base Price
+                @* @Html.DisplayNameFor(model => model.BasePrice) *@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ItemType)
+                Inventory
+                @* @Html.DisplayNameFor(model => model.Inventory) *@
+            </th>
+            <th>
+                Item Type
+                @* @Html.DisplayNameFor(model => model.ItemType) *@
             </th>
             <th></th>
         </tr>
@@ -39,6 +68,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PkItemId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -69,6 +101,24 @@
 }
     </tbody>
 </table>
+
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link"
+               href="@Url.Action("Index", new { pageNumber = Model.PageIndex - 1 })">
+                Previous
+            </a>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link"
+               href="@Url.Action("Index", new { pageNumber = Model.PageIndex + 1 })">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
+
 <a asp-area="" asp-controller="Admin" asp-action="Index">
     <button type="button" class="btn btn-info">Back</button>
 </a>

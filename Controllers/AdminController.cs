@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Sips.Data;
 using Sips.Models;
 using Sips.Repositories;
@@ -11,7 +12,7 @@ namespace Sips.Controllers
     {
         //private readonly ILogger<HomeController> _logger;
         private readonly SipsContext _context;
-
+        private IEnumerable<Item> products;
 
         public AdminController(SipsContext context)
         {
@@ -23,12 +24,59 @@ namespace Sips.Controllers
             return View();
         }
         //Product CRUD**********************************************
-        public IActionResult ItemIndex(string message)
+        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 4)
         {
             message = message ?? string.Empty;
-            ViewData["Message"] = message; 
+            ViewData["Message"] = message;
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";
+
+
+
             ProductRepository prorepo = new ProductRepository(_context);
-            return View(prorepo.GetAll());
+            products = prorepo.GetAll().ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => p.Name.ToLower().Contains(searchString.ToLower()) ||
+                                        p.Description.ToLower().Contains(searchString.ToLower())).ToList();
+            }
+
+
+            switch (sortOrder)
+            {
+
+                case "nameSortDesc":
+                    products =
+                        products.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case "Name":
+                    products =
+                        products.OrderBy(p => p.Name).ToList();
+                    break;
+                case "idSortDesc":
+                    products =
+                        products.OrderByDescending(p => p.PkItemId).ToList();
+                    break;
+                default:
+                    products =
+                        products.OrderBy(p => p.PkItemId).ToList();
+                    break;
+            }
+
+            int pageIndex = pageNumber ?? 1;
+            var count = products.Count();
+            var items = products.Skip((pageIndex - 1) * pageSize)
+                                            .Take(pageSize).ToList();
+            var paginatedProducts = new PaginatedList<Item>(items
+                                                                , count
+                                                                , pageIndex
+                                                                , pageSize);
+
+
+
+            return View(paginatedProducts);
         }
         public IActionResult ItemDetails(int id)
         {
@@ -190,7 +238,7 @@ namespace Sips.Controllers
 
             string repoMessage = customerRepository.Delete(contact.PkUserId);
 
-            return RedirectToAction("ItemIndex", new { message = repoMessage });
+            return RedirectToAction("CustomerIndex", new { message = repoMessage });
         }
 
 
