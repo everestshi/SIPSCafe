@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Sips.Data;
-using Sips.Models;
+using Sips.SipsModels;
 using Sips.Repositories;
 using System.Diagnostics;
 
@@ -11,10 +11,10 @@ namespace Sips.Controllers
     public class AdminController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
-        private readonly SipsContext _context;
+        private readonly SipsdatabaseContext _context;
         private IEnumerable<Item> products;
 
-        public AdminController(SipsContext context)
+        public AdminController(SipsdatabaseContext context)
         {
             //_logger = logger;
             _context = context;
@@ -57,11 +57,11 @@ namespace Sips.Controllers
                     break;
                 case "idSortDesc":
                     products =
-                        products.OrderByDescending(p => p.PkItemId).ToList();
+                        products.OrderByDescending(p => p.ItemId).ToList();
                     break;
                 default:
                     products =
-                        products.OrderBy(p => p.PkItemId).ToList();
+                        products.OrderBy(p => p.ItemId).ToList();
                     break;
             }
 
@@ -87,9 +87,9 @@ namespace Sips.Controllers
         public IActionResult ItemCreate()
         {
             ProductRepository prorepo = new ProductRepository(_context);
-            ViewData["Ice"] = new SelectList(_context.Items, "Ice", "Ice");
-            ViewData["Sweetness"] = new SelectList(_context.Items, "Sweetness", "Sweetness");
-            ViewData["ItemType"] = new SelectList(_context.Items, "ItemType", "ItemType");
+            ViewData["Ice"] = new SelectList(_context.Ices, "Ice", "Ice");
+            ViewData["Sweetness"] = new SelectList(_context.Sweetnesses, "Sweetness", "Sweetness");
+            ViewData["ItemType"] = new SelectList(_context.ItemTypes, "ItemType", "ItemType");
 
             return View();
         }
@@ -106,9 +106,9 @@ namespace Sips.Controllers
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
-            ViewData["Ice"] = new SelectList(_context.Items, "Ice", "Ice");
-            ViewData["Sweetness"] = new SelectList(_context.Items, "Sweetness", "Sweetness");
-            ViewData["ItemType"] = new SelectList(_context.Items, "ItemType", "ItemType");
+            ViewData["Ice"] = new SelectList(_context.Ices, "Ice", "Ice");
+            ViewData["Sweetness"] = new SelectList(_context.Sweetnesses, "Sweetness", "Sweetness");
+            ViewData["ItemType"] = new SelectList(_context.ItemTypes, "ItemType", "ItemType");
 
 
             return View(item);
@@ -118,9 +118,9 @@ namespace Sips.Controllers
         {
             ProductRepository prorepo = new ProductRepository(_context);
             Item item = prorepo.GetById(id);
-            ViewData["Ice"] = new SelectList(_context.Items, "Ice", "Ice", item.Ice);
-            ViewData["Sweetness"] = new SelectList(_context.Items, "Sweetness", "Sweetness", item.Sweetness);
-            ViewData["ItemType"] = new SelectList(_context.Items, "ItemType", "ItemType", item.ItemType);
+            ViewData["Ice"] = new SelectList(_context.Ices, "Ice", "Ice", item.Ice);
+            ViewData["Sweetness"] = new SelectList(_context.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
+            ViewData["ItemType"] = new SelectList(_context.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
             return View(item);
         }
@@ -137,9 +137,9 @@ namespace Sips.Controllers
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
-            ViewData["Ice"] = new SelectList(_context.Items, "Ice", "Ice", item.Ice);
-            ViewData["Sweetness"] = new SelectList(_context.Items, "Sweetness", "Sweetness", item.Sweetness);
-            ViewData["ItemType"] = new SelectList(_context.Items, "ItemType", "ItemType", item.ItemType);
+            ViewData["Ice"] = new SelectList(_context.Ices, "Ice", "Ice", item.Ice);
+            ViewData["Sweetness"] = new SelectList(_context.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
+            ViewData["ItemType"] = new SelectList(_context.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
 
             return View(item);
@@ -157,7 +157,7 @@ namespace Sips.Controllers
         {
             ProductRepository prorepo = new ProductRepository(_context);
 
-            string repoMessage = prorepo.Delete(item.PkItemId);
+            string repoMessage = prorepo.Delete(item.ItemId);
 
             return RedirectToAction("ItemIndex", new { message = repoMessage });
         }
@@ -183,8 +183,7 @@ namespace Sips.Controllers
         public IActionResult CustomerCreate()
         {
             Contact contact = new Contact();
-            contact.FkUserTypeId = 1;
-            contact.IsDrinkRedeemed = "no";
+            contact.IsDrinkRedeemed = false;
             //contact.FkUserType = new Credential();
             return View(contact);
         }
@@ -193,7 +192,6 @@ namespace Sips.Controllers
         public IActionResult CustomerCreate(Contact contact)
         {
             CustomerRepository customerRepository = new CustomerRepository(_context);
-            contact.FkUserType = new Credential();//how to add this to customer
             if (ModelState.IsValid)
             {
 
@@ -235,8 +233,9 @@ namespace Sips.Controllers
         public IActionResult CustomerDelete(Contact contact)
         {
             CustomerRepository customerRepository = new CustomerRepository(_context);
+            //contactUserId = customerRepository
 
-            string repoMessage = customerRepository.Delete(contact.PkUserId);
+            string repoMessage = customerRepository.Delete(contact);
 
             return RedirectToAction("CustomerIndex", new { message = repoMessage });
         }
