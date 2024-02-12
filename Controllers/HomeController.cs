@@ -1,21 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sips.Models;
+using Sips.SipsModels;
 using System.Diagnostics;
 
 namespace Sips.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly SipsContext _context;
+        private readonly SipsdatabaseContext _context;
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(SipsdatabaseContext context, ILogger<HomeController> logger, IConfiguration configuration)
         {
+            _context = context;
             _logger = logger;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
         {
+            var connectionString = _configuration["ConnectionStrings:DefaultConnection"];
             return View();
         }
 
@@ -31,11 +35,11 @@ namespace Sips.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
 
         public IActionResult Contact ()
         {
