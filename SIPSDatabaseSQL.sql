@@ -13,9 +13,55 @@ DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS [Store];
 DROP TABLE IF EXISTS Contact;
 
+-- Create ItemType table
+CREATE TABLE ItemType (
+    itemTypeID INTEGER PRIMARY KEY IDENTITY(1,1),
+    itemTypeName VARCHAR(50) NOT NULL
+);
+
+-- Create ItemSize table
+CREATE TABLE ItemSize (
+    sizeID INTEGER PRIMARY KEY IDENTITY(1,1),
+    sizeName VARCHAR(30) NOT NULL,
+    priceModifier DECIMAL(10, 2) NOT NULL
+);
+
+-- Create Sweetness table
+CREATE TABLE Sweetness (
+    sweetnessID INTEGER PRIMARY KEY IDENTITY(1,1),
+    sweetnessPercent DECIMAL(5, 2) NOT NULL
+);
+
+-- Create Ice table
+CREATE TABLE Ice (
+    iceID INTEGER PRIMARY KEY IDENTITY(1,1),
+    icePercent DECIMAL(5, 2) NOT NULL
+);
+
+-- Create AddIn table
+CREATE TABLE AddIn (
+    addInID INTEGER PRIMARY KEY IDENTITY(1,1),
+    addInName VARCHAR(30) NOT NULL,
+    priceModifier DECIMAL(10, 2) NOT NULL,
+    urlString TEXT
+);
+
+-- Create Store table
+CREATE TABLE [Store] (
+    storeID INTEGER PRIMARY KEY IDENTITY(1,1),
+    storeHours VARCHAR(255) NOT NULL
+);
+
+-- Create OrderStatus table
+CREATE TABLE [OrderStatus] (
+    statusID INTEGER PRIMARY KEY IDENTITY(1,1),
+    isOrdered BIT NOT NULL,
+    isPickedUp BIT NOT NULL
+);
+
 -- Create Contact table
 CREATE TABLE Contact (
-    userID INTEGER PRIMARY KEY AUTOINCREMENT,
+    userID INTEGER PRIMARY KEY IDENTITY(1,1),
     firstName VARCHAR(30) NOT NULL,
     lastName VARCHAR(30),
     phoneNumber VARCHAR(20) NOT NULL,
@@ -26,18 +72,26 @@ CREATE TABLE Contact (
     province VARCHAR(20),
     postalCode VARCHAR(10),
     birthDate DATE,
-    isDrinkRedeemed BOOLEAN NOT NULL
+    isDrinkRedeemed BIT NOT NULL
 );
 
--- Create Store table
-CREATE TABLE [Store] (
-    storeID INTEGER PRIMARY KEY AUTOINCREMENT,
-    storeHours VARCHAR(255) NOT NULL
+-- Create Transaction table
+CREATE TABLE [Transaction] (
+    transactionID INTEGER PRIMARY KEY IDENTITY(1,1),
+    dateOrdered DATE NOT NULL,
+    isOrdered BIT NOT NULL,
+    isPickedUp BIT NOT NULL,
+    storeID INTEGER NOT NULL,
+    userID INTEGER NOT NULL,
+    statusID INTEGER, -- Assuming this is the foreign key to OrderStatus table
+    FOREIGN KEY (storeID) REFERENCES Store(storeID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (userID) REFERENCES Contact(userID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (statusID) REFERENCES OrderStatus(statusID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Create Rating table
 CREATE TABLE Rating (
-    ratingID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ratingID INTEGER PRIMARY KEY IDENTITY(1,1),
     rating VARCHAR(5) NOT NULL,
     date DATE NOT NULL,
     comment VARCHAR(255) NOT NULL,
@@ -47,45 +101,9 @@ CREATE TABLE Rating (
     FOREIGN KEY (userID) REFERENCES Contact(userID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- Create Transaction table
-CREATE TABLE [Transaction] (
-    transactionID INTEGER PRIMARY KEY AUTOINCREMENT,
-    dateOrdered DATE NOT NULL,
-    isOrdered BOOLEAN NOT NULL,
-    isPickedUp BOOLEAN NOT NULL,
-    storeID INTEGER NOT NULL,
-    userID INTEGER NOT NULL,
-    statusID INTEGER, -- Assuming this is the foreign key to OrderStatus table
-    FOREIGN KEY (storeID) REFERENCES Store(storeID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (userID) REFERENCES Contact(userID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (statusID) REFERENCES OrderStatus(statusID) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
--- Create OrderStatus table
-CREATE TABLE [OrderStatus] (
-    statusID INTEGER PRIMARY KEY AUTOINCREMENT,
-    isOrdered BOOLEAN NOT NULL,
-    isPickedUp BOOLEAN NOT NULL
-);
-
--- Create OrderDetail table
-CREATE TABLE OrderDetail (
-    orderDetailID INTEGER PRIMARY KEY AUTOINCREMENT,
-    price DECIMAL(10, 2) NOT NULL,
-    quantity INTEGER NOT NULL,
-    isBirthdayDrink BOOLEAN NOT NULL,
-    promoValue DECIMAL(10, 2),
-    itemID INTEGER NOT NULL,
-    transactionID INTEGER NOT NULL,
-    sizeID INTEGER NOT NULL,
-    FOREIGN KEY (itemID) REFERENCES Item(itemID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (transactionID) REFERENCES [Transaction](transactionID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (sizeID) REFERENCES ItemSize(sizeID) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 -- Create Item table
 CREATE TABLE Item (
-    itemID INTEGER PRIMARY KEY AUTOINCREMENT,
+    itemID INTEGER PRIMARY KEY IDENTITY(1,1),
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     basePrice DECIMAL(10, 2) NOT NULL,
@@ -99,29 +117,19 @@ CREATE TABLE Item (
     FOREIGN KEY (itemTypeID) REFERENCES ItemType(itemTypeID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- Create Sweetness table
-CREATE TABLE Sweetness (
-    sweetnessID INTEGER PRIMARY KEY AUTOINCREMENT,
-    sweetnessPercent DECIMAL(5, 2) NOT NULL
-);
-
--- Create Ice table
-CREATE TABLE Ice (
-    iceID INTEGER PRIMARY KEY AUTOINCREMENT,
-    icePercent DECIMAL(5, 2) NOT NULL
-);
-
--- Create ItemType table
-CREATE TABLE ItemType (
-    itemTypeID INTEGER PRIMARY KEY AUTOINCREMENT,
-    itemTypeName VARCHAR(50) NOT NULL
-);
-
--- Create ItemSize table
-CREATE TABLE ItemSize (
-    sizeID INTEGER PRIMARY KEY AUTOINCREMENT,
-    sizeName VARCHAR(30) NOT NULL,
-    priceModifier DECIMAL(10, 2) NOT NULL
+-- Create OrderDetail table
+CREATE TABLE OrderDetail (
+    orderDetailID INTEGER PRIMARY KEY IDENTITY(1,1),
+    price DECIMAL(10, 2) NOT NULL,
+    quantity INTEGER NOT NULL,
+    isBirthdayDrink BIT NOT NULL,
+    promoValue DECIMAL(10, 2),
+    itemID INTEGER NOT NULL,
+    transactionID INTEGER NOT NULL,
+    sizeID INTEGER NOT NULL,
+    FOREIGN KEY (itemID) REFERENCES Item(itemID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (transactionID) REFERENCES [Transaction](transactionID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (sizeID) REFERENCES ItemSize(sizeID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Create AddIn_OrderDetail table
@@ -132,14 +140,6 @@ CREATE TABLE AddIn_OrderDetail (
     PRIMARY KEY (addInID, orderDetailID),
     FOREIGN KEY (addInID) REFERENCES AddIn(addInID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (orderDetailID) REFERENCES OrderDetail(orderDetailID) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
--- Create AddIn table
-CREATE TABLE AddIn (
-    addInID INTEGER PRIMARY KEY AUTOINCREMENT,
-    addInName VARCHAR(30) NOT NULL,
-    priceModifier DECIMAL(10, 2) NOT NULL,
-    urlString TEXT
 );
 
 
