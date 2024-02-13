@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sips.Data;
+using Sips.Data.Services;
 using Sips.SipsModels;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.AddDbContext<SipsdatabaseContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddSession(options =>
 {
