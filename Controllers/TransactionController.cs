@@ -1,25 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sips.SipsModels;
+using Sips.SipsModels.ViewModels;
 
 namespace Sips.Controllers
 {
     public class TransactionController : Controller
     {
         private readonly SipsdatabaseContext _db;
+        private SipsModels.ViewModels.PayPalVM payPalVM;
 
         public IActionResult Index()
-        {
-            return View("Index", "3.55|CAD");
-        }
-
-        // Home page shows list of items.
-        // Item price is set through the ViewBag.
-        public IActionResult Transactions()
         {
             DbSet<OrderDetail> items = _db.OrderDetails;
 
             return View(items);
+        }
+        public IActionResult PayPal(PayPalVM payPalVM)
+        {
+            _db.PayPalVM.Add(payPalVM);
+            _db.SaveChanges();
+            return View(payPalVM);
         }
 
         // This method receives and stores
@@ -42,8 +43,8 @@ namespace Sips.Controllers
         // Item price is set through the ViewBag.
         public IActionResult Confirmation(string confirmationId)
         {
-            IPN transaction =
-            _db.IPNs.FirstOrDefault(t => t.paymentID == confirmationId);
+            OrderDetail transaction =
+            _db.OrderDetails.FirstOrDefault(t => t.OrderDetailId == confirmationId);
 
             return View("Confirmation", transaction);
         }
