@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Sips.SipsModels.ViewModels.UserVM>
+﻿@model PaginatedList<Sips.SipsModels.ViewModels.UserVM>
 
 @{
     ViewData["Title"] = "User Roles";
@@ -9,9 +9,28 @@
     <a asp-action="Create">Create New User Role</a>
 </p> *@
 <table class="table">
+    <form asp-action="Index" method="get">
+        <div class="form-actions no-color">
+            <p>
+                <div class="form-group" style="display: inline-block">
+                    <span>Search on User Email:</span>
+                    <input type="text" name="SearchString"
+                           value="@ViewData["currentFilter"]" required />
+                </div>
+                <div class="form-group" style="display: inline-block">
+                    <input type="submit" value="Search"
+                           class="btn btn-primary" />
+                </div>
+                <a asp-action="Index">Back to Full List</a>
+            </p>
+        </div>
+    </form>
+
     <thead>
         <tr>
-            <th>Users</th>
+            <th>
+                @Html.ActionLink("Users", "Index", new { sortOrder = ViewBag.NameSortParm })
+            </th>
             <th><a asp-action="Create">Create New User Role</a></th>
         </tr>
     </thead>
@@ -29,3 +48,20 @@
         }
     </tbody>
 </table>
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link"
+               href="@Url.Action("Index", new { pageNumber = Model.PageIndex - 1 })">
+                Previous
+            </a>
+        </li>
+        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+            <a class="page-link"
+               href="@Url.Action("Index", new { pageNumber = Model.PageIndex + 1 })">
+                Next
+            </a>
+        </li>
+    </ul>
+</nav>
+

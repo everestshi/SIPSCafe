@@ -32,9 +32,9 @@ namespace Sips.Repositories
                     BasePrice = p.BasePrice,
                     Inventory = p.Inventory,
                     UrlString = p.UrlString,
-                    ItemType = p.ItemType != null ? p.ItemType.ItemTypeName : null,
-                    Ice = p.Ice != null ? p.Ice.IcePercent : null,
-                    Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
+                    //ItemType = p.ItemType != null ? p.ItemType.ItemTypeName : null,
+                    //Ice = p.Ice != null ? p.Ice.IcePercent : null,
+                    //Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
                 };
 
                 productsVM.Add(productVm);
@@ -71,11 +71,11 @@ namespace Sips.Repositories
             try
             {
                 Item item = GetById(editingItem.ItemId);
-                item.Sweetness = editingItem.Sweetness;
+                //item.Sweetness = editingItem.Sweetness;
                 item.Description = editingItem.Description;
-                item.Ice = editingItem.Ice;
+                //item.Ice = editingItem.Ice;
                 item.Name = editingItem.Name;
-                item.ItemType = editingItem.ItemType;
+                //item.ItemType = editingItem.ItemType;
                 item.BasePrice = editingItem.BasePrice;
                 item.Inventory = editingItem.Inventory;
                 //item.urlString = editingItem.urlString;

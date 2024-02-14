@@ -119,9 +119,9 @@ namespace Sips.Controllers
         {
             ProductRepository prorepo = new ProductRepository(_db);
             Item item = prorepo.GetById(id);
-            ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
+            //ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
+            //ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
+            //ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
             return View(item);
         }
@@ -138,9 +138,9 @@ namespace Sips.Controllers
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
-            ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
+            //ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
+            //ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
+            //ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
 
             return View(item);

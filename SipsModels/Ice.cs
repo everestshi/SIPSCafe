@@ -9,5 +9,5 @@ public partial class Ice
 
     public decimal IcePercent { get; set; }
 
-    public virtual ICollection<Item> Items { get; set; } = new List<Item>();
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }
