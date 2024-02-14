@@ -5,7 +5,7 @@ namespace Sips.SipsModels;
 
 public partial class Transaction
 {
-    public int TransactionId { get; set; }
+    public string? TransactionId { get; set; }
 
     public DateTime DateOrdered { get; set; }
 
