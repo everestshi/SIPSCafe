@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Sips.SipsModels.ViewModels
+namespace Sips.ViewModels
 {
     public class PayPalVM
     {
@@ -19,5 +19,7 @@ namespace Sips.SipsModels.ViewModels
         [Display(Name = "MOP")]
         public string PaymentMethod { get; set; }
         public string Currency { get; set; }
+
+        public bool isFullfilled { get; set; } = false;
     }
 }

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sips.SipsModels;
-using Sips.SipsModels.ViewModels;
+using Sips.ViewModels;
 
 namespace Sips.Controllers
 {
     public class TransactionController : Controller
     {
         private readonly SipsdatabaseContext _db;
-        private SipsModels.ViewModels.PayPalVM payPalVM;
+        private PayPalVM payPalVM;
 
         public IActionResult Index()
         {
@@ -22,6 +22,9 @@ namespace Sips.Controllers
             _db.SaveChanges();
             return View(payPalVM);
         }
+        public IActionResult Checkout()
+        {             return View();
+               }
 
         // This method receives and stores
         // the Paypal transaction details.
