@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sips.Data;
-using Sips.Models;
+using Sips.SipsModels;
 
 namespace Sips.Controllers
 {
     [Authorize]
     public class RegisteredCustomerController : Controller
     {
-        private readonly SipsContext _context;
-        public RegisteredCustomerController(SipsContext context)
+        private readonly SipsdatabaseContext _context;
+        public RegisteredCustomerController(SipsdatabaseContext context)
         {
             _context = context;
 

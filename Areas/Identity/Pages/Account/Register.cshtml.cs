@@ -19,8 +19,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Sips.Data;
-using Sips.SipsModels;
 using Sips.Repositories;
+using Sips.SipsModels;
 using static Sips.Services.ReCAPTCHA;
 using Sips.Data.Services;
 
@@ -40,6 +40,7 @@ namespace Sips.Areas.Identity.Pages.Account
 
 
 
+
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
@@ -49,6 +50,7 @@ namespace Sips.Areas.Identity.Pages.Account
             IConfiguration configuration,
             SipsdatabaseContext db,
             IEmailService emailService)
+
         {
             _userManager = userManager;
             _userStore = userStore;
