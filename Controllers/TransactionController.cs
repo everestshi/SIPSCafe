@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Sips.Data;
+using Sips.Repositories;
 using Sips.SipsModels;
 using Sips.ViewModels;
 
@@ -10,12 +12,22 @@ namespace Sips.Controllers
         private readonly SipsdatabaseContext _db;
         private PayPalVM payPalVM;
 
+        public TransactionController(SipsdatabaseContext db)
+        {
+            _db = db;
+
+        }
+
         public IActionResult Index()
         {
-            DbSet<OrderDetail> items = _db.OrderDetails;
+            //DbSet<OrderDetail> items = _db.OrderDetails;
 
-            return View(items);
+            //return View(items);
+            TransactionRepo transactionRepo = new TransactionRepo(_db);
+
+            return View(transactionRepo.GetTransactions());
         }
+    
         public IActionResult PayPal(PayPalVM payPalVM)
         {
             _db.PayPalVM.Add(payPalVM);
@@ -24,7 +36,8 @@ namespace Sips.Controllers
         }
         public IActionResult Checkout()
         {             return View();
-               }
+               
+        }
 
         // This method receives and stores
         // the Paypal transaction details.
