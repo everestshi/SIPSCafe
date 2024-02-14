@@ -1,6 +1,6 @@
-﻿@* @model IEnumerable<Sips.SipsModels.Item> *@
+﻿@model IEnumerable<Sips.ViewModels.ProductVM>
 
-    @model PaginatedList<Item>
+    @* @model PaginatedList<Item> *@
 
 @{
     ViewData["Title"] = "ItemIndex";
@@ -97,13 +97,13 @@
                 @Html.DisplayFor(modelItem => item.UrlString)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Ice.IceId)
+                @Html.DisplayFor(modelItem => item.Ice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ItemType.ItemTypeId)
+                @Html.DisplayFor(modelItem => item.ItemType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sweetness.SweetnessId)
+                @Html.DisplayFor(modelItem => item.Sweetness)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
@@ -115,7 +115,7 @@
     </tbody>
     
 </table>
-<nav>
+@* <nav>
     <ul class="pagination">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
             <a class="page-link"
@@ -130,4 +130,4 @@
             </a>
         </li>
     </ul>
-</nav>
+</nav> *@

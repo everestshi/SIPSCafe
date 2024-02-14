@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Sips.ViewModels;
 
 namespace Sips.SipsModels;
 
@@ -14,6 +15,7 @@ public partial class SipsdatabaseContext : DbContext
         : base(options)
     {
     }
+    public virtual DbSet<ProductVM> ProductsVM { get; set; }
 
     public virtual DbSet<AddIn> AddIns { get; set; }
 
