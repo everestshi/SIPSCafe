@@ -23,10 +23,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(10);
-});
+builder.Services.AddSession();
 
 
 var app = builder.Build();

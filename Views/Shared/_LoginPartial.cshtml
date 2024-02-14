@@ -4,8 +4,7 @@
 
 @{
     var firstName = Context.Session.GetString("SessionUserName");
-    var helloLink = firstName != null ?
-    string.Format("Hello {0}!", firstName) : "";
+    var helloLink = !string.IsNullOrEmpty(firstName) ? $"Hello, {firstName}!" : "";
 }
 
 <ul class="navbar-nav">
@@ -20,7 +19,7 @@
         </form>
     </li>
         <div class="banner">
-            <span>Welcome back, Eunice</span>
+            <span>Welcome back, @firstName!</span>
             <span class="progress"></span>
         </div>
 }
