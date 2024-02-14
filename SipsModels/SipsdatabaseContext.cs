@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Sips.SipsModels.ViewModels;
 using Sips.ViewModels;
 
 namespace Sips.SipsModels;
