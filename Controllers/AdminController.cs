@@ -36,7 +36,7 @@ namespace Sips.Controllers
 
 
             ProductRepository prorepo = new ProductRepository(_db);
-            IEnumerable<ProductVM> products = prorepo.GetAll().ToList();
+            IEnumerable<ItemVM> products = prorepo.GetAll().ToList();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -70,7 +70,7 @@ namespace Sips.Controllers
             var count = products.Count();
             var items = products.Skip((pageIndex - 1) * pageSize)
                                             .Take(pageSize).ToList();
-            var paginatedProducts = new PaginatedList<ProductVM>(items
+            var paginatedProducts = new PaginatedList<ItemVM>(items
                                                                 , count
                                                                 , pageIndex
                                                                 , pageSize);
@@ -88,80 +88,80 @@ namespace Sips.Controllers
         public IActionResult ItemCreate()
         {
             ProductRepository prorepo = new ProductRepository(_db);
-            ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice");
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness");
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType");
+            //ViewData["Ice"] = new SelectList(_db.Ices, "iceID", "icePercent");
+            //ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "sweetnessID", "sweetnessPercent");
+            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "itemTypeID", "itemTypeIDName");
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult ItemCreate(Item item)
+        public IActionResult ItemCreate(ItemVM proVM)
         {
             ProductRepository prorepo = new ProductRepository(_db);
             if (ModelState.IsValid)
             {
 
-                string repoMessage = prorepo.Add(item);
+                string repoMessage = prorepo.Add(proVM);
 
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
-            ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice");
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness");
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType");
+            ViewData["Ice"] = new SelectList(_db.Ices, "iceID", "icePercent");
+            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "sweetnessID", "sweetnessPercent");
+            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "itemTypeID", "itemTypeIDName");
 
 
-            return View(item);
+            return View(proVM);
         }
 
-        public IActionResult ItemEdit(int id)
-        {
-            ProductRepository prorepo = new ProductRepository(_db);
-            Item item = prorepo.GetById(id);
-            ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
+        //public IActionResult ItemEdit(int id)
+        //{
+        //    ProductRepository prorepo = new ProductRepository(_db);
+        //    Item item = prorepo.GetById(id);
+        //    ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
+        //    ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
+        //    ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
-            return View(item);
-        }
+        //    return View(item);
+        //}
 
-        [HttpPost]
-        public IActionResult ItemEdit(Item item)
-        {
-            ProductRepository prorepo = new ProductRepository(_db);
-            if (ModelState.IsValid)
-            {
+        //[HttpPost]
+        //public IActionResult ItemEdit(Item item)
+        //{
+        //    ProductRepository prorepo = new ProductRepository(_db);
+        //    if (ModelState.IsValid)
+        //    {
 
-                string repoMessage = prorepo.Update(item);
+        //        string repoMessage = prorepo.Update(item);
 
-                return RedirectToAction("ItemIndex", new { message = repoMessage });
-            }
+        //        return RedirectToAction("ItemIndex", new { message = repoMessage });
+        //    }
 
-            ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
+        //    ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
+        //    ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
+        //    ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
 
-            return View(item);
-        }
+        //    return View(item);
+        //}
 
-        public IActionResult ItemDelete(int id)
-        {
-            ProductRepository prorepo = new ProductRepository(_db);
+        //public IActionResult ItemDelete(int id)
+        //{
+        //    ProductRepository prorepo = new ProductRepository(_db);
 
-            return View(prorepo.GetById(id));
-        }
+        //    return View(prorepo.GetById(id));
+        //}
 
-        [HttpPost]
-        public IActionResult ItemDelete(Item item)
-        {
-            ProductRepository prorepo = new ProductRepository(_db);
+        //[HttpPost]
+        //public IActionResult ItemDelete(Item item)
+        //{
+        //    ProductRepository prorepo = new ProductRepository(_db);
 
-            string repoMessage = prorepo.Delete(item.ItemId);
+        //    string repoMessage = prorepo.Delete(item.ItemId);
 
-            return RedirectToAction("ItemIndex", new { message = repoMessage });
-        }
+        //    return RedirectToAction("ItemIndex", new { message = repoMessage });
+        //}
 
 
 

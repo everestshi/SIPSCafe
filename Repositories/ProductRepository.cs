@@ -13,18 +13,14 @@ namespace Sips.Repositories
         {
             _db = db;
         }
-        //public IEnumerable<ProductVM> GetAll()
-        //{
-        //    return _db.ProductsVM;
-        //}
 
-        public IEnumerable<ProductVM> GetAll()
+        public IEnumerable<ItemVM> GetAll()
         {
             var products = _db.Items.ToList();
-            List<ProductVM> productsVM = new List<ProductVM>();
+            List<ItemVM> itemsVM = new List<ItemVM>();
             foreach (var p in products)
             {
-                ProductVM productVm = new ProductVM()
+                ItemVM itemVM = new ItemVM()
                 {
                     ItemId = p.ItemId,
                     Name = p.Name,
@@ -32,26 +28,45 @@ namespace Sips.Repositories
                     BasePrice = p.BasePrice,
                     Inventory = p.Inventory,
                     UrlString = p.UrlString,
-                    ItemType = p.ItemType != null ? p.ItemType.ItemTypeName : null,
-                    Ice = p.Ice != null ? p.Ice.IcePercent : null,
-                    Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
+                    ItemType = p.ItemType 
                 };
 
-                productsVM.Add(productVm);
+                itemsVM.Add(itemVM);
             }
 
-            //_db.ProductsVM.AddRange(productsVM);
-            //_db.SaveChanges();
-            return productsVM;
+            return itemsVM;
         }
-        public Item GetById(int id)
+        public ItemVM GetById(int id)
         {
-            return _db.Items.FirstOrDefault(p => p.ItemId == id);
+            var p = _db.Items.FirstOrDefault(p => p.ItemId == id);
+            var itemVM = new ItemVM
+            {
+                ItemId = p.ItemId,
+                Name = p.Name,
+                Description = p.Description,
+                BasePrice = p.BasePrice,
+                Inventory = p.Inventory,
+                UrlString = p.UrlString,
+                ItemType = p.ItemType,
+                //Ice = p.Ice != null ? new Ice() : new Ice
+                //{
+                //    IceId = p.Ice.IceId,
+                //    IcePercent = p.Ice.IcePercent
+                //}, //{ p.Ice.IcePercent : null,
+                //Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
+            };
+
+            return itemVM;
         }
 
-        public string Add(Item item)
+        public string Add(ItemVM proVM)
         {
             string message = string.Empty;
+            Item item = new Item
+            {
+                ItemId = proVM.ItemId,
+
+            };
             try
             {
                 _db.Items.Add(item);
@@ -65,47 +80,47 @@ namespace Sips.Repositories
             return message;
         }
 
-        public string Update(Item editingItem)
-        {
-            string message = string.Empty;
-            try
-            {
-                Item item = GetById(editingItem.ItemId);
-                item.Sweetness = editingItem.Sweetness;
-                item.Description = editingItem.Description;
-                item.Ice = editingItem.Ice;
-                item.Name = editingItem.Name;
-                item.ItemType = editingItem.ItemType;
-                item.BasePrice = editingItem.BasePrice;
-                item.Inventory = editingItem.Inventory;
-                //item.urlString = editingItem.urlString;
-                
-                _db.SaveChanges();
-                message = $"Product {editingItem.Name} updated successfully";
-            }
-            catch (Exception e)
-            {
-                message = $" Error updating Product {editingItem.Name} : {e.Message}";
-            }
-            return message;
-        }
+        //public string Update(Item editingItem)
+        //{
+        //    string message = string.Empty;
+        //    try
+        //    {
+        //        Item item = GetById(editingItem.ItemId);
+        //        item.Sweetness = editingItem.Sweetness;
+        //        item.Description = editingItem.Description;
+        //        item.Ice = editingItem.Ice;
+        //        item.Name = editingItem.Name;
+        //        item.ItemType = editingItem.ItemType;
+        //        item.BasePrice = editingItem.BasePrice;
+        //        item.Inventory = editingItem.Inventory;
+        //        //item.urlString = editingItem.urlString;
 
-        public string Delete(int id)
-        {
-            string message = string.Empty;
-            try
-            {
-                Item item = GetById(id);
-                _db.Items.Remove(item);
-                _db.SaveChanges();
-                message = $"{item.Name} deleted successfully";
-            }
-            catch (Exception e)
-            {
-                message = $" Error deleting product-{id}: {e.Message}";
-            }
-            return message;
-        }
+        //        _db.SaveChanges();
+        //        message = $"Product {editingItem.Name} updated successfully";
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        message = $" Error updating Product {editingItem.Name} : {e.Message}";
+        //    }
+        //    return message;
+        //}
+
+        //public string Delete(int id)
+        //{
+        //    string message = string.Empty;
+        //    try
+        //    {
+        //        Item item = GetById(id);
+        //        _db.Items.Remove(item);
+        //        _db.SaveChanges();
+        //        message = $"{item.Name} deleted successfully";
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        message = $" Error deleting product-{id}: {e.Message}";
+        //    }
+        //    return message;
+        //}
 
     }
 }
