@@ -5,7 +5,7 @@ namespace Sips.SipsModels;
 
 public partial class OrderDetail
 {
-    public int OrderDetailId { get; set; }
+    public string OrderDetailId { get; set; }
 
     public decimal Price { get; set; }
 
@@ -17,7 +17,7 @@ public partial class OrderDetail
 
     public int ItemId { get; set; }
 
-    public int? TransactionId { get; set; }
+    public string? TransactionId { get; set; }
 
     public int SizeId { get; set; }
     public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();

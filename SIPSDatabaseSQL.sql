@@ -77,7 +77,7 @@ CREATE TABLE Contact (
 
 -- Create Transaction table
 CREATE TABLE [Transaction] (
-    transactionID INTEGER PRIMARY KEY IDENTITY(1,1),
+    transactionID VARCHAR(30) PRIMARY KEY,
     dateOrdered DATE NOT NULL,
     isOrdered BIT NOT NULL,
     isPickedUp BIT NOT NULL,
@@ -119,13 +119,13 @@ CREATE TABLE Item (
 
 -- Create OrderDetail table
 CREATE TABLE OrderDetail (
-    orderDetailID INTEGER PRIMARY KEY IDENTITY(1,1),
+    orderDetailID VARCHAR(30) PRIMARY KEY,
     price DECIMAL(10, 2) NOT NULL,
     quantity INTEGER NOT NULL,
     isBirthdayDrink BIT NOT NULL,
     promoValue DECIMAL(10, 2),
     itemID INTEGER NOT NULL,
-    transactionID INTEGER NOT NULL,
+    transactionID VARCHAR(30) NOT NULL,
     sizeID INTEGER NOT NULL,
     FOREIGN KEY (itemID) REFERENCES Item(itemID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (transactionID) REFERENCES [Transaction](transactionID) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -135,7 +135,7 @@ CREATE TABLE OrderDetail (
 -- Create AddIn_OrderDetail table
 CREATE TABLE AddIn_OrderDetail (
     addInID INTEGER NOT NULL,
-    orderDetailID INTEGER NOT NULL,
+    orderDetailID VARCHAR(30) NOT NULL,
     quantity INTEGER NOT NULL,
     PRIMARY KEY (addInID, orderDetailID),
     FOREIGN KEY (addInID) REFERENCES AddIn(addInID) ON UPDATE CASCADE ON DELETE CASCADE,
