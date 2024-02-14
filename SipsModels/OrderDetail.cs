@@ -20,4 +20,8 @@ public partial class OrderDetail
     public int? TransactionId { get; set; }
 
     public int SizeId { get; set; }
+    public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
+    public virtual Item Item { get; set; } = null!;
+    public virtual ItemSize Size { get; set; } = null!;
+    public virtual Transaction Transaction { get; set; } = null!;
 }
