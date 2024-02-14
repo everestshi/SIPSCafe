@@ -14,4 +14,8 @@ public partial class AddInOrderDetail
     public virtual AddIn AddIn { get; set; } = null!;
 
     public virtual OrderDetail OrderDetail { get; set; } = null!;
+    public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
+    public virtual Item Item { get; set; } = null!;
+    public virtual ItemSize Size { get; set; } = null!;
+    public virtual Transaction Transaction { get; set; } = null!;
 }
