@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Sips.Data;
 using Sips.Repositories;
+using Sips.SipsModels;
 using Sips.SipsModels.ViewModels;
+using Sips.ViewModels;
 
 namespace Sips.Controllers
 {
@@ -18,12 +20,38 @@ namespace Sips.Controllers
             _userManager = userManager;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString, int? pageNumber, int pageSize = 2)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";
+
             UserRepo userRepo = new UserRepo(_db);
             IEnumerable<UserVM> users = userRepo.GetAllUsers();
 
-            return View(users);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                users =
+                    users.Where(p => p.Email.Contains(searchString)).ToList();
+            }
+
+            switch (sortOrder)
+            {
+                case "nameSortDesc":
+                    users = users.OrderByDescending(u => u.Email).ToList();
+                    break;
+                case "Name":
+                    users = users.OrderBy(u => u.Email).ToList();
+                    break;
+            }
+            int pageIndex = pageNumber ?? 1;
+            var count = users.Count();
+            var items = users.Skip((pageIndex - 1) * pageSize)
+                                            .Take(pageSize).ToList();
+            var paginatedUsers = new PaginatedList<UserVM>(items
+                                                                , count
+                                                                , pageIndex
+                                                                , pageSize);
+            return View(paginatedUsers);
         }
 
         public async Task<IActionResult> Detail(string userName,
