@@ -1,6 +1,6 @@
-﻿@model IEnumerable<Sips.ViewModels.ProductVM>
+﻿@* @model IEnumerable<Sips.ViewModels.ProductVM> *@
 
-    @* @model PaginatedList<Item> *@
+@model PaginatedList<Sips.ViewModels.ProductVM>
 
 @{
     ViewData["Title"] = "ItemIndex";
@@ -115,7 +115,7 @@
     </tbody>
     
 </table>
-@* <nav>
+<nav>
     <ul class="pagination">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
             <a class="page-link"
@@ -130,4 +130,4 @@
             </a>
         </li>
     </ul>
-</nav> *@
+</nav>

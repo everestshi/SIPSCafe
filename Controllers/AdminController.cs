@@ -25,59 +25,59 @@ namespace Sips.Controllers
             return View();
         }
         //Product CRUD**********************************************
-        public IActionResult ItemIndex(/*string message, string sortOrder, string searchString*/)
+        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 4)
         {
-            //message = message ?? string.Empty;
-            //ViewData["Message"] = message;
-            //ViewData["CurrentSort"] = sortOrder;
-            //ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
-            //ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";
+            message = message ?? string.Empty;
+            ViewData["Message"] = message;
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
+            ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";
 
 
 
             ProductRepository prorepo = new ProductRepository(_db);
             IEnumerable<ProductVM> products = prorepo.GetAll().ToList();
 
-            //if (!string.IsNullOrEmpty(searchString))
-            //{
-            //    products = products.Where(p => p.Name.ToLower().Contains(searchString.ToLower()) ||
-            //                            p.Description.ToLower().Contains(searchString.ToLower())).ToList();
-            //}
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => p.Name.ToLower().Contains(searchString.ToLower()) ||
+                                        p.Description.ToLower().Contains(searchString.ToLower())).ToList();
+            }
 
 
-            //switch (sortOrder)
-            //{
+            switch (sortOrder)
+            {
 
-            //    case "nameSortDesc":
-            //        products =
-            //            products.OrderByDescending(p => p.Name).ToList();
-            //        break;
-            //    case "Name":
-            //        products =
-            //            products.OrderBy(p => p.Name).ToList();
-            //        break;
-            //    case "idSortDesc":
-            //        products =
-            //            products.OrderByDescending(p => p.ItemId).ToList();
-            //        break;
-            //    default:
-            //        products =
-            //            products.OrderBy(p => p.ItemId).ToList();
-            //        break;
-            //}
+                case "nameSortDesc":
+                    products =
+                        products.OrderByDescending(p => p.Name).ToList();
+                    break;
+                case "Name":
+                    products =
+                        products.OrderBy(p => p.Name).ToList();
+                    break;
+                case "idSortDesc":
+                    products =
+                        products.OrderByDescending(p => p.ItemId).ToList();
+                    break;
+                default:
+                    products =
+                        products.OrderBy(p => p.ItemId).ToList();
+                    break;
+            }
 
-            //int pageIndex = pageNumber ?? 1;
-            //var count = products.Count();
-            //var items = products.Skip((pageIndex - 1) * pageSize)
-            //                                .Take(pageSize).ToList();
-            //var paginatedProducts = new PaginatedList<ProductsVM>(items
-            //                                                    , count
-            //                                                    , pageIndex
-            //                                                    , pageSize);
+            int pageIndex = pageNumber ?? 1;
+            var count = products.Count();
+            var items = products.Skip((pageIndex - 1) * pageSize)
+                                            .Take(pageSize).ToList();
+            var paginatedProducts = new PaginatedList<ProductVM>(items
+                                                                , count
+                                                                , pageIndex
+                                                                , pageSize);
 
 
 
-            return View(products);
+            return View(paginatedProducts);
         }
         public IActionResult ItemDetails(int id)
         {
