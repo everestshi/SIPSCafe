@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Sips.SipsModels;
 using Sips.ViewModels;
@@ -28,9 +29,8 @@ namespace Sips.Repositories
                     BasePrice = p.BasePrice,
                     Inventory = p.Inventory,
                     UrlString = p.UrlString,
-                    //ItemType = p.ItemType != null ? p.ItemType.ItemTypeName : null,
-                    //Ice = p.Ice != null ? p.Ice.IcePercent : null,
-                    //Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
+                    ItemType = p.ItemType,
+
                 };
 
                 itemsVM.Add(itemVM);
@@ -38,6 +38,21 @@ namespace Sips.Repositories
 
             return itemsVM;
         }
+
+        public List<SelectListItem> GetItemTypes()
+        {
+            var itemTypes = _db.ItemTypes
+                .Select(t => t.ItemTypeName)
+                .Distinct()
+                .Select(type => new SelectListItem
+                {
+                    Value = type,
+                    Text = type
+                }).ToList();
+            return itemTypes;
+        }
+
+        
         public ItemVM GetById(int id)
         {
             var p = _db.Items.FirstOrDefault(p => p.ItemId == id);
@@ -50,12 +65,6 @@ namespace Sips.Repositories
                 Inventory = p.Inventory,
                 UrlString = p.UrlString,
                 ItemType = p.ItemType,
-                //Ice = p.Ice != null ? new Ice() : new Ice
-                //{
-                //    IceId = p.Ice.IceId,
-                //    IcePercent = p.Ice.IcePercent
-                //}, //{ p.Ice.IcePercent : null,
-                //Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
             };
 
             return itemVM;
@@ -66,8 +75,12 @@ namespace Sips.Repositories
             string message = string.Empty;
             Item item = new Item
             {
-                ItemId = proVM.ItemId,
-
+                Name = proVM.Name,
+                Description = proVM.Description,
+                BasePrice = proVM.BasePrice,
+                Inventory = proVM.Inventory,
+                UrlString = proVM.UrlString,
+                ItemType = proVM.ItemType,
             };
             try
             {
@@ -82,30 +95,30 @@ namespace Sips.Repositories
             return message;
         }
 
-        public string Update(Item editingItem)
-        {
-            string message = string.Empty;
-            try
-            {
-                Item item = GetById(editingItem.ItemId);
-                item.Sweetness = editingItem.Sweetness;
-                item.Description = editingItem.Description;
-                item.Ice = editingItem.Ice;
-                item.Name = editingItem.Name;
-                item.ItemType = editingItem.ItemType;
-                item.BasePrice = editingItem.BasePrice;
-                item.Inventory = editingItem.Inventory;
-                //item.urlString = editingItem.urlString;
+        //public string Update(Item editingItem)
+        //{
+        //    string message = string.Empty;
+        //    try
+        //    {
+        //        Item item = GetById(editingItem.ItemId);
+        //        item.Sweetness = editingItem.Sweetness;
+        //        item.Description = editingItem.Description;
+        //        item.Ice = editingItem.Ice;
+        //        item.Name = editingItem.Name;
+        //        item.ItemType = editingItem.ItemType;
+        //        item.BasePrice = editingItem.BasePrice;
+        //        item.Inventory = editingItem.Inventory;
+        //        //item.urlString = editingItem.urlString;
                 
-                _db.SaveChanges();
-                message = $"Product {editingItem.Name} updated successfully";
-            }
-            catch (Exception e)
-            {
-                message = $" Error updating Product {editingItem.Name} : {e.Message}";
-            }
-            return message;
-        }
+        //        _db.SaveChanges();
+        //        message = $"Product {editingItem.Name} updated successfully";
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        message = $" Error updating Product {editingItem.Name} : {e.Message}";
+        //    }
+        //    return message;
+        //}
 
         //public string Delete(int id)
         //{

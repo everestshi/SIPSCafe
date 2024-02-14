@@ -25,7 +25,7 @@ namespace Sips.Controllers
             return View();
         }
         //Product CRUD**********************************************
-        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 4)
+        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
         {
             message = message ?? string.Empty;
             ViewData["Message"] = message;
@@ -88,9 +88,8 @@ namespace Sips.Controllers
         public IActionResult ItemCreate()
         {
             ProductRepository prorepo = new ProductRepository(_db);
-            //ViewData["Ice"] = new SelectList(_db.Ices, "iceID", "icePercent");
-            //ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "sweetnessID", "sweetnessPercent");
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "itemTypeID", "itemTypeIDName");
+
+            ViewBag.ItemType = prorepo.GetItemTypes();
 
             return View();
         }
@@ -107,23 +106,22 @@ namespace Sips.Controllers
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
-            ViewData["Ice"] = new SelectList(_db.Ices, "iceID", "icePercent");
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "sweetnessID", "sweetnessPercent");
+
             ViewData["ItemType"] = new SelectList(_db.ItemTypes, "itemTypeID", "itemTypeIDName");
 
 
             return View(proVM);
         }
 
-        public IActionResult ItemEdit(int id)
-        {
-            ProductRepository prorepo = new ProductRepository(_db);
-            Item item = prorepo.GetById(id);
+        //public IActionResult ItemEdit(int id)
+        //{
+            //ProductRepository prorepo = new ProductRepository(_db);
+            //Item item = prorepo.GetById(id);
             //ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
             //ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
             //ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
-        //    return View(item);
+            //    return View(item);
         //}
 
         //[HttpPost]
@@ -138,108 +136,108 @@ namespace Sips.Controllers
         //        return RedirectToAction("ItemIndex", new { message = repoMessage });
         //    }
 
-            ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
-            ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
-            ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
+        //ViewData["Ice"] = new SelectList(_db.Ices, "Ice", "Ice", item.Ice);
+        //    ViewData["Sweetness"] = new SelectList(_db.Sweetnesses, "Sweetness", "Sweetness", item.Sweetness);
+        //    ViewData["ItemType"] = new SelectList(_db.ItemTypes, "ItemType", "ItemType", item.ItemType);
 
 
-        //    return View(item);
+            //    return View(item);
+            //}
+
+            //public IActionResult ItemDelete(int id)
+            //{
+            //    ProductRepository prorepo = new ProductRepository(_db);
+
+            //    return View(prorepo.GetById(id));
+            //}
+
+            //[HttpPost]
+            //public IActionResult ItemDelete(Item item)
+            //{
+            //    ProductRepository prorepo = new ProductRepository(_db);
+
+            //    string repoMessage = prorepo.Delete(item.ItemId);
+
+            //    return RedirectToAction("ItemIndex", new { message = repoMessage });
+            //}
+
+
+
+        //}
+        //Customer CRUD**********************************************
+        //public IActionResult CustomerIndex(string message)
+        //{
+        //    message = message ?? string.Empty;
+
+        //    ViewData["Message"] = message; 
+        //    CustomerRepository customerrepo = new CustomerRepository(_db);
+        //    return View(customerrepo.GetAll());
+        //}
+        //public IActionResult CustomerDetails(int id)
+        //{
+        //    CustomerRepository customerrepo = new CustomerRepository(_db);
+        //    return View(customerrepo.GetById(id));
         //}
 
-        //public IActionResult ItemDelete(int id)
+        //public IActionResult CustomerCreate()
         //{
-        //    ProductRepository prorepo = new ProductRepository(_db);
-
-        //    return View(prorepo.GetById(id));
+        //    Contact contact = new Contact();
+        //    contact.IsDrinkRedeemed = false;
+        //    //contact.FkUserType = new Credential();
+        //    return View(contact);
         //}
 
         //[HttpPost]
-        //public IActionResult ItemDelete(Item item)
+        //public IActionResult CustomerCreate(Contact contact)
         //{
-        //    ProductRepository prorepo = new ProductRepository(_db);
+        //    CustomerRepository customerRepository = new CustomerRepository(_db);
+        //    if (ModelState.IsValid)
+        //    {
 
-        //    string repoMessage = prorepo.Delete(item.ItemId);
+        //        string repoMessage = customerRepository.Add(contact);
 
-        //    return RedirectToAction("ItemIndex", new { message = repoMessage });
+        //        return RedirectToAction("CustomerIndex", new { message = repoMessage });
+        //    }
+
+        //    return View(contact);
         //}
 
+        //public IActionResult CustomerEdit(int id)
+        //{
+        //    CustomerRepository customerRepository = new CustomerRepository(_db);
+        //    Contact contact = customerRepository.GetById(id);
+        //    return View(contact);
+        //}
 
+        //[HttpPost]
+        //public IActionResult CustomerEdit(Contact contact)
+        //{
+        //    CustomerRepository customerRepository = new CustomerRepository(_db);
+        //    if (ModelState.IsValid)
+        //    {
+        //        string repoMessage = customerRepository.Update(contact);
+        //        return RedirectToAction("CustomerIndex", new { message = repoMessage });
+        //    }
+        //    return View(contact);
+        //}
 
+        //public IActionResult CustomerDelete(int id)
+        //{
+        //    CustomerRepository customerRepository = new CustomerRepository(_db);
 
-        //Customer CRUD**********************************************
-        public IActionResult CustomerIndex(string message)
-        {
-            message = message ?? string.Empty;
+        //    return View(customerRepository.GetById(id));
+        //}
 
-            ViewData["Message"] = message; 
-            CustomerRepository customerrepo = new CustomerRepository(_db);
-            return View(customerrepo.GetAll());
-        }
-        public IActionResult CustomerDetails(int id)
-        {
-            CustomerRepository customerrepo = new CustomerRepository(_db);
-            return View(customerrepo.GetById(id));
-        }
+        //[HttpPost]
+        //public IActionResult CustomerDelete(Contact contact)
+        //{
+        //    CustomerRepository customerRepository = new CustomerRepository(_db);
+        //    //contactUserId = customerRepository
 
-        public IActionResult CustomerCreate()
-        {
-            Contact contact = new Contact();
-            contact.IsDrinkRedeemed = false;
-            //contact.FkUserType = new Credential();
-            return View(contact);
-        }
+        //    string repoMessage = customerRepository.Delete(contact);
 
-        [HttpPost]
-        public IActionResult CustomerCreate(Contact contact)
-        {
-            CustomerRepository customerRepository = new CustomerRepository(_db);
-            if (ModelState.IsValid)
-            {
-
-                string repoMessage = customerRepository.Add(contact);
-
-                return RedirectToAction("CustomerIndex", new { message = repoMessage });
-            }
-
-            return View(contact);
-        }
-
-        public IActionResult CustomerEdit(int id)
-        {
-            CustomerRepository customerRepository = new CustomerRepository(_db);
-            Contact contact = customerRepository.GetById(id);
-            return View(contact);
-        }
-
-        [HttpPost]
-        public IActionResult CustomerEdit(Contact contact)
-        {
-            CustomerRepository customerRepository = new CustomerRepository(_db);
-            if (ModelState.IsValid)
-            {
-                string repoMessage = customerRepository.Update(contact);
-                return RedirectToAction("CustomerIndex", new { message = repoMessage });
-            }
-            return View(contact);
-        }
-
-        public IActionResult CustomerDelete(int id)
-        {
-            CustomerRepository customerRepository = new CustomerRepository(_db);
-
-            return View(customerRepository.GetById(id));
-        }
-
-        [HttpPost]
-        public IActionResult CustomerDelete(Contact contact)
-        {
-            CustomerRepository customerRepository = new CustomerRepository(_db);
-            //contactUserId = customerRepository
-
-            string repoMessage = customerRepository.Delete(contact);
-
-            return RedirectToAction("CustomerIndex", new { message = repoMessage });
-        }
+        //    return RedirectToAction("CustomerIndex", new { message = repoMessage });
+        //}
 
 
 

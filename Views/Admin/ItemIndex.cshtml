@@ -35,43 +35,29 @@
             <th>
                 @Html.ActionLink("Product ID", "ItemIndex", new { sortOrder = ViewBag.IDSortParm })
 
-                @* Product ID *@
-                @* @Html.DisplayNameFor(model => model.Name) *@
             </th>
             <th>
                 @Html.ActionLink("Name", "ItemIndex", new { sortOrder = ViewBag.NameSortParm })
 
-                @* Name *@
-                @* @Html.DisplayNameFor(model => model.Name) *@
             </th>
             <th>
                 Description
-                @* @Html.DisplayNameFor(model => model.Description) *@
+
             </th>
             <th>
                 Base Price
-                @* @Html.DisplayNameFor(model => model.BasePrice) *@
             </th>
             <th>
                 Inventory
-                @* @Html.DisplayNameFor(model => model.Inventory) *@
             </th>
             <th>
                 Url String
-                @* @Html.DisplayNameFor(model => model.UrlString) *@
             </th>
-            <th>
-                Ice
-                @* @Html.DisplayNameFor(model => model.Ice) *@
-            </th>
+
             <th>
                 Item Type
-                @* @Html.DisplayNameFor(model => model.ItemType) *@
             </th>
-            <th>
-                Sweetness
-                @* @Html.DisplayNameFor(model => model.Sweetness) *@
-            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -96,15 +82,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UrlString)
             </td>
-@*             <td>
-                @Html.DisplayFor(modelItem => item.Ice)
-            </td> *@
+
             <td>
-                @Html.DisplayFor(modelItem => item.ItemType)
+                @Html.DisplayFor(modelItem => item.ItemType.ItemTypeName)
             </td>
-@*             <td>
-                @Html.DisplayFor(modelItem => item.Sweetness)
-            </td> *@
+
             <td>
                 <a asp-action="ItemEdit" asp-route-id="@item.ItemId">Edit</a> |
                 <a asp-action="ItemDetails" asp-route-id="@item.ItemId">Details</a> |
