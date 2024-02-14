@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Sips.Data;
-using Sips.Models;
+using Sips.SipsModels;
 using Sips.Repositories;
 using static Sips.Services.ReCAPTCHA;
 
@@ -34,7 +34,7 @@ namespace Sips.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
-        private readonly SipsContext _db;
+        private readonly SipsdatabaseContext _db;
 
 
 
@@ -45,7 +45,7 @@ namespace Sips.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IConfiguration configuration,
-            SipsContext db)
+            SipsdatabaseContext db)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -202,7 +202,7 @@ namespace Sips.Areas.Identity.Pages.Account
                         Unit = Input.UnitNumber,
                         Province = Input.Province,
                         PostalCode = Input.PostalCode,
-                        IsDrinkRedeemed = "no",
+                        IsDrinkRedeemed = false,
                         //FkUserTypeId = 1
                     };
 

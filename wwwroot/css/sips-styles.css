@@ -420,12 +420,18 @@ a {
 .tea-container{
     display:flex;
     flex-direction:column;
+    margin:0 auto;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
 }
 
 .tea-list{
     display:flex;
     flex-direction:column;
 justify-content:center;
+align-items:center;
+margin:0 auto;
 }
 .tea-item{
 display:flex;
@@ -433,6 +439,7 @@ display:flex;
     justify-content:space-between;
     align-items:center;
     margin:10px 0;
+    width:800px;
 }
 .tea-item img{
     width:200px;
@@ -447,9 +454,18 @@ display:flex;
     flex-direction:column;
     gap:1vh;
 }
-.tea-btns button{
-    width:100px;
-    border:0;
-    padding:10px;
-}
+    .tea-btns button {
+        width: 150px;
+        border: 0;
+        padding: 10px;
+        border-radius: 5px;
+        background: #97ED8A;
+        color: #fff;
+    }
+    .tea-btns button:nth-child(2) {
+        background: #A3CCFF;
+    }
+        .tea-btns button:hover {
+            background: #F58D7A;
+        }
 
