@@ -1,4 +1,4 @@
-﻿@model Sips.Models.Item
+﻿@model Sips.SipsModels.Item
 
 @{
     ViewData["Title"] = "ItemCreate";
@@ -54,9 +54,9 @@
                 <span asp-validation-for="ItemType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="urlString" class="control-label"></label>
-                <input asp-for="urlString" class="form-control" />
-                <span asp-validation-for="urlString" class="text-danger"></span>
+                <label asp-for="UrlString" class="control-label"></label>
+                <input asp-for="UrlString" class="form-control" />
+                <span asp-validation-for="UrlString" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

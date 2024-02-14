@@ -19,9 +19,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Sips.Data;
-using Sips.SipsModels;
+using Sips.Models;
 using Sips.Repositories;
+using Sips.SipsModels;
 using static Sips.Services.ReCAPTCHA;
+using Sips.Data.Services;
 
 namespace Sips.Areas.Identity.Pages.Account
 {
@@ -35,6 +37,8 @@ namespace Sips.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
         private readonly SipsdatabaseContext _db;
+        private readonly IEmailService _emailService;
+
 
 
 
@@ -45,7 +49,9 @@ namespace Sips.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IConfiguration configuration,
-            SipsdatabaseContext db)
+            SipsdatabaseContext db,
+            IEmailService emailService)
+
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -55,6 +61,7 @@ namespace Sips.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _configuration = configuration;
             _db = db;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -187,7 +194,7 @@ namespace Sips.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-
+                    //IMPORTANT NOTE: move saving info until after email confirmation?
                     ContactRepo regUserRepo = new ContactRepo(_db);
 
                     Contact registerUser = new Contact()
@@ -220,12 +227,29 @@ namespace Sips.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    var response = await _emailService.SendSingleEmail(new SipsModels.ComposeEmailModel
+                    {
+                        FirstName = "Everest",
+                        LastName = "Shi",
+                        Subject = "Confirm your email",
+                        Email = Input.Email,
+                        Body = $"Please confirm your account by " +
+                                $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                    });
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new
+                        {
+                            email = Input.Email,
+                            returnUrl = returnUrl,
+                            DisplayConfirmAccountLink = false
+                        });
                     }
                     else
                     {

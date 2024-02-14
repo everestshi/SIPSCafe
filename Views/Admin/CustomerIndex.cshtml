@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Sips.Models.Contact>
+﻿@model IEnumerable<Sips.SipsModels.Contact>
 
 @{
     ViewData["Title"] = "CustomerIndex";
@@ -91,9 +91,9 @@
                 @Html.DisplayFor(modelItem => item.FkUserType.PkUserTypeId)
             </td> *@
             <td>
-                <a asp-action="CustomerEdit" asp-route-id="@item.PkUserId">Edit</a> |
-                <a asp-action="CustomerDetails" asp-route-id="@item.PkUserId">Details</a> |
-                <a asp-action="CustomerDelete" asp-route-id="@item.PkUserId">Delete</a>
+                <a asp-action="CustomerEdit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="CustomerDetails" asp-route-id="@item.UserId">Details</a> |
+                <a asp-action="CustomerDelete" asp-route-id="@item.UserId">Delete</a>
             </td>
         </tr>
 }

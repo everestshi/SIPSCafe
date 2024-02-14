@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Sips.SipsModels;
+using Sips.ViewModels;
 
 namespace Sips.Repositories
 {
@@ -12,9 +13,36 @@ namespace Sips.Repositories
         {
             _db = db;
         }
-        public IEnumerable<Item> GetAll()
+        //public IEnumerable<ProductVM> GetAll()
+        //{
+        //    return _db.ProductsVM;
+        //}
+
+        public IEnumerable<ProductVM> GetAll()
         {
-            return _db.Items;
+            var products = _db.Items.ToList();
+            List<ProductVM> productsVM = new List<ProductVM>();
+            foreach (var p in products)
+            {
+                ProductVM productVm = new ProductVM()
+                {
+                    ItemId = p.ItemId,
+                    Name = p.Name,
+                    Description = p.Description,
+                    BasePrice = p.BasePrice,
+                    Inventory = p.Inventory,
+                    UrlString = p.UrlString,
+                    ItemType = p.ItemType != null ? p.ItemType.ItemTypeName : null,
+                    Ice = p.Ice != null ? p.Ice.IcePercent : null,
+                    Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
+                };
+
+                productsVM.Add(productVm);
+            }
+
+            //_db.ProductsVM.AddRange(productsVM);
+            //_db.SaveChanges();
+            return productsVM;
         }
         public Item GetById(int id)
         {
