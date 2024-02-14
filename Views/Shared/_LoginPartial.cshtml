@@ -4,8 +4,7 @@
 
 @{
     var firstName = Context.Session.GetString("SessionUserName");
-    var helloLink = firstName != null ?
-    string.Format("Hello {0}!", firstName) : "";
+    var helloLink = !string.IsNullOrEmpty(firstName) ? $"Hello, {firstName}!" : "";
 }
 
 <ul class="navbar-nav">
@@ -19,16 +18,16 @@
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
     </li>
+        <div class="banner">
+            <span>Welcome back, @firstName!</span>
+            <span class="progress"></span>
+        </div>
 }
 else
 {
     <li class="nav-item">
         <a class="nav-link" style="color: #519389;" asp-area="Identity" asp-page="/Account/Register">register</a>
     </li>
-        <div class="banner">
-            <span>Welcome back, Eunice</span>
-            <span class="progress"></span>
-        </div>
     <li class="nav-item">
             <a class="nav-link" style="color: #519389;" asp-area="Identity" asp-page="/Account/Login">login</a>
     </li>

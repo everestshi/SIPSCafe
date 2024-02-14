@@ -28,7 +28,9 @@ namespace Sips.Repositories
                     BasePrice = p.BasePrice,
                     Inventory = p.Inventory,
                     UrlString = p.UrlString,
-                    ItemType = p.ItemType 
+                    //ItemType = p.ItemType != null ? p.ItemType.ItemTypeName : null,
+                    //Ice = p.Ice != null ? p.Ice.IcePercent : null,
+                    //Sweetness = p.Sweetness != null ? p.Sweetness.SweetnessPercent : null
                 };
 
                 itemsVM.Add(itemVM);
@@ -80,30 +82,30 @@ namespace Sips.Repositories
             return message;
         }
 
-        //public string Update(Item editingItem)
-        //{
-        //    string message = string.Empty;
-        //    try
-        //    {
-        //        Item item = GetById(editingItem.ItemId);
-        //        item.Sweetness = editingItem.Sweetness;
-        //        item.Description = editingItem.Description;
-        //        item.Ice = editingItem.Ice;
-        //        item.Name = editingItem.Name;
-        //        item.ItemType = editingItem.ItemType;
-        //        item.BasePrice = editingItem.BasePrice;
-        //        item.Inventory = editingItem.Inventory;
-        //        //item.urlString = editingItem.urlString;
-
-        //        _db.SaveChanges();
-        //        message = $"Product {editingItem.Name} updated successfully";
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        message = $" Error updating Product {editingItem.Name} : {e.Message}";
-        //    }
-        //    return message;
-        //}
+        public string Update(Item editingItem)
+        {
+            string message = string.Empty;
+            try
+            {
+                Item item = GetById(editingItem.ItemId);
+                item.Sweetness = editingItem.Sweetness;
+                item.Description = editingItem.Description;
+                item.Ice = editingItem.Ice;
+                item.Name = editingItem.Name;
+                item.ItemType = editingItem.ItemType;
+                item.BasePrice = editingItem.BasePrice;
+                item.Inventory = editingItem.Inventory;
+                //item.urlString = editingItem.urlString;
+                
+                _db.SaveChanges();
+                message = $"Product {editingItem.Name} updated successfully";
+            }
+            catch (Exception e)
+            {
+                message = $" Error updating Product {editingItem.Name} : {e.Message}";
+            }
+            return message;
+        }
 
         //public string Delete(int id)
         //{

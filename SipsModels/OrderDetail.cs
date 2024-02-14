@@ -5,7 +5,7 @@ namespace Sips.SipsModels;
 
 public partial class OrderDetail
 {
-    public int OrderDetailId { get; set; }
+    public string OrderDetailId { get; set; } = null!;
 
     public decimal Price { get; set; }
 
@@ -17,11 +17,18 @@ public partial class OrderDetail
 
     public int ItemId { get; set; }
 
-    public int? TransactionId { get; set; }
+    public string TransactionId { get; set; } = null!;
 
     public int SizeId { get; set; }
-    public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
+
+    public int? SweetnessId { get; set; }
+
+    public int? IceId { get; set; }
+
+    public virtual Ice? Ice { get; set; }
+
     public virtual Item Item { get; set; } = null!;
-    public virtual ItemSize Size { get; set; } = null!;
-    public virtual Transaction Transaction { get; set; } = null!;
+
+    public virtual Sweetness? Sweetness { get; set; }
+    public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
 }

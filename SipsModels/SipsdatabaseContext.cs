@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Sips.SipsModels.ViewModels;
 using Sips.ViewModels;
 
 namespace Sips.SipsModels;
@@ -42,6 +43,8 @@ public partial class SipsdatabaseContext : DbContext
     public virtual DbSet<Sweetness> Sweetnesses { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
+
+    public virtual DbSet<PayPalVM> PayPalVM { get; set; }
 
 //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -135,7 +138,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<Ice>(entity =>
         {
-            entity.HasKey(e => e.IceId).HasName("PK__Ice__298F0B67A03B1F34");
+            entity.HasKey(e => e.IceId).HasName("PK__Ice__298F0B67C5053EEE");
 
             entity.ToTable("Ice");
 
@@ -147,7 +150,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<Item>(entity =>
         {
-            entity.HasKey(e => e.ItemId).HasName("PK__Item__56A1284A728B1CBF");
+            entity.HasKey(e => e.ItemId).HasName("PK__Item__56A1284A9D8E956D");
 
             entity.ToTable("Item");
 
@@ -158,32 +161,15 @@ public partial class SipsdatabaseContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
-            entity.Property(e => e.IceId).HasColumnName("iceID");
             entity.Property(e => e.Inventory).HasColumnName("inventory");
             entity.Property(e => e.ItemTypeId).HasColumnName("itemTypeID");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("name");
-            entity.Property(e => e.SweetnessId).HasColumnName("sweetnessID");
             entity.Property(e => e.UrlString)
                 .HasColumnType("text")
                 .HasColumnName("urlString");
-
-            entity.HasOne(d => d.Ice).WithMany(p => p.Items)
-                .HasForeignKey(d => d.IceId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__Item__iceID__2739D489");
-
-            entity.HasOne(d => d.ItemType).WithMany(p => p.Items)
-                .HasForeignKey(d => d.ItemTypeId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__Item__itemTypeID__282DF8C2");
-
-            entity.HasOne(d => d.Sweetness).WithMany(p => p.Items)
-                .HasForeignKey(d => d.SweetnessId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__Item__sweetnessI__2645B050");
         });
 
         modelBuilder.Entity<ItemSize>(entity =>
@@ -217,11 +203,15 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__E4FEDE2A9C147AD5");
+            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__E4FEDE2A1965C627");
 
             entity.ToTable("OrderDetail");
 
-            entity.Property(e => e.OrderDetailId).HasColumnName("orderDetailID");
+            entity.Property(e => e.OrderDetailId)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("orderDetailID");
+            entity.Property(e => e.IceId).HasColumnName("iceID");
             entity.Property(e => e.IsBirthdayDrink).HasColumnName("isBirthdayDrink");
             entity.Property(e => e.ItemId).HasColumnName("itemID");
             entity.Property(e => e.Price)
@@ -232,19 +222,25 @@ public partial class SipsdatabaseContext : DbContext
                 .HasColumnName("promoValue");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.SizeId).HasColumnName("sizeID");
-            entity.Property(e => e.TransactionId).HasColumnName("transactionID");
+            entity.Property(e => e.SweetnessId).HasColumnName("sweetnessID");
+            entity.Property(e => e.TransactionId)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("transactionID");
+
+            entity.HasOne(d => d.Ice).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.IceId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__OrderDeta__iceID__74444068");
 
             entity.HasOne(d => d.Item).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ItemId)
-                .HasConstraintName("FK__OrderDeta__itemI__2B0A656D");
+                .HasConstraintName("FK__OrderDeta__itemI__7073AF84");
 
-            entity.HasOne(d => d.Size).WithMany(p => p.OrderDetails)
-                .HasForeignKey(d => d.SizeId)
-                .HasConstraintName("FK__OrderDeta__sizeI__2CF2ADDF");
-
-            entity.HasOne(d => d.Transaction).WithMany(p => p.OrderDetails)
-                .HasForeignKey(d => d.TransactionId)
-                .HasConstraintName("FK__OrderDeta__trans__2BFE89A6");
+            entity.HasOne(d => d.Sweetness).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.SweetnessId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK__OrderDeta__sweet__73501C2F");
         });
 
         modelBuilder.Entity<OrderStatus>(entity =>

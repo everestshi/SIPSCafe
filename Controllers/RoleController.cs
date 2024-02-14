@@ -54,43 +54,43 @@ namespace Sips.Controllers
 
             return View(roleVM);
         }
-        public ActionResult Delete(string roleName)
-        {
-            RoleRepo roleRepo = new RoleRepo(_db);
-            //var role = roleRepo.GetRole(roleName); 
+        //public ActionResult Delete(string roleName)
+        //{
+        //    RoleRepo roleRepo = new RoleRepo(_db);
+        //    //var role = roleRepo.GetRole(roleName); 
 
-            // Check if the role is assigned to any user
-            var isRoleAssigned = roleRepo.IsRoleAssigned(roleName);
+        //    // Check if the role is assigned to any user
+        //    var isRoleAssigned = roleRepo.IsRoleAssigned(roleName);
 
-            if (isRoleAssigned)
-            {
-                string message = "Role cannot be deleted because it is assigned to one or more users.";
+        //    if (isRoleAssigned)
+        //    {
+        //        string message = "Role cannot be deleted because it is assigned to one or more users.";
 
-                return RedirectToAction("Index", "Role", new { message = message }); // Redirect to the Index page
-            }
+        //        return RedirectToAction("Index", "Role", new { message = message }); // Redirect to the Index page
+        //    }
 
-            return View(new RoleVM { RoleName = roleName });
-        }
+        //    return View(new RoleVM { RoleName = roleName });
+        //}
 
-        [HttpPost]
-        public ActionResult Delete(RoleVM role)
-        {
-            RoleRepo roleRepo = new RoleRepo(_db);
+        //[HttpPost]
+        //public ActionResult Delete(RoleVM role)
+        //{
+        //    RoleRepo roleRepo = new RoleRepo(_db);
 
-            bool isSuccess = roleRepo.DeleteRole(role.RoleName);
-            string message = "";
+        //    bool isSuccess = roleRepo.DeleteRole(role.RoleName);
+        //    string message = "";
 
-            if (isSuccess)
-            {
-                message = "Role deleted successfully.";
-            }
-            else
-            {
-                message = "Role deletion failed.";
-            }
+        //    if (isSuccess)
+        //    {
+        //        message = "Role deleted successfully.";
+        //    }
+        //    else
+        //    {
+        //        message = "Role deletion failed.";
+        //    }
 
-            return RedirectToAction("Index", "Role", new { message = message }); // Redirect to the Index page
-        }
+        //    return RedirectToAction("Index", "Role", new { message = message }); // Redirect to the Index page
+        //}
 
     }
 }
