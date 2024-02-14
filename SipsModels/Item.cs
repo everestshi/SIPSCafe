@@ -17,17 +17,9 @@ public partial class Item
 
     public string? UrlString { get; set; }
 
-    public int? SweetnessId { get; set; }
-
-    public int? IceId { get; set; }
-
     public int? ItemTypeId { get; set; }
-
-    public virtual Ice? Ice { get; set; }
 
     public virtual ItemType? ItemType { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
-
-    public virtual Sweetness? Sweetness { get; set; }
 }
