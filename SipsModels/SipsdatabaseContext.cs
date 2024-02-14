@@ -15,7 +15,7 @@ public partial class SipsdatabaseContext : DbContext
         : base(options)
     {
     }
-    public virtual DbSet<ProductVM> ProductsVM { get; set; }
+    //public virtual DbSet<ProductVM> ProductsVM { get; set; }
 
     public virtual DbSet<AddIn> AddIns { get; set; }
 

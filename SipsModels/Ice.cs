@@ -5,6 +5,7 @@ namespace Sips.SipsModels;
 
 public partial class Ice
 {
+
     public int IceId { get; set; }
 
     public decimal IcePercent { get; set; }
