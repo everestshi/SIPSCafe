@@ -89,47 +89,47 @@ namespace Sips.Repositories
             }
         }
 
-        public bool DeleteRole(string roleName)
-        {
-            bool isSuccess = true;
+        //public bool DeleteRole(string roleName)
+        //{
+        //    bool isSuccess = true;
 
-            bool roleCount = _db.UserRoles.Any(ur => ur.RoleId == roleName.ToLower());
-            if (roleCount)
-            {
-                isSuccess = false;
-            }
-            else
-            {
-                try
-                {
-                    var role = _db.Roles
-                                       .Where(r => r.Name == roleName)
-                                       .FirstOrDefault();
+        //    bool roleCount = _db.UserRoles.Any(ur => ur.RoleId == roleName.ToLower());
+        //    if (roleCount)
+        //    {
+        //        isSuccess = false;
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            var role = _db.Roles
+        //                               .Where(r => r.Name == roleName)
+        //                               .FirstOrDefault();
 
-                    if (role != null)
-                    {
-                        _db.Roles.Remove(role);
-                        _db.SaveChanges();
-                    }
-                    else
-                    {
-                        isSuccess = false; // Role not found
-                    }
-                }
-                catch (Exception)
-                {
-                    isSuccess = false;
-                }
-            }
+        //            if (role != null)
+        //            {
+        //                _db.Roles.Remove(role);
+        //                _db.SaveChanges();
+        //            }
+        //            else
+        //            {
+        //                isSuccess = false; // Role not found
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            isSuccess = false;
+        //        }
+        //    }
 
-            return isSuccess;
-        }
+        //    return isSuccess;
+        //}
 
-        public bool IsRoleAssigned(string roleName)
-        {
-            // Check if any user is assigned to the given role
-            return _db.UserRoles.Any(ur => ur.RoleId == roleName);
-        }
+        //public bool IsRoleAssigned(string roleName)
+        //{
+        //    // Check if any user is assigned to the given role
+        //    return _db.UserRoles.Any(ur => ur.RoleId == roleName);
+        //}
 
     }
 }
