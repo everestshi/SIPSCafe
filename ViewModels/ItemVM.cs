@@ -26,7 +26,6 @@ namespace Sips.ViewModels
         public int? ItemTypeId { get; set; }
 
         [Display(Name = "Item Type")]
-        [Required]
         public string? ItemTypeName { get; set; }
 
 
