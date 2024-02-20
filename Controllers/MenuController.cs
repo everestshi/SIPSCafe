@@ -29,15 +29,19 @@ namespace Sips.Controllers
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var milkTeas = menuRepo.GetMilkTeas();
+            var iceOptions = menuRepo.GetIceOptions();
+            var sweetnessOptions = menuRepo.GetSweetnessOptions();
+            var milkOptions = menuRepo.GetMilkOptions();
+            var addInOptions = menuRepo.GetAddInOptions();
 
             var viewModel = new MenuItemVM
             {
                 Title = "Milk Tea Menu",
                 Items = milkTeas.ToList(),
-                //IceOptions = menuRepo.GetIceOptions(),
-                //SweetnessOptions = menuRepo.GetSweetnessOptions(),
-                //MilkOptions = menuRepo.GetMilkOptions(),
-                //AddonOptions = menuRepo.GetAddonOptions()
+                IceOptions = iceOptions.ToList(),
+                SweetnessOptions = sweetnessOptions.ToList(),
+                MilkOptions = milkOptions.ToList(),
+                AddInOptions = addInOptions.ToList()
             };
 
             return View(viewModel);
@@ -49,7 +53,21 @@ namespace Sips.Controllers
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var fruitTeas = menuRepo.GetFruitTeas();
-            return View(fruitTeas);
+            var iceOptions = menuRepo.GetIceOptions();
+            var sweetnessOptions = menuRepo.GetSweetnessOptions();
+            var milkOptions = menuRepo.GetMilkOptions();
+            var addInOptions = menuRepo.GetAddInOptions();
+
+            var viewModel = new MenuItemVM
+            {
+                Title = "Milk Tea Menu",
+                Items = fruitTeas.ToList(),
+                IceOptions = iceOptions.ToList(),
+                SweetnessOptions = sweetnessOptions.ToList(),
+                MilkOptions = milkOptions.ToList(),
+                AddInOptions = addInOptions.ToList()
+            };
+            return View(viewModel);
         }
 
         public IActionResult Slush()
@@ -57,7 +75,21 @@ namespace Sips.Controllers
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var slushes = menuRepo.GetSlushes();
-            return View(slushes);
+            var iceOptions = menuRepo.GetIceOptions();
+            var sweetnessOptions = menuRepo.GetSweetnessOptions();
+            var milkOptions = menuRepo.GetMilkOptions();
+            var addInOptions = menuRepo.GetAddInOptions();
+
+            var viewModel = new MenuItemVM
+            {
+                Title = "Milk Tea Menu",
+                Items = slushes.ToList(),
+                IceOptions = iceOptions.ToList(),
+                SweetnessOptions = sweetnessOptions.ToList(),
+                MilkOptions = milkOptions.ToList(),
+                AddInOptions = addInOptions.ToList()
+            };
+            return View(viewModel);
         }
     }
 }
