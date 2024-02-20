@@ -419,30 +419,36 @@ a {
 }
 
 /* tea pages styling*/
-.tea-container{
-    display:flex;
-    flex-direction:column;
-    margin:0 auto;
-    justify-content:center;
-    align-items:center;
-    padding:40px 20px;
+.tea-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
 }
 
-.tea-list{
-    display:flex;
-    flex-direction:column;
-justify-content:center;
-align-items:center;
-margin:0 auto;
+.tea-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    align-items: flex-start;
+    width: 95%;
+    max-width: 1440px;
 }
-.tea-item{
-display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-    align-items:center;
-    margin:10px 0;
-    width:800px;
+
+.tea-item {
+    flex: 0 0 48%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    width: 800px;
 }
+
 .tea-item img{
     width:200px;
 }
