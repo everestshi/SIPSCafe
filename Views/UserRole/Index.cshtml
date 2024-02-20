@@ -8,12 +8,12 @@
 @* <p>
     <a asp-action="Create">Create New User Role</a>
 </p> *@
-<table class="table">
+<table class="table" id="user-role-index">
     <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
+        <div class="form-actions no-color" id="form-input">
             <p>
                 <div class="form-group" style="display: inline-block">
-                    <span>Search on User Email:</span>
+                    <span>Search User Email:</span>
                     <input type="text" name="SearchString"
                            value="@ViewData["currentFilter"]" required />
                 </div>

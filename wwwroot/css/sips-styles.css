@@ -235,6 +235,8 @@ width:100%;
     /*justify-content:space-around;*/
     align-content: center;
     align-items: center;
+    margin-top: 75px;
+    margin-bottom: 60px;
 }
 
 .home-boba-img{
@@ -469,3 +471,15 @@ display:flex;
             background: #F58D7A;
         }
 
+
+/*#user-role-index {
+    min-height: 55vh;
+}*/
+.pb-3 {
+    min-height: 55vh;
+}
+#form-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
