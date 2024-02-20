@@ -1,5 +1,6 @@
 ﻿using Sips.Data;
 using Sips.SipsModels;
+using Sips.ViewModels;
 
 namespace Sips.Repositories
 {
@@ -38,6 +39,21 @@ namespace Sips.Repositories
         public IEnumerable<Ice> GetIceOptions()
         {
             return _db.Ices.ToList();
+        }
+
+        public IEnumerable<Sweetness> GetSweetnessOptions()
+        {
+            return _db.Sweetnesses.ToList();
+        }
+
+        public IEnumerable<MilkChoice> GetMilkOptions()
+        {
+            return _db.MilkChoices.ToList();
+        }
+
+        public IEnumerable<AddIn> GetAddInOptions()
+        {
+            return _db.AddIns.ToList();
         }
     }
 }
