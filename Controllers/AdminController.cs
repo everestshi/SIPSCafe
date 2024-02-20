@@ -24,6 +24,16 @@ namespace Sips.Controllers
         {
             return View();
         }
+
+
+        // ROLES INDEX **********************************************
+
+        public IActionResult RoleIndex(string message)
+        {
+            return View();
+        }
+
+
         //Product CRUD**********************************************
         public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
         {

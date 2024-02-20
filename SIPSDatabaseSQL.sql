@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS [OrderStatus];
 DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS [Store];
 DROP TABLE IF EXISTS Contact;
+DROP TABLE IF EXISTS MilkChoice; -- Add this line
 
 -- Create ItemType table
 CREATE TABLE ItemType (
@@ -29,13 +30,13 @@ CREATE TABLE ItemSize (
 -- Create Sweetness table
 CREATE TABLE Sweetness (
     sweetnessID INTEGER PRIMARY KEY IDENTITY(1,1),
-    sweetnessPercent DECIMAL(5, 2) NOT NULL
+    sweetnessPercent VARCHAR(30) NOT NULL
 );
 
 -- Create Ice table
 CREATE TABLE Ice (
     iceID INTEGER PRIMARY KEY IDENTITY(1,1),
-    icePercent DECIMAL(5, 2) NOT NULL
+    icePercent VARCHAR(30) NOT NULL
 );
 
 -- Create AddIn table
@@ -113,6 +114,13 @@ CREATE TABLE Item (
     FOREIGN KEY (itemTypeID) REFERENCES ItemType(itemTypeID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+-- Create MilkChoice table
+CREATE TABLE MilkChoice (
+    milkChoiceID INTEGER PRIMARY KEY IDENTITY(1,1),
+    milkType VARCHAR(50) NOT NULL,
+    priceModifier DECIMAL(10, 2) NOT NULL
+);
+
 -- Create OrderDetail table
 CREATE TABLE OrderDetail (
     orderDetailID VARCHAR(30) PRIMARY KEY,
@@ -125,11 +133,13 @@ CREATE TABLE OrderDetail (
     sizeID INTEGER NOT NULL,
     sweetnessID INTEGER,
     iceID INTEGER,
+    milkChoiceID INTEGER, -- New column for MilkChoice
     FOREIGN KEY (itemID) REFERENCES Item(itemID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (transactionID) REFERENCES [Transaction](transactionID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (sizeID) REFERENCES ItemSize(sizeID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (sweetnessID) REFERENCES Sweetness(sweetnessID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (iceID) REFERENCES Ice(iceID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (milkChoiceID) REFERENCES MilkChoice(milkChoiceID) ON UPDATE CASCADE ON DELETE CASCADE -- New foreign key
 );
 
 -- Create AddIn_OrderDetail table
@@ -142,20 +152,30 @@ CREATE TABLE AddIn_OrderDetail (
     FOREIGN KEY (orderDetailID) REFERENCES OrderDetail(orderDetailID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+-- Pre-populate Sweetness table
+INSERT INTO Sweetness (sweetnessPercent) VALUES ('0% Sweet');
+INSERT INTO Sweetness (sweetnessPercent) VALUES ('25% Sweet');
+INSERT INTO Sweetness (sweetnessPercent) VALUES ('50% Sweet');
+INSERT INTO Sweetness (sweetnessPercent) VALUES ('75% Sweet');
+INSERT INTO Sweetness (sweetnessPercent) VALUES ('100% Sweet');
 
--- Insert statements for Ice table
-INSERT INTO Ice (icePercent) VALUES (100);
-INSERT INTO Ice (icePercent) VALUES (75);
-INSERT INTO Ice (icePercent) VALUES (50);
-INSERT INTO Ice (icePercent) VALUES (25);
-INSERT INTO Ice (icePercent) VALUES (0);
+-- Pre-populate Ice table
+INSERT INTO Ice (icePercent) VALUES ('No Ice');
+INSERT INTO Ice (icePercent) VALUES ('Less Ice');
+INSERT INTO Ice (icePercent) VALUES ('Regular Ice');
+INSERT INTO Ice (icePercent) VALUES ('Extra Ice');
 
--- Insert statements for Sweetness table
-INSERT INTO Sweetness (sweetnessPercent) VALUES (100);
-INSERT INTO Sweetness (sweetnessPercent) VALUES (75);
-INSERT INTO Sweetness (sweetnessPercent) VALUES (50);
-INSERT INTO Sweetness (sweetnessPercent) VALUES (25);
-INSERT INTO Sweetness (sweetnessPercent) VALUES (0);
+-- Pre-populate MilkChoice table
+INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Regular', 0.00);
+INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Soy', 0.80);
+INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Almond', 0.80);
+INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Oat', 0.80);
+
+-- Pre-populate AddIn table
+INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Pearls', 1.25, NULL);
+INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Sago', 1.25, NULL);
+INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Lychee Jelly', 1.25, NULL);
+INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Pudding', 1.25, NULL);
 
 -- Insert statements for ItemType table
 INSERT INTO ItemType (itemTypeName) VALUES ('Milk Tea');
@@ -164,39 +184,39 @@ INSERT INTO ItemType (itemTypeName) VALUES ('Slush');
 
 -- Milk Teas
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Matcha Milk Tea', 'A delightful blend of matcha and creamy milk.', 2.99, 100, 1);
+VALUES ('Matcha Milk Tea', 'A delightful blend of matcha and creamy milk.', 4.99, 100, 1);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Taro Milk Tea', 'Experience the unique flavor of taro in a refreshing milk tea.', 2.99, 100, 1);
+VALUES ('Taro Milk Tea', 'Experience the unique flavor of taro in a refreshing milk tea.', 4.99, 100, 1);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Brown Sugar Milk Tea', 'Indulge in the rich taste of brown sugar infused in milk tea.', 3.49, 100, 1);
+VALUES ('Brown Sugar Milk Tea', 'Indulge in the rich taste of brown sugar infused in milk tea.', 5.49, 100, 1);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Sips Milk Tea', 'Our classic and flavorful Sips Milk Tea.', 2.99, 100, 1);
+VALUES ('Sips Milk Tea', 'Our classic and flavorful Sips Milk Tea.', 3.99, 100, 1);
 
 -- Fruit Teas
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('PassionFruit Tea', 'A tropical burst of passion fruit in a refreshing tea.', 3.29, 100, 2);
+VALUES ('PassionFruit Tea', 'A tropical burst of passion fruit in a refreshing tea.', 5.69, 100, 2);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Peach Kiwi Tea', 'Experience the perfect harmony of peach and kiwi in tea.', 3.49, 100, 2);
+VALUES ('Peach Kiwi Tea', 'Experience the perfect harmony of peach and kiwi in tea.', 5.99, 100, 2);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Mango Tea', 'Enjoy the sweetness of mango in our delightful tea blend.', 3.29, 100, 2);
+VALUES ('Mango Tea', 'Enjoy the sweetness of mango in our delightful tea blend.', 5.99, 100, 2);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Wintermelon Tea', 'Refresh yourself with the cooling taste of wintermelon tea.', 3.29, 100, 2);
+VALUES ('Wintermelon Tea', 'Refresh yourself with the cooling taste of wintermelon tea.', 6.29, 100, 2);
 
 -- Slushes
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Watermelon Raspberry Slush', 'Savor the unique and sweet taste of watermelon and raspberry in a slush.', 4.49, 100, 3);
+VALUES ('Watermelon Raspberry Slush', 'Savor the unique and sweet taste of watermelon and raspberry in a slush.', 6.49, 100, 3);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Taro Slush', 'Experience the rich and creamy taro in a delightful slush.', 4.29, 100, 3);
+VALUES ('Taro Slush', 'Experience the rich and creamy taro in a delightful slush.', 6.29, 100, 3);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Strawberry Slush', 'Enjoy the freshness of strawberry in a chilled slush drink.', 4.29, 100, 3);
+VALUES ('Strawberry Slush', 'Enjoy the freshness of strawberry in a chilled slush drink.', 5.99, 100, 3);
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Coffee Slush', 'A delightful mix of coffee flavor in a frosty slush.', 4.49, 100, 3);
+VALUES ('Coffee Slush', 'A delightful mix of coffee flavor in a frosty slush.', 5.99, 100, 3);

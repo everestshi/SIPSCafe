@@ -235,6 +235,8 @@ width:100%;
     /*justify-content:space-around;*/
     align-content: center;
     align-items: center;
+    margin-top: 75px;
+    margin-bottom: 60px;
 }
 
 .home-boba-img{
@@ -469,3 +471,71 @@ display:flex;
             background: #F58D7A;
         }
 
+
+/*#user-role-index {
+    min-height: 55vh;
+}*/
+.pb-3 {
+    min-height: 55vh;
+    color: #519389;
+}
+#form-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+}
+a {
+    color: #478279;
+}
+a:hover {
+    color: #345e57
+}
+.user-search-input {
+    border: 1px solid #478279;
+    border-radius: 5px;
+    padding: 5px;
+}
+#search-button {
+    margin: 0 5px;
+}
+#back-to-list {
+    font-size: 0.8rem
+}
+.pagination-btn {
+    color: #478279;
+}
+.pagination-btn:hover {
+    color: #345e57
+}
+.pagination {
+    margin-top: 90px;
+    margin-left: 10px;
+}
+.role-title {
+    font-size: x-large;
+    margin-top: 20px;
+}
+#role-create-btn {
+    margin-bottom: 10px;
+}
+#role-create-input {
+    margin: 10px 0;
+}
+#assignUserRole {
+    margin: 10px 0;
+}
+#user-role-detail-table {
+    color: #478279;
+}
+#user-role-delete-title {
+    font-size: large;
+}
+#user-role-delete-table {
+    margin-top: 25px;
+    margin-bottom: 40px;
+    color: #478279;
+}
+#delete-role-rolename, #delete-role-email {
+    width: 50%;
+}

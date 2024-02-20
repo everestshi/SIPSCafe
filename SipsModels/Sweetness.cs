@@ -7,7 +7,7 @@ public partial class Sweetness
 {
     public int SweetnessId { get; set; }
 
-    public decimal SweetnessPercent { get; set; }
+    public string SweetnessPercent { get; set; } = null!;
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }

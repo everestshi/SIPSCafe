@@ -2,6 +2,7 @@
 using Sips.Interfaces;
 using Sips.Repositories;
 using Sips.SipsModels;
+using Sips.ViewModels;
 using Sips.Data;
 
 namespace Sips.Controllers
@@ -29,21 +30,36 @@ namespace Sips.Controllers
 
             var milkTeas = menuRepo.GetMilkTeas();
 
-            var viewModel = new MilkTeaVM
+            var viewModel = new MenuItemVM
             {
-                title = "Milk Tea Menu",
-                Items = milkTeas.ToList()
+                Title = "Milk Tea Menu",
+                Items = milkTeas.ToList(),
+                //IceOptions = menuRepo.GetIceOptions(),
+                //SweetnessOptions = menuRepo.GetSweetnessOptions(),
+                //MilkOptions = menuRepo.GetMilkOptions(),
+                //AddonOptions = menuRepo.GetAddonOptions()
             };
 
             return View(viewModel);
         }
 
-        public IActionResult FruitTea()
+
+        public IActionResult FruitTea1()
         {
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var fruitTeas = menuRepo.GetFruitTeas();
-            return View(fruitTeas);
+
+            var viewModel = new MenuItemVM
+            {
+                Title = "Fruit Tea Menu",
+                Items = fruitTeas.ToList(),
+                //IceOptions = menuRepo.GetIceOptions(),
+                //SweetnessOptions = menuRepo.GetSweetnessOptions(),
+                //MilkOptions = menuRepo.GetMilkOptions(),
+                //AddonOptions = menuRepo.GetAddonOptions()
+            };
+            return View(viewModel);
         }
 
         public IActionResult Slush()
@@ -51,7 +67,18 @@ namespace Sips.Controllers
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var slushes = menuRepo.GetSlushes();
-            return View(slushes);
+
+            var viewModel = new MenuItemVM
+            {
+                Title = "Slushies Menu",
+                Items = slushes.ToList(),
+                //IceOptions = menuRepo.GetIceOptions(),
+                //SweetnessOptions = menuRepo.GetSweetnessOptions(),
+                //MilkOptions = menuRepo.GetMilkOptions(),
+                //AddonOptions = menuRepo.GetAddonOptions()
+            };
+
+            return View(viewModel);
         }
     }
 }

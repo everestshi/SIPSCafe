@@ -34,5 +34,10 @@ namespace Sips.Repositories
 
             return items;
         }
+
+        public IEnumerable<Ice> GetIceOptions()
+        {
+            return _db.Ices.ToList();
+        }
     }
 }

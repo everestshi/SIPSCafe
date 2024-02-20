@@ -8,20 +8,21 @@
 @* <p>
     <a asp-action="Create">Create New User Role</a>
 </p> *@
-<table class="table">
+<table class="table" id="user-role-index">
     <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
+        <div class="form-actions no-color" id="form-input">
             <p>
                 <div class="form-group" style="display: inline-block">
-                    <span>Search on User Email:</span>
+                    <span>Search User Email:</span>
                     <input type="text" name="SearchString"
-                           value="@ViewData["currentFilter"]" required />
+                           value="@ViewData["currentFilter"]" required
+                           class="user-search-input" />
                 </div>
                 <div class="form-group" style="display: inline-block">
                     <input type="submit" value="Search"
-                           class="btn btn-primary" />
+                           class="btn btn-primary " id="search-button"/>
                 </div>
-                <a asp-action="Index">Back to Full List</a>
+                <a asp-action="Index" id="back-to-list">Back to Full List</a>
             </p>
         </div>
     </form>
@@ -38,8 +39,8 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Email</td>
-                <td>
+                <td style="color: #519389">@item.Email</td>
+                <td style="color: #519389">
                     @Html.ActionLink( "View Roles"
                 , "Detail"
                 , new { userName = item.Email })
@@ -51,13 +52,13 @@
 <nav>
     <ul class="pagination">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link"
+            <a class="page-link pagination-btn"
                href="@Url.Action("Index", new { pageNumber = Model.PageIndex - 1 })">
                 Previous
             </a>
         </li>
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-            <a class="page-link"
+            <a class="page-link pagination-btn"
                href="@Url.Action("Index", new { pageNumber = Model.PageIndex + 1 })">
                 Next
             </a>
