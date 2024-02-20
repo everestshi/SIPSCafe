@@ -44,12 +44,22 @@ namespace Sips.Controllers
         }
 
 
-        public IActionResult FruitTea()
+        public IActionResult FruitTea1()
         {
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var fruitTeas = menuRepo.GetFruitTeas();
-            return View(fruitTeas);
+
+            var viewModel = new MenuItemVM
+            {
+                Title = "Fruit Tea Menu",
+                Items = fruitTeas.ToList(),
+                //IceOptions = menuRepo.GetIceOptions(),
+                //SweetnessOptions = menuRepo.GetSweetnessOptions(),
+                //MilkOptions = menuRepo.GetMilkOptions(),
+                //AddonOptions = menuRepo.GetAddonOptions()
+            };
+            return View(viewModel);
         }
 
         public IActionResult Slush()
@@ -57,7 +67,18 @@ namespace Sips.Controllers
             MenuRepo menuRepo = new MenuRepo(_db);
 
             var slushes = menuRepo.GetSlushes();
-            return View(slushes);
+
+            var viewModel = new MenuItemVM
+            {
+                Title = "Slushies Menu",
+                Items = slushes.ToList(),
+                //IceOptions = menuRepo.GetIceOptions(),
+                //SweetnessOptions = menuRepo.GetSweetnessOptions(),
+                //MilkOptions = menuRepo.GetMilkOptions(),
+                //AddonOptions = menuRepo.GetAddonOptions()
+            };
+
+            return View(viewModel);
         }
     }
 }
