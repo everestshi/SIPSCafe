@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
+using Sips.SipsModels;
 
-namespace Sips.SipsModels
+namespace Sips.ViewModels
 {
-    public class MilkTeaVM
+    public class MenuItemVM
     {
         public string Title { get; set; } = "Milk Tea";
         public List<Item> Items { get; set; }
@@ -12,7 +13,7 @@ namespace Sips.SipsModels
         public List<string> AddonOptions { get; set; } // List of addon options
 
         // Constructor to initialize lists
-        public MilkTeaVM()
+        public MenuItemVM()
         {
             IceOptions = new List<string>();
             SweetnessOptions = new List<string>();
