@@ -34,17 +34,17 @@
                 <span asp-validation-for="Inventory" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ItemType" class="control-label"></label>
-                <select asp-for="ItemType" class="form-control" asp-items="ViewBag.ItemType">
+                <label asp-for="ItemTypeId" class="control-label"></label>
+                <select asp-for="ItemTypeId" class="form-control" asp-items="ViewBag.ItemTypes">
                     <option value="">Select from Item Type options</option>
                 </select>  
-                <span asp-validation-for="ItemType" class="text-danger"></span>
+                <span asp-validation-for="ItemTypeId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+@*             <div class="form-group">
                 <label asp-for="UrlString" class="control-label"></label>
                 <input asp-for="UrlString" class="form-control" />
                 <span asp-validation-for="UrlString" class="text-danger"></span>
-            </div>
+            </div> *@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
