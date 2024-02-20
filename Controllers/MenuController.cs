@@ -2,6 +2,7 @@
 using Sips.Interfaces;
 using Sips.Repositories;
 using Sips.SipsModels;
+using Sips.ViewModels;
 using Sips.Data;
 
 namespace Sips.Controllers
@@ -29,7 +30,7 @@ namespace Sips.Controllers
 
             var milkTeas = menuRepo.GetMilkTeas();
 
-            var viewModel = new MilkTeaVM
+            var viewModel = new MenuItemVM
             {
                 Title = "Milk Tea Menu",
                 Items = milkTeas.ToList(),
