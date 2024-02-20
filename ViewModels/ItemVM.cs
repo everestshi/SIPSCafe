@@ -12,10 +12,10 @@ namespace Sips.ViewModels
 
         public string Description { get; set; } = null!;
         [Display(Name = "Base Price")]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
 
         public decimal BasePrice { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "Inventory cannot be negative.")]
         public int Inventory { get; set; }
 
