@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Sips.SipsModels.ViewModels
+namespace Sips.ViewModels
 {
     public class RoleVM
     {

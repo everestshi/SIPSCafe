@@ -1,0 +1,111 @@
+﻿@model Sips.ViewModels.MenuItemVM
+
+<div class="tea-container">
+    <h1>Fruit Teas</h1>
+</div>
+
+<div class="tea-list">
+    @foreach (var tea in Model.Items)
+    {
+        <div class="tea-item">
+            <img src="~/images/boba-02.png" alt="@tea.Name" class="img-fluid">
+            <div class="tea-copy">
+                <h3>@tea.Name</h3>
+                <p>Description: @tea.Description</p>
+                <p>Price: $@tea.BasePrice.ToString()</p>
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="tea-btns">
+                    <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                    <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal">Customize</button>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
+                <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Customization options -->
+                <div class="customization-options">
+                    <!-- Example options -->
+                    <div class="form-group">
+                        <label for="iceLevel">Ice Level:</label>
+                        <select class="form-control" id="iceLevel">
+                            <option>No Ice</option>
+                            <option>Less Ice</option>
+                            <option>Regular Ice</option>
+                            <option>Extra Ice</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="milkChoice">Milk Choice:</label>
+                        <select class="form-control" id="milkChoice">
+                            <option>Regular</option>
+                            <option>Soy</option>
+                            <option>Almond</option>
+                            <option>Oat</option>
+                        </select>
+                    </div>
+                    <!-- Add more customization options here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeModalButton" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get references to the customize and add to cart buttons
+            var customizeButtons = document.querySelectorAll('.customize');
+            var addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+            // Add event listener for customize button click
+            customizeButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Reset modal options to default when opening
+                    document.getElementById('iceLevel').value = 'Regular Ice';
+                    document.getElementById('milkChoice').value = 'Regular';
+                    console.log('Customize button clicked');
+
+                    // Show the modal
+                    document.getElementById('customizeModal').classList.add('show');
+                    document.getElementById('customizeModal').style.display = 'block';
+                });
+            });
+
+            // Add event listener for add to cart button click
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Add your logic to add item to cart here
+                    alert('Item added to cart!');
+                });
+            });
+
+            // Hide the modal when close button is clicked
+            document.getElementById('closeModal').addEventListener('click', function () {
+                document.getElementById('customizeModal').classList.remove('show');
+                document.getElementById('customizeModal').style.display = 'none';
+            });
+        });
+    </script>
+}
+
+
+
+@* <img src="~/images/boba-02.png" /> *@

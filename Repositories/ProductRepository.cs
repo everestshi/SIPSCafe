@@ -17,8 +17,10 @@ namespace Sips.Repositories
 
         public IEnumerable<ItemVM> GetAll()
         {
-            var products = _db.Items.ToList();
+            var products = _db.Items.Include(p => p.ItemType).ToList();
             List<ItemVM> itemsVM = new List<ItemVM>();
+
+
             foreach (var p in products)
             {
                 ItemVM itemVM = new ItemVM()
@@ -29,7 +31,8 @@ namespace Sips.Repositories
                     BasePrice = p.BasePrice,
                     Inventory = p.Inventory,
                     UrlString = p.UrlString,
-                    ItemType = p.ItemType,
+                    ItemTypeId = p.ItemType?.ItemTypeId ?? 1,
+                    ItemTypeName = p.ItemType?.ItemTypeName,
 
                 };
 
@@ -55,7 +58,9 @@ namespace Sips.Repositories
         
         public ItemVM GetById(int id)
         {
-            var p = _db.Items.FirstOrDefault(p => p.ItemId == id);
+            var p = _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == id);
+            var ItemTypeName = p.ItemType?.ItemTypeName;
+
             var itemVM = new ItemVM
             {
                 ItemId = p.ItemId,
@@ -64,8 +69,10 @@ namespace Sips.Repositories
                 BasePrice = p.BasePrice,
                 Inventory = p.Inventory,
                 UrlString = p.UrlString,
-                ItemType = p.ItemType,
-            };
+                ItemTypeId = p.ItemTypeId,
+                ItemTypeName = p.ItemType?.ItemTypeName,
+
+        };
 
             return itemVM;
         }
@@ -80,7 +87,7 @@ namespace Sips.Repositories
                 BasePrice = proVM.BasePrice,
                 Inventory = proVM.Inventory,
                 UrlString = proVM.UrlString,
-                ItemType = proVM.ItemType,
+                ItemTypeId = proVM.ItemTypeId,
             };
             try
             {
@@ -95,47 +102,47 @@ namespace Sips.Repositories
             return message;
         }
 
-        //public string Update(Item editingItem)
-        //{
-        //    string message = string.Empty;
-        //    try
-        //    {
-        //        Item item = GetById(editingItem.ItemId);
-        //        item.Sweetness = editingItem.Sweetness;
-        //        item.Description = editingItem.Description;
-        //        item.Ice = editingItem.Ice;
-        //        item.Name = editingItem.Name;
-        //        item.ItemType = editingItem.ItemType;
-        //        item.BasePrice = editingItem.BasePrice;
-        //        item.Inventory = editingItem.Inventory;
-        //        //item.urlString = editingItem.urlString;
-                
-        //        _db.SaveChanges();
-        //        message = $"Product {editingItem.Name} updated successfully";
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        message = $" Error updating Product {editingItem.Name} : {e.Message}";
-        //    }
-        //    return message;
-        //}
+        public string Update(ItemVM editingItem)
+        {
+            string message = string.Empty;
+            Item item = _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == editingItem.ItemId);
 
-        //public string Delete(int id)
-        //{
-        //    string message = string.Empty;
-        //    try
-        //    {
-        //        Item item = GetById(id);
-        //        _db.Items.Remove(item);
-        //        _db.SaveChanges();
-        //        message = $"{item.Name} deleted successfully";
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        message = $" Error deleting product-{id}: {e.Message}";
-        //    }
-        //    return message;
-        //}
+            try
+            {
+                item.Description = editingItem.Description;
+                item.Name = editingItem.Name;
+                item.ItemTypeId = editingItem.ItemTypeId;
+                item.BasePrice = editingItem.BasePrice;
+                item.Inventory = editingItem.Inventory;
+                //item.urlString = editingItem.urlString;
+
+                _db.SaveChanges();
+                message = $"{editingItem.Name} updated successfully";
+            }
+            catch (Exception e)
+            {
+                message = $" Error updating Product {editingItem.Name} : {e.Message}";
+            }
+            return message;
+        }
+
+        public string Delete(int id)
+        {
+            string message = string.Empty;
+            Item item= _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == id);
+
+            try
+            {
+                _db.Items.Remove(item);
+                _db.SaveChanges();
+                message = $"{item.Name} deleted successfully";
+            }
+            catch (Exception e)
+            {
+                message = $" Error deleting product-{id}: {e.Message}";
+            }
+            return message;
+        }
 
     }
 }

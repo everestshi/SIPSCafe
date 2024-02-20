@@ -48,7 +48,7 @@ namespace Sips.Controllers
         }
 
 
-        public IActionResult FruitTea()
+        public IActionResult FruitTea1()
         {
             MenuRepo menuRepo = new MenuRepo(_db);
 
