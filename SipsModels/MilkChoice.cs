@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 namespace Sips.SipsModels;
 
-public partial class Ice
+public partial class MilkChoice
 {
-    public int IceId { get; set; }
+    public int MilkChoiceId { get; set; }
 
-    public string IcePercent { get; set; } = null!;
+    public string MilkType { get; set; } = null!;
+
+    public decimal PriceModifier { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 }

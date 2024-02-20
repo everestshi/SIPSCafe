@@ -15,7 +15,7 @@ namespace Sips.Repositories
         public List<PayPalVM> GetTransactions()
         {
             SipsdatabaseContext db = _db;
-            List<PayPalVM> transactions = _db.PayPalVM
+            List<PayPalVM> transactions = _db.PayPalVMs
                     .Select(transaction => new PayPalVM
                     {
                         TransactionId = transaction.TransactionId,

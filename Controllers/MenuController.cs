@@ -31,12 +31,17 @@ namespace Sips.Controllers
 
             var viewModel = new MilkTeaVM
             {
-                title = "Milk Tea Menu",
-                Items = milkTeas.ToList()
+                Title = "Milk Tea Menu",
+                Items = milkTeas.ToList(),
+                //IceOptions = menuRepo.GetIceOptions(),
+                //SweetnessOptions = menuRepo.GetSweetnessOptions(),
+                //MilkOptions = menuRepo.GetMilkOptions(),
+                //AddonOptions = menuRepo.GetAddonOptions()
             };
 
             return View(viewModel);
         }
+
 
         public IActionResult FruitTea()
         {
