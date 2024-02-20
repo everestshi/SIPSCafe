@@ -25,10 +25,19 @@ public partial class OrderDetail
 
     public int? IceId { get; set; }
 
+    public int? MilkChoiceId { get; set; }
+
+    public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
+
     public virtual Ice? Ice { get; set; }
 
     public virtual Item Item { get; set; } = null!;
 
+    public virtual MilkChoice? MilkChoice { get; set; }
+
+    public virtual ItemSize Size { get; set; } = null!;
+
     public virtual Sweetness? Sweetness { get; set; }
-    public virtual ICollection<AddInOrderDetail> AddInOrderDetails { get; set; } = new List<AddInOrderDetail>();
+
+    public virtual Transaction Transaction { get; set; } = null!;
 }

@@ -30,7 +30,7 @@ namespace Sips.Controllers
     
         public IActionResult PayPal(PayPalVM payPalVM)
         {
-            _db.PayPalVM.Add(payPalVM);
+            _db.PayPalVMs.Add(payPalVM);
             _db.SaveChanges();
             return View(payPalVM);
         }
