@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Sips.Data;
 using Sips.Repositories;
 using Sips.SipsModels;
-using Sips.SipsModels.ViewModels;
 using Sips.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Sips.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class UserRoleController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -20,7 +23,7 @@ namespace Sips.Controllers
             _userManager = userManager;
         }
 
-        public ActionResult Index(string sortOrder, string searchString, int? pageNumber, int pageSize = 2)
+        public ActionResult Index(string sortOrder, string searchString, int? pageNumber, int pageSize = 10)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Sips.SipsModels.ViewModels;
+using Sips.ViewModels;
 
 namespace Sips.Repositories
 {
