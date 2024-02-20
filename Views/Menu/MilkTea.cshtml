@@ -17,10 +17,13 @@
                 <p>Description: @tea.Description</p>
                 <p>Price: $@tea.BasePrice.ToString()</p>
             </div>
-            <div class="tea-btns">
-                <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal">Customize</button>
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="tea-btns">
+                    <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                    <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal">Customize</button>
+                </div>
+            }
         </div>
     }
 </div>
