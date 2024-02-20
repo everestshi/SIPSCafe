@@ -80,11 +80,9 @@ CREATE TABLE Contact (
 CREATE TABLE [Transaction] (
     transactionID VARCHAR(30) PRIMARY KEY,
     dateOrdered DATE NOT NULL,
-    isOrdered BIT NOT NULL,
-    isPickedUp BIT NOT NULL,
     storeID INTEGER NOT NULL,
     userID INTEGER NOT NULL,
-    statusID INTEGER, -- Assuming this is the foreign key to OrderStatus table
+    statusID INTEGER NOT NULL, -- Assuming this is the foreign key to OrderStatus table
     FOREIGN KEY (storeID) REFERENCES Store(storeID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (userID) REFERENCES Contact(userID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (statusID) REFERENCES OrderStatus(statusID) ON UPDATE CASCADE ON DELETE CASCADE
