@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Sips.Data;
 using Sips.Repositories;
 using Sips.SipsModels;
-using Sips.SipsModels.ViewModels;
 using Sips.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Sips.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class UserRoleController : Controller
     {
         private readonly ApplicationDbContext _db;

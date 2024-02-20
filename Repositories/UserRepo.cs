@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Sips.Data;
-using Sips.SipsModels.ViewModels;
+using Sips.ViewModels;
 
 namespace Sips.Repositories
 {
