@@ -20,7 +20,7 @@ namespace Sips.Controllers
             _userManager = userManager;
         }
 
-        public ActionResult Index(string sortOrder, string searchString, int? pageNumber, int pageSize = 2)
+        public ActionResult Index(string sortOrder, string searchString, int? pageNumber, int pageSize = 10)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";
