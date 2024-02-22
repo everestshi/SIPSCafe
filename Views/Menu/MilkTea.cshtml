@@ -14,7 +14,7 @@
             <img src="~/images/boba-02.png" alt="@tea.Name" class="img-fluid">
             <div class="tea-copy">
                 <h3>@tea.Name</h3>
-                <p>Description: @tea.Description</p>
+                <p>@tea.Description</p>
                 <p>Price: $@tea.BasePrice.ToString()</p>
             </div>
             @if (User.Identity.IsAuthenticated)
