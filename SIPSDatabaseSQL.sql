@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS OrderDetail;
 DROP TABLE IF EXISTS Item;
 DROP TABLE IF EXISTS ItemSize;
 DROP TABLE IF EXISTS ItemType;
+DROP TABLE IF EXISTS ImageStores;
 DROP TABLE IF EXISTS Ice;
 DROP TABLE IF EXISTS Sweetness;
 DROP TABLE IF EXISTS [Transaction];
@@ -12,12 +13,20 @@ DROP TABLE IF EXISTS [OrderStatus];
 DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS [Store];
 DROP TABLE IF EXISTS Contact;
-DROP TABLE IF EXISTS MilkChoice; -- Add this line
+DROP TABLE IF EXISTS MilkChoice;
 
 -- Create ItemType table
 CREATE TABLE ItemType (
     itemTypeID INTEGER PRIMARY KEY IDENTITY(1,1),
     itemTypeName VARCHAR(50) NOT NULL
+);
+
+-- Create ImageStores table
+CREATE TABLE ImageStores( 
+    ImageID    INTEGER IDENTITY(1,1) NOT NULL,
+    [FileName] VARCHAR(20)       NOT NULL,
+    [Image]    VARBINARY(MAX)    NOT NULL, 
+    CONSTRAINT PK_ImageStores PRIMARY KEY CLUSTERED ( ImageId ASC )
 );
 
 -- Create ItemSize table
@@ -44,7 +53,6 @@ CREATE TABLE AddIn (
     addInID INTEGER PRIMARY KEY IDENTITY(1,1),
     addInName VARCHAR(30) NOT NULL,
     priceModifier DECIMAL(10, 2) NOT NULL,
-    urlString TEXT
 );
 
 -- Create Store table
@@ -56,8 +64,7 @@ CREATE TABLE [Store] (
 -- Create OrderStatus table
 CREATE TABLE [OrderStatus] (
     statusID INTEGER PRIMARY KEY IDENTITY(1,1),
-    isOrdered BIT NOT NULL,
-    isPickedUp BIT NOT NULL
+    isCompleted BIT NOT NULL
 );
 
 -- Create Contact table
@@ -107,9 +114,10 @@ CREATE TABLE Item (
     description TEXT NOT NULL,
     basePrice DECIMAL(10, 2) NOT NULL,
     inventory INTEGER NOT NULL,
-    urlString TEXT,
     itemTypeID INTEGER,
-    FOREIGN KEY (itemTypeID) REFERENCES ItemType(itemTypeID) ON UPDATE CASCADE ON DELETE CASCADE
+    imageID INTEGER,
+    FOREIGN KEY (itemTypeID) REFERENCES ItemType(itemTypeID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (imageID) REFERENCES ImageStores(ImageID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- Create MilkChoice table
@@ -170,10 +178,10 @@ INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Almond', 0.80);
 INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Oat', 0.80);
 
 -- Pre-populate AddIn table
-INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Pearls', 1.25, NULL);
-INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Sago', 1.25, NULL);
-INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Lychee Jelly', 1.25, NULL);
-INSERT INTO AddIn (addInName, priceModifier, urlString) VALUES ('Pudding', 1.25, NULL);
+INSERT INTO AddIn (addInName, priceModifier) VALUES ('Pearls', 1.25);
+INSERT INTO AddIn (addInName, priceModifier) VALUES ('Sago', 1.25);
+INSERT INTO AddIn (addInName, priceModifier) VALUES ('Lychee Jelly', 1.25);
+INSERT INTO AddIn (addInName, priceModifier) VALUES ('Pudding', 1.25);
 
 -- Insert statements for ItemType table
 INSERT INTO ItemType (itemTypeName) VALUES ('Milk Tea');
@@ -218,3 +226,7 @@ VALUES ('Strawberry Slush', 'Enjoy the freshness of strawberry in a chilled slus
 
 INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
 VALUES ('Coffee Slush', 'A delightful mix of coffee flavor in a frosty slush.', 5.99, 100, 3);
+
+-- OrderStatus
+INSERT INTO [OrderStatus] (isCompleted) VALUES (0);
+INSERT INTO [OrderStatus] (isCompleted) VALUES (1);
