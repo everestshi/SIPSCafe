@@ -6,8 +6,16 @@
 
 <div class="tea-container">
     <h1>Milk Teas</h1>
-    <div class="tea-subtotal">
-
+    <div>
+        <a href="@Url.Action("Slush", "Menu")">
+            <h4>Slushes</h4>
+        </a>
+        <a href="@Url.Action("FruitTea1", "Menu")">
+            <h4>Fruit Teas</h4>
+        </a>
+    </div>
+</div>
+  <div class="tea-subtotal">
         
             <p>Quantity: <span id="totalQuantity"> 0</span></p>
             <p>Subtotal: <span id="totalAmount"> 0</span></p>
@@ -59,7 +67,7 @@
                             {
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                        <input type="radio" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
                                         @option.IcePercent
                                     </label>
                                 </li>
@@ -75,7 +83,7 @@
                             {
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                        <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
                                         @option.SweetnessPercent
                                     </label>
                                 </li>
@@ -91,7 +99,7 @@
                             {
                                 <li>
                                     <label>
-                                        <input type="checkbox" name="milkOptions" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
+                                        <input type="radio" name="milkOptions" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
                                         @option.MilkType
                                     </label>
                                 </li>
