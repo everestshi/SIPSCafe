@@ -43,8 +43,6 @@ namespace Sips.Controllers
             ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
             ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";
 
-
-
             ProductRepository prorepo = new ProductRepository(_db);
             IEnumerable<ItemVM> products = prorepo.GetAll().ToList();
 
@@ -54,25 +52,20 @@ namespace Sips.Controllers
                                         p.Description.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
-
             switch (sortOrder)
             {
 
                 case "nameSortDesc":
-                    products =
-                        products.OrderByDescending(p => p.Name).ToList();
+                    products = products.OrderByDescending(p => p.Name).ToList();
                     break;
                 case "Name":
-                    products =
-                        products.OrderBy(p => p.Name).ToList();
+                    products = products.OrderBy(p => p.Name).ToList();
                     break;
                 case "idSortDesc":
-                    products =
-                        products.OrderByDescending(p => p.ItemId).ToList();
+                    products = products.OrderByDescending(p => p.ItemId).ToList();
                     break;
                 default:
-                    products =
-                        products.OrderBy(p => p.ItemId).ToList();
+                    products = products.OrderBy(p => p.ItemId).ToList();
                     break;
             }
 
@@ -84,8 +77,6 @@ namespace Sips.Controllers
                                                                 , count
                                                                 , pageIndex
                                                                 , pageSize);
-
-
 
             return View(paginatedProducts);
         }
@@ -100,9 +91,7 @@ namespace Sips.Controllers
             ProductRepository prorepo = new ProductRepository(_db);
 
             //ViewBag.ItemTypes = prorepo.GetItemTypes();
-            //ViewBag["ItemType"] = new SelectList(_db.ItemTypes, "itemTypeID", "itemTypeName");
-            var itemTypeList = _db.ItemTypes.ToList(); // Make sure it's materialized
-            //var DefaultOption = itemVm.ItemType?.ItemTypeName;
+            var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName");
 
             return View();
@@ -114,9 +103,7 @@ namespace Sips.Controllers
             ProductRepository prorepo = new ProductRepository(_db);
             if (ModelState.IsValid)
             {
-
                 string repoMessage = prorepo.Add(proVM);
-
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
@@ -134,7 +121,7 @@ namespace Sips.Controllers
 
             //ViewBag.ItemType = prorepo.GetItemTypes();
 
-            var itemTypeList = _db.ItemTypes.ToList(); // Make sure it's materialized
+            var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemTypeId);
 
             return View(itemVm);
@@ -148,11 +135,9 @@ namespace Sips.Controllers
             {
 
                 string repoMessage = prorepo.Update(itemVm);
-
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
             var itemTypeList = _db.ItemTypes.ToList(); 
-            //ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemType?.ItemTypeName);
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemTypeId);
 
 
@@ -178,86 +163,154 @@ namespace Sips.Controllers
         }
 
 
-
-        //}
         //Customer CRUD**********************************************
-        //public IActionResult CustomerIndex(string message)
-        //{
-        //    message = message ?? string.Empty;
+        public IActionResult ContactIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
+        {
+            message = message ?? string.Empty;
+            ViewData["Message"] = message;
+            ViewData["CurrentSort"] = sortOrder;
 
-        //    ViewData["Message"] = message; 
-        //    CustomerRepository customerrepo = new CustomerRepository(_db);
-        //    return View(customerrepo.GetAll());
-        //}
-        //public IActionResult CustomerDetails(int id)
-        //{
-        //    CustomerRepository customerrepo = new CustomerRepository(_db);
-        //    return View(customerrepo.GetById(id));
-        //}
+            ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
+            ViewData["FNameSortParm"] = sortOrder == "FirstName" ? "fnameSortDesc" : "FirstName";
+            ViewData["LNameSortParm"] = sortOrder == "LastName" ? "lnameSortDesc" : "LastName";
+            ViewData["EmailSortParm"] = sortOrder == "Email" ? "EmailSortDesc" : "Email";
+            ViewData["ProvinceSortParm"] = sortOrder == "Province" ? "provinceSortDesc" : "Province";
+            ViewData["CitySortParm"] = sortOrder == "City" ? "CitySortDesc" : "City";
 
-        //public IActionResult CustomerCreate()
-        //{
-        //    Contact contact = new Contact();
-        //    contact.IsDrinkRedeemed = false;
-        //    //contact.FkUserType = new Credential();
-        //    return View(contact);
-        //}
+            ContactRepo contactRepo = new ContactRepo(_db);
+            IEnumerable<ContactVM> contacts = contactRepo.GetAll().ToList();
 
-        //[HttpPost]
-        //public IActionResult CustomerCreate(Contact contact)
-        //{
-        //    CustomerRepository customerRepository = new CustomerRepository(_db);
-        //    if (ModelState.IsValid)
-        //    {
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                contacts = contacts.Where(c => c.FirstName.ToLower().Contains(searchString.ToLower()) ||
+                                          c.LastName.ToLower().Contains(searchString.ToLower()) ||
+                                          c.City.ToLower().Contains(searchString.ToLower()) ||
+                                          c.Province.ToLower().Contains(searchString.ToLower()) ||
+                                          c.Email.ToLower().Contains(searchString.ToLower()) ||
+                                          c.Street.ToLower().Contains(searchString.ToLower()) 
 
-        //        string repoMessage = customerRepository.Add(contact);
+                                        ).ToList();
+            }
 
-        //        return RedirectToAction("CustomerIndex", new { message = repoMessage });
-        //    }
+            switch (sortOrder)
+            {
 
-        //    return View(contact);
-        //}
+                case "fnameSortDesc":
+                    contacts = contacts.OrderByDescending(p => p.FirstName).ToList();
+                    break;
+                case "FirstName":
+                    contacts = contacts.OrderBy(p => p.FirstName).ToList();
+                    break;
 
-        //public IActionResult CustomerEdit(int id)
-        //{
-        //    CustomerRepository customerRepository = new CustomerRepository(_db);
-        //    Contact contact = customerRepository.GetById(id);
-        //    return View(contact);
-        //}
+                case "lnameSortDesc":
+                    contacts = contacts.OrderByDescending(p => p.LastName).ToList();
+                    break;
+                case "LastName":
+                    contacts = contacts.OrderBy(p => p.LastName).ToList();
+                    break;
 
-        //[HttpPost]
-        //public IActionResult CustomerEdit(Contact contact)
-        //{
-        //    CustomerRepository customerRepository = new CustomerRepository(_db);
-        //    if (ModelState.IsValid)
-        //    {
-        //        string repoMessage = customerRepository.Update(contact);
-        //        return RedirectToAction("CustomerIndex", new { message = repoMessage });
-        //    }
-        //    return View(contact);
-        //}
+                case "EmailSortDesc":
+                    contacts = contacts.OrderByDescending(p => p.Email).ToList();
+                    break;
+                case "Email":
+                    contacts = contacts.OrderBy(p => p.Email).ToList();
+                    break;
 
-        //public IActionResult CustomerDelete(int id)
-        //{
-        //    CustomerRepository customerRepository = new CustomerRepository(_db);
+                case "ProvinceSortDesc":
+                    contacts = contacts.OrderByDescending(p => p.Province).ToList();
+                    break;
+                case "Province":
+                    contacts = contacts.OrderBy(p => p.Province).ToList();
+                    break;
+                case "CitySortDesc":
+                    contacts = contacts.OrderByDescending(p => p.City).ToList();
+                    break;
+                case "City":
+                    contacts = contacts.OrderBy(p => p.City).ToList();
+                    break;
+                case "idSortDesc":
+                    contacts = contacts.OrderByDescending(p => p.UserId).ToList();
+                    break;
+                default:
+                    contacts = contacts.OrderBy(p => p.UserId).ToList();
+                    break;
+            }
+            int pageIndex = pageNumber ?? 1;
+            var count = contacts.Count();
+            var items = contacts.Skip((pageIndex - 1) * pageSize)
+                                            .Take(pageSize).ToList();
+            var paginatedContacts = new PaginatedList<ContactVM>(items
+                                                                , count
+                                                                , pageIndex
+                                                                , pageSize);
 
-        //    return View(customerRepository.GetById(id));
-        //}
-
-        //[HttpPost]
-        //public IActionResult CustomerDelete(Contact contact)
-        //{
-        //    CustomerRepository customerRepository = new CustomerRepository(_db);
-        //    //contactUserId = customerRepository
-
-        //    string repoMessage = customerRepository.Delete(contact);
-
-        //    return RedirectToAction("CustomerIndex", new { message = repoMessage });
-        //}
+            return View(paginatedContacts);
+        }
 
 
+        public IActionResult ContactDetails(int id)
+        {
+            ContactRepo contactRepo = new ContactRepo(_db);
+            return View(contactRepo.GetById(id));
+        }
 
+        public IActionResult ContactCreate()
+        {
+            Contact contact = new Contact();
+            contact.IsDrinkRedeemed = false;
+            return View(contact);
+        }
 
+        [HttpPost]
+        public IActionResult ContactCreate(Contact contact)
+        {
+            ContactRepo customerRepository = new ContactRepo(_db);
+            if (ModelState.IsValid)
+            {
+
+                string repoMessage = customerRepository.Add(contact);
+
+                return RedirectToAction("ContactIndex", new { message = repoMessage });
+            }
+
+            return View(contact);
+        }
+
+        public IActionResult ContactEdit(int id)
+        {
+            ContactRepo contactRepo = new ContactRepo(_db);
+            ContactVM contactVM = contactRepo.GetById(id);
+            return View(contactVM);
+        }
+
+        [HttpPost]
+        public IActionResult ContactEdit(ContactVM contactVM)
+        {
+            ContactRepo customerrepo = new ContactRepo(_db);
+            if (ModelState.IsValid)
+            {
+                string repoMessage = customerrepo.Update(contactVM);
+                return RedirectToAction("ContactIndex", new { message = repoMessage });
+            }
+            return View(contactVM);
+        }
+
+        public IActionResult ContactDelete(int id)
+        {
+            ContactRepo contactRepo = new ContactRepo(_db);
+
+            return View(contactRepo.GetById(id));
+        }
+
+        [HttpPost]
+        public IActionResult ContactDelete(ContactVM contactVM)
+        {
+            ContactRepo contactRepo = new ContactRepo(_db);
+
+            string repoMessage = contactRepo.Delete(contactVM);
+
+            return RedirectToAction("ContactIndex", new { message = repoMessage });
+        }
 
     }
 }

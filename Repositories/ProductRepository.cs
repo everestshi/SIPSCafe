@@ -17,7 +17,9 @@ namespace Sips.Repositories
 
         public IEnumerable<ItemVM> GetAll()
         {
-            var products = _db.Items.Include(p => p.ItemType).ToList();
+            //var products = _db.Items.Include(p => p.ItemType).ToList();
+            var products = _db.Items.ToList();
+
             List<ItemVM> itemsVM = new List<ItemVM>();
 
 
