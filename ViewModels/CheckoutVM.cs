@@ -23,7 +23,6 @@ namespace Sips.ViewModels
         public string Ice { get; set; }
         public decimal Subtotal { get; set; }
 
-        public string Currency { get; set; }
         public List<AddInOrderDetail> AddInNames { get; set; } = new List<AddInOrderDetail>();
         public List<AddInOrderDetail> AddInPriceModifiers { get; set; } = new List<AddInOrderDetail>();
     }

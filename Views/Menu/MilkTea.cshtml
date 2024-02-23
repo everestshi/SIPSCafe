@@ -40,6 +40,8 @@
                     <button class="btn btn-primary add-to-cart" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
                     <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal">Customize</button>
                     <input type="hidden" id="itemPrice_@tea.ItemId" value="@tea.BasePrice" />
+                    @* <input type="hidden" id="currency_@tea.ItemId" value="@tea.Currency" /> *@
+
 
                 </div>
             }
@@ -145,7 +147,7 @@
 
             var itemPrice = parseFloat(price);
             var subTotal = total * itemPrice;
-            document.getElementById('totalAmount').textContent = formatCurrency(subTotal, currency);
+            document.getElementById('totalAmount').textContent = formatCurrency(subTotal);
 
             // Update grand total
             totalQuantity += 1;
@@ -153,11 +155,11 @@
 
             // Display grand total
             document.getElementById('totalQuantity').textContent = totalQuantity;
-            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount, currency);
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
         }
 
-        function formatCurrency(amount, currency) {
-            return '$' + amount.toFixed(2) + ' ' + currency;
+        function formatCurrency(amount) {
+            return '$' + amount.toFixed(2) + ' ' + 'CAD';
         }
 
 
