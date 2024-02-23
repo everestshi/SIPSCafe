@@ -86,7 +86,7 @@
                                 <li>
                                     <label>
                                         <input type="radio" name="milkOptions" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
-                                        @option.MilkType
+                                        @option.MilkType - $@option.PriceModifier
                                     </label>
                                 </li>
                             }
@@ -102,7 +102,7 @@
                                 <li>
                                     <label>
                                         <input type="checkbox" name="addInOptions" value="@option.AddInId">
-                                        @option.AddInName
+                                        @option.AddInName - $@option.PriceModifier
                                     </label>
                                 </li>
                             }
