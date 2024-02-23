@@ -3,17 +3,22 @@
 *@
 @model Sips.ViewModels.MenuItemVM
 
+
 <div class="tea-container">
     <h1>Milk Teas</h1>
-
     <div class="tea-subtotal">
-        <p>Subtotal:</p>
+
+        
+            <p>Quantity: <span id="totalQuantity"> 0</span></p>
+            <p>Subtotal: <span id="totalAmount"> 0</span></p>
+
     </div>
 </div>
-
 <div class="tea-list">
     @foreach (var tea in Model.Items)
     {
+
+
         <div class="tea-item">
             <img src="~/images/boba-02.png" alt="@tea.Name" class="img-fluid">
             <div class="tea-copy">
@@ -24,8 +29,10 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="tea-btns">
-                    <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                    <button class="btn btn-primary add-to-cart" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
                     <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal">Customize</button>
+                    <input type="hidden" id="itemPrice_@tea.ItemId" value="@tea.BasePrice" />
+
                 </div>
             }
         </div>
@@ -118,6 +125,34 @@
 </div>
 @section Scripts {
     <script>
+
+        var totalQuantity = 0;
+        var totalAmount = 0;
+
+        function AddOne(id, price, currency) {
+            var totalElement = document.getElementById('totalQuantity');
+            var total = parseInt(totalElement.textContent);
+            total += 1;
+            totalElement.textContent = total;
+
+            var itemPrice = parseFloat(price);
+            var subTotal = total * itemPrice;
+            document.getElementById('totalAmount').textContent = formatCurrency(subTotal, currency);
+
+            // Update grand total
+            totalQuantity += 1;
+            totalAmount += itemPrice;
+
+            // Display grand total
+            document.getElementById('totalQuantity').textContent = totalQuantity;
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount, currency);
+        }
+
+        function formatCurrency(amount, currency) {
+            return '$' + amount.toFixed(2) + ' ' + currency;
+        }
+
+
         document.addEventListener('DOMContentLoaded', function () {
             // Get references to the customize and add to cart buttons
             var customizeButtons = document.querySelectorAll('.customize');
@@ -134,7 +169,7 @@
             addToCartButtons.forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Add your logic to add item to cart here
-                    alert('Item added to cart!');
+                    // alert('Item added to cart!');
                 });
             });
             // Hide the modal when close button is clicked

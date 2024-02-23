@@ -552,8 +552,8 @@ a:hover {
     margin: 0 auto;
     border-radius: 20px;
     align-items: center;
-    justify-content: center;
-    width: 200px;
+    justify-content: space-evenly;
+    width: 400px;
     height: 40px;
     background: #E4F2EE;
 }
