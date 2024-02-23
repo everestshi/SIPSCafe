@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Sips.SipsModels;
 
@@ -16,9 +15,11 @@ public partial class Item
 
     public int Inventory { get; set; }
 
-    public string? UrlString { get; set; }
-
     public int? ItemTypeId { get; set; }
+
+    public int? ImageId { get; set; }
+
+    public virtual ImageStore? Image { get; set; }
 
     public virtual ItemType? ItemType { get; set; }
 

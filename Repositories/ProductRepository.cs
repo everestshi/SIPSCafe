@@ -30,7 +30,6 @@ namespace Sips.Repositories
                     Description = p.Description,
                     BasePrice = p.BasePrice,
                     Inventory = p.Inventory,
-                    UrlString = p.UrlString,
                     ItemTypeId = p.ItemType?.ItemTypeId ?? 1,
                     ItemTypeName = p.ItemType?.ItemTypeName,
 
@@ -68,7 +67,6 @@ namespace Sips.Repositories
                 Description = p.Description,
                 BasePrice = p.BasePrice,
                 Inventory = p.Inventory,
-                UrlString = p.UrlString,
                 ItemTypeId = p.ItemTypeId,
                 ItemTypeName = p.ItemType?.ItemTypeName,
 
@@ -86,7 +84,6 @@ namespace Sips.Repositories
                 Description = proVM.Description,
                 BasePrice = proVM.BasePrice,
                 Inventory = proVM.Inventory,
-                UrlString = proVM.UrlString,
                 ItemTypeId = proVM.ItemTypeId,
             };
             try
