@@ -2,6 +2,14 @@
 
 <div class="tea-container">
     <h1>Fruit Teas</h1>
+    <div>
+        <a href="@Url.Action("MilkTea", "Menu")">
+            <h4>Milk Teas</h4>
+        </a>
+        <a href="@Url.Action("Slush", "Menu")">
+            <h4>Slushes</h4>
+        </a>
+    </div>
 </div>
 
 <div class="tea-list">
@@ -25,7 +33,6 @@
     }
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -38,17 +45,196 @@
             <div class="modal-body">
                 <!-- Customization options -->
                 <div class="customization-options">
-                    <!-- Example options -->
-                    <div class="form-group">
-                        <label for="iceLevel">Ice Level:</label>
-                        <select class="form-control" id="iceLevel">
-                            <option>No Ice</option>
-                            <option>Less Ice</option>
-                            <option>Regular Ice</option>
-                            <option>Extra Ice</option>
-                        </select>
+                    <!-- Ice Level Options -->
+                    <div>
+                        <h4>Ice Level:</h4>
+                        <ul>
+                            @foreach (var option in Model.IceOptions)
+                            {
+                                <li>
+                                    <label>
+                                        <input type="radio" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                        @option.IcePercent
+                                    </label>
+                                </li>
+                            }
+                        </ul>
                     </div>
-                    <div class="form-group">
+
+                    <!-- Sweetness Level Options -->
+                    <div>
+                        <h4>Sweetness Level:</h4>
+                        <ul>
+                            @foreach (var option in Model.SweetnessOptions)
+                            {
+                                <li>
+                                    <label>
+                                        <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                        @option.SweetnessPercent
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <!-- Milk Choice Options -->
+                    @* <div>
+                        <h4>Milk Choice:</h4>
+                        <ul>
+                            @foreach (var option in Model.MilkOptions)
+                            {
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="milkOptions" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
+                                        @option.MilkType
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </div> *@
+
+                    <!-- Addon Options -->
+                    <div>
+                        <h4>Add Ins:</h4>
+                        <ul>
+                            @foreach (var option in Model.AddInOptions)
+                            {
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="addInOptions" value="@option.AddInId">
+                                        @option.AddInName
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeModalButton" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get references to the customize and add to cart buttons
+            var customizeButtons = document.querySelectorAll('.customize');
+            var addToCartButtons = document.querySelectorAll('.add-to-cart');
+            // Add event listener for customize button click
+            customizeButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Show the modal
+                    document.getElementById('customizeModal').classList.add('show');
+                    document.getElementById('customizeModal').style.display = 'block';
+                });
+            });
+            // Add event listener for add to cart button click
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Add your logic to add item to cart here
+                    alert('Item added to cart!');
+                });
+            });
+            // Hide the modal when close button is clicked
+            document.getElementById('closeModal').addEventListener('click', function () {
+                document.getElementById('customizeModal').classList.remove('show');
+                document.getElementById('customizeModal').style.display = 'none';
+            });
+
+            document.getElementById('closeModalButton').addEventListener('click', function () {
+                document.getElementById('customizeModal').classList.remove('show');
+                document.getElementById('customizeModal').style.display = 'none';
+            });
+        });
+    </script>
+}
+
+<style>
+    /* Customize modal appearance */
+    .modal-content {
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .modal-header {
+        border-bottom: none;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+
+    .customization-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+    }
+
+        .customization-options h4 {
+            font-size: 16px;
+            margin-top: 0;
+        }
+
+        .customization-options ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .customization-options label {
+            font-size: 14px;
+        }
+
+        .customization-options input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+    /* Customize close button */
+    #closeModal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #888;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+</style>
+
+@* 
+<!-- Modal -->
+@* <div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
+                <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Customization options -->
+                <div class="customization-options">
+                    <!-- Ice Level Options -->
+                    <div>
+                        <h4>Ice Level:</h4>
+                        <ul>
+                            @foreach (var option in Model.IceOptions)
+                            {
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                        @option.IcePercent
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    @* <div class="form-group">
                         <label for="milkChoice">Milk Choice:</label>
                         <select class="form-control" id="milkChoice">
                             <option>Regular</option>
@@ -56,6 +242,36 @@
                             <option>Almond</option>
                             <option>Oat</option>
                         </select>
+                    </div> *@
+ @*                    <!-- Sweetness Level Options -->
+                    <div>
+                        <h4>Sweetness Level:</h4>
+                        <ul>
+                            @foreach (var option in Model.SweetnessOptions)
+                            {
+                                <li>
+                                    <label>
+                                        <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                        @option.SweetnessPercent
+                                    </label
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- Addon Options -->
+                    <div>
+                        <h4>Add Ins:</h4>
+                        <ul>
+                            @foreach (var option in Model.AddInOptions)
+                            {
+                                <li>
+                                    <label>
+                                        <input type="checkbox" name="addInOptions" value="@option.AddInId">
+                                        @option.AddInName
+                                    </label>
+                                </li>
+                            }
+                        </ul>
                     </div>
                     <!-- Add more customization options here -->
                 </div>
@@ -66,9 +282,9 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 
-@section Scripts {
+@* @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Get references to the customize and add to cart buttons
@@ -79,8 +295,8 @@
             customizeButtons.forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Reset modal options to default when opening
-                    document.getElementById('iceLevel').value = 'Regular Ice';
-                    document.getElementById('milkChoice').value = 'Regular';
+                    //document.getElementById('iceLevel').value = 'Regular Ice';
+                    //document.getElementById('milkChoice').value = 'Regular';
                     console.log('Customize button clicked');
 
                     // Show the modal
@@ -102,10 +318,14 @@
                 document.getElementById('customizeModal').classList.remove('show');
                 document.getElementById('customizeModal').style.display = 'none';
             });
+            // Hide the modal when close button is clicked
+            document.getElementById('closeModalButton').addEventListener('click', function () {
+                document.getElementById('customizeModal').classList.remove('show');
+                document.getElementById('customizeModal').style.display = 'none';
+            });
         });
     </script>
-}
-
-
+} 
+  *@
 
 @* <img src="~/images/boba-02.png" /> *@
