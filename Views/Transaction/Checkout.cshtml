@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Sips.ViewModels.CheckoutVM>
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="checkout-section">
+    <h1>Checkout</h1>
+    <div class="checkout-container">
+        <div class="checkout-items">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Add Ins</th>
+                        <th>Add In Price</th>
+                        <th>Size</th>
+                        <th>Size Price</th>
+                        <th>Sweetness</th>
+                        <th>Milk Type</th>
+                        <th>Milk Price</th>
+                        <th>Ice</th>
+                        <th>Subtotal</th>
+
+                    </tr>
+                </thead>
+                @*                 <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                <td>@item.Name</td>
+                <td>@item.BasePrice</td>
+                <td>@item.Quantity</td>
+                <td>@item.AddInName</td>
+                <td>@item.AddInPriceModifier</td>
+                <td>@item.SizeName</td>
+                <td>@item.SizePriceModifier</td>
+                <td>@item.Sweetness</td> *@
+                @*                             <td>@item.MilkName</td>
+                <td>@item.MilkPriceModifier</td> *@
+                @*                             <td>@item.Ice</td>
+                <td>@item.Subtotal</td>
+                </tr>
+                }
+                </tbody> *@
+            </table>
+        </div>
+        <div class="checkout-details">
+            <div class="order-details">
+                @*                 <p>Subtotal: $@Model.Sum(item => item.Subtotal)</p>
+                <p>Tax: $@Model.Sum(item => item.Subtotal) * 0.13</p>
+                <p>Total: $@Model.Sum(item => item.Subtotal) * 1.13</p> *@
+
+
+                @* <button class="btn btn-primary">Checkout</button> *@
+                <input type="hidden" value="USD" id="currency" />
+
+                <div id="paypal-button-container"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://www.paypal.com/sdk/js?client-id=@ViewData["PayPalClientId"]"></script>
+
+<script>
+    paypal.Buttons({
+        // Set up the transaction
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: parseFloat(document.getElementById('grandTotalAmount').innerText.replace('$', '')),
+                        currency:
+                            document.getElementById('currency').value
+                    }
+                }]
+            });
+        },
+        // Finalize the transaction
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+                const redirectUrl =
+                    '/Home/PayPalConfirmation?TransactionId=' +
+                    encodeURIComponent(details.id) + '&Amount=' +
+                    encodeURIComponent(details.purchase_units[0].amount.value) + '&PayerName=' +
+                    encodeURIComponent(details.payer.name.given_name) + '&PayerEmail=' +
+                    encodeURIComponent(details.payer.email_address) + '&CreatedDate=' +
+                    encodeURIComponent(details.create_time) + '&PaymentMethod=' +
+                    encodeURIComponent('paypal') + '&Currency=' +
+                    encodeURIComponent('CAD');
+                window.location.href = redirectUrl
+            }).catch(err => alert('An error occurred during the transaction.'))
+        },
+        onCancel: function (data) {
+            alert('Transaction was cancelled.');
+        },
+        onError: function (err) {
+            alert('An error occurred during the transaction.');
+        },
+        style: {
+            layout: 'horizontal', // 'vertical', 'horizontal'
+            color: 'silver',      // 'gold', 'blue', 'silver', 'black'
+            shape: 'rect',      // 'rect', 'pill'
+            label: 'checkout'     // 'checkout', 'pay', 'buynow', 'paypal'
+        }
+    }).render('#paypal-button-container');
+</script>

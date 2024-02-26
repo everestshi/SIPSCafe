@@ -11,11 +11,12 @@ namespace Sips.Controllers
     {
         private readonly SipsdatabaseContext _db;
         private PayPalVM payPalVM;
+        private readonly IConfiguration _configuration;
 
-        public TransactionController(SipsdatabaseContext db)
+        public TransactionController(SipsdatabaseContext db, IConfiguration configuration)
         {
             _db = db;
-
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -35,8 +36,14 @@ namespace Sips.Controllers
             return View(payPalVM);
         }
         public IActionResult Checkout()
-        {             return View();
-               
+        {
+            //IEnumerable<CheckoutVMs> checkouts;
+            //TransactionRepo transactionRepo = new TransactionRepo(_db);
+            //return View(transactionRepo.GetCheckout());
+            var payPalClient = _configuration["PayPal:ClientId"];
+            ViewData["PayPalClientId"] = payPalClient;
+            return View();
+
         }
 
         // This method receives and stores
