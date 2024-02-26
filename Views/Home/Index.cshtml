@@ -4,30 +4,30 @@
 
 
 <div class="banner-container">
-    <div class="banner-heading">
-    <h1 class="main-heading">Welcome to Sips!</h1>
-    <p class="promo">Save 10% on all milk teas!</p>
+    <!-- Slick Carousel -->
+    <div id="slick-carousel" class="slick-carousel">vulcan
+        <div><img src="./images/carousel-img-1.jpg" alt="Slide 1"></div>
+        <div><img src="./images/carousel-img-2.jpg" alt="Slide 2"></div>
+        <div><img src="./images/carousel-img-3.jpg" alt="Slide 3"></div>
+        <div><img src="./images/carousel-img-4.jpg" alt="Slide 3"></div>
     </div>
 
-    <div class="banner-btns">
-        <a href="/Identity/Account/Register" class="banner-cta register-btn">Create Account</a>
-        <a href="/Home/About" class="banner-cta learn-more-btn">Learn More</a>
+    <div class="banner-overlay">
+        <div class="banner-heading">
+            <h1 class="main-heading">Welcome to Sips!</h1>
+            <p class="promo">Save 10% on all milk teas!</p>
+        </div>
+
+        <div class="banner-btns">
+            <a href="/Identity/Account/Register" class="banner-cta register-btn">Create Account</a>
+            <a href="/Home/About" class="banner-cta learn-more-btn">Learn More</a>
+        </div>
     </div>
 </div>
 
 
+
 <h2 class="subheading">Our Teas</h2>
-@* <div class="our-teas">
-    <a asp-area="" asp-controller="Menu" asp-action="MilkTea" class="tea-link">
-        <button type="button" class="btn btn-info tea-index-button">Milk Tea</button> 
-    </a>
-    <a asp-area="" asp-controller="Menu" asp-action="FruitTea" class="tea-link">
-        <button type="button" class="btn btn-info tea-index-button">Fruit Tea</button>
-    </a>
-    <a asp-area="" asp-controller="Menu" asp-action="Slush" class="tea-link">
-        <button type="button" class="btn btn-info tea-index-button">Slush</button>
-    </a>
-</div> *@
 <div class="drink-images">
     <div class="row">
         <div class="col-md-4">
@@ -52,8 +52,6 @@
 </div>
 
 
-
-
 <div class="home-about-container">
     <div class="home-boba-img">
         <img src="/images/boba-03.png" alt="boba graphic image" />
@@ -65,3 +63,54 @@
        
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        // Get reference to the Slick Carousel element
+        var slickCarousel = $('#slick-carousel');
+
+        // Initialize Slick Carousel
+        slickCarousel.slick({
+            dots: false,          // Show dots for navigation
+            arrows: false,       // Hide arrow navigation
+            infinite: true,      // Enable infinite loop
+            autoplay: true,      // Autoplay slides
+            autoplaySpeed: 3000, // Autoplay speed in milliseconds
+            fade: true           // Fade effect between slides
+        });
+
+        // Array to store the links for each slide
+        var slideLinks = [
+            '/Menu/MenuIndex',   // Slide 1
+            '/Menu/MilkTea',     // Slide 2
+            '/Menu/FruitTea1',    // Slide 3
+            '/Menu/Slush'        // Slide 4
+        ];
+
+        // Function to update button text and link
+        function updateButton() {
+            var currentSlideIndex = slickCarousel.slick('slickCurrentSlide');
+            var orderButton = $('.register-btn');
+
+            // Check if user is authenticated
+            var isAuthenticated = @Html.Raw(User.Identity.IsAuthenticated.ToString().ToLower());
+
+            if (isAuthenticated) {
+                orderButton.text('Order Now');
+                orderButton.attr('href', slideLinks[currentSlideIndex]);
+            } else {
+                orderButton.text('Create Account');
+                orderButton.attr('href', '/Identity/Account/Register');
+            }
+        }
+
+        // Update button initially
+        updateButton();
+
+        // Update button when slide changes
+        slickCarousel.on('afterChange', function (event, slick, currentSlide) {
+            updateButton();
+        });
+    });
+</script>
