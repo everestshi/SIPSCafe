@@ -184,7 +184,7 @@
             var price = parseFloat(basePrice.textContent);
             var newPrice = price - currentPriceModifier;
             newTotal = newPrice + parseFloat(priceModifier);
-            basePrice.textContent = newTotal;
+            basePrice.textContent = (newTotal).toFixed(2);
             currentPriceModifier = priceModifier;
         }
 
@@ -198,14 +198,14 @@
                 var price = parseFloat(basePrice.textContent);
                 console.log(price == 4.99);
                 var newTotal = price + parseFloat(priceModifier);
-                basePrice.textContent = newTotal;
+                basePrice.textContent = (newTotal).toFixed(2)
             }
             // if checkbox is unchecked, subtract the price modifier from the total
             else {
                 var basePrice = document.getElementById('modalPrice_' + id);
                 var price = parseFloat(basePrice.textContent);
                 var newTotal = price - parseFloat(priceModifier);
-                basePrice.textContent = newTotal;
+                basePrice.textContent = (newTotal).toFixed(2);
             }
         }
 
