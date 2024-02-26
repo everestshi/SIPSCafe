@@ -34,7 +34,7 @@
             {
                 <div class="tea-btns">
                     <button class="btn btn-primary add-to-cart" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
-                    <button class="btn btn-secondary customize" data-toggle="modal" data-target="customizeModal_@tea.ItemId" data-price="@tea.BasePrice">Customize</button>
+                    <button class="btn btn-secondary customize" data-bs-toggle="modal" data-bs-target="#customizeModal_@tea.ItemId" data-price="@tea.BasePrice">Customize</button>
                     <input type="hidden" id="itemPrice_@tea.ItemId" value="@tea.BasePrice" />
                 </div>
             }
@@ -45,7 +45,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                        <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" id="closeModal" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -86,7 +86,7 @@
 
                             <!-- Milk Choice Options -->
                             
-                            @if (tea.ItemId == 10)
+                            @if (tea.HasMilk)
                             {
                             <div>
                                 <h4>Milk Choice:</h4>
@@ -95,7 +95,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="milkOptions" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
+                                                    <input type="radio" name="milkOptions" value="@option.MilkChoiceId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" @(option.MilkType == "Regular" ? "checked" : "")>
                                                 @option.MilkType - $@option.PriceModifier
                                             </label>
                                         </li>
@@ -103,11 +103,10 @@
                                 </ul>
                                 </div>
                             }
-                            else
+                            @* else
                             {
                                 <div>No milk options available.</div>
-                            }
-
+                            } *@
                             <!-- Addon Options -->
                             <div>
                                 <h4>Add Ins:</h4>
@@ -116,7 +115,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="checkbox" name="addInOptions" value="@option.AddInId">
+                                                <input type="checkbox" name="addInOptions" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
                                                 @option.AddInName - $@option.PriceModifier
                                             </label>
                                         </li>
@@ -126,8 +125,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <span id="modalPrice"></span>
-                        <button type="button" class="btn btn-secondary" id="closeModalButton" data-dismiss="modal">Close</button>
+                        <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
+                        <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary">Add to Cart</button>
                     </div>
                 </div>
@@ -135,24 +134,23 @@
         </div>
     }
 </div>
-
-@* @section Scripts {
+@section Scripts {
 
         // Add event listener for customize button click, get the price from data attribute and update the modal price
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var customizeButtons = document.querySelectorAll('.customize');
-            var modalPrice = document.getElementById('modalPrice');
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var customizeButtons = document.querySelectorAll('.customize');
+        //     var modalPrice = document.getElementById('modalPrice');
 
-            customizeButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    // Get the price from data attribute
-                    var price = button.getAttribute('data-price');
-                    // Update the modal price
-                    modalPrice.textContent = '$' + parseFloat(price).toFixed(2);
-                });
-            });
-        });
+        //     customizeButtons.forEach(function (button) {
+        //         button.addEventListener('click', function () {
+        //             // Get the price from data attribute
+        //             var price = button.getAttribute('data-price');
+        //             // Update the modal price
+        //             modalPrice.textContent = '$' + parseFloat(price).toFixed(2);
+        //         });
+        //     });
+        // });
     </script>
 
     <script>
@@ -203,20 +201,44 @@
                     // alert('Item added to cart!');
                 });
             });
-            // Hide the modal when close button is clicked
-            document.getElementById('closeModal').addEventListener('click', function () {
-                document.getElementById('customizeModal').classList.remove('show');
-                document.getElementById('customizeModal').style.display = 'none';
-            });
-
-            document.getElementById('closeModalButton').addEventListener('click', function () {
-                document.getElementById('customizeModal').classList.remove('show');
-                document.getElementById('customizeModal').style.display = 'none';
-            });
         });
+
+        // function to handle milk price modifiers
+        function AdjustPrice(price, priceModifier, id, checkbox) {
+            var basePrice = document.getElementById("modalPrice_" + id);
+            var price = parseFloat(basePrice.textContent);
+            var newPrice = price - currentPriceModifier;
+            newTotal = newPrice + parseFloat(priceModifier);
+            basePrice.textContent = (newTotal).toFixed(2);
+            currentPriceModifier = priceModifier;
+        }
+
+        // Keep track of the current price modifier
+        var currentPriceModifier = 0;
+
+        //function to handle add on price modifiers
+        function AddOnPrice(priceModifier, id, checkbox) {
+            console.log(checkbox.checked)
+            // if checkbox is checked, add the price modifier to the total
+            if (checkbox.checked) {
+                var basePrice = document.getElementById('modalPrice_' + id);
+                console.log(basePrice.textContent);
+                var price = parseFloat(basePrice.textContent);
+                console.log(price == 4.99);
+                var newTotal = price + parseFloat(priceModifier);
+                basePrice.textContent = (newTotal).toFixed(2)
+            }
+            // if checkbox is unchecked, subtract the price modifier from the total
+            else {
+                var basePrice = document.getElementById('modalPrice_' + id);
+                var price = parseFloat(basePrice.textContent);
+                var newTotal = price - parseFloat(priceModifier);
+                basePrice.textContent = (newTotal).toFixed(2);
+            }
+        }
     </script>
 }
- *@
+
 <style>
     /* Customize modal appearance */
     .modal-content {
