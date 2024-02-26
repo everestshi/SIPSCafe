@@ -18,6 +18,10 @@ h1, h2, h3, h5, h6 {
 
 .sips-logo-nav {
     width: 100px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
 }
 
 .sips-nav-link {
