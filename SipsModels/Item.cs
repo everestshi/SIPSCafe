@@ -19,6 +19,8 @@ public partial class Item
 
     public int? ImageId { get; set; }
 
+    public bool HasMilk { get; set; }
+
     public virtual ImageStore? Image { get; set; }
 
     public virtual ItemType? ItemType { get; set; }
