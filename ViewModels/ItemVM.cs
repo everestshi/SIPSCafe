@@ -28,8 +28,14 @@ namespace Sips.ViewModels
         public string? ItemTypeName { get; set; }
 
         [Required(ErrorMessage = "Please select a file.")]
+        [Display(Name = "Image File")]
 
         public IFormFile? ImageFile { get; set; }
+
+        //public byte[] ImageFile { get; set; } 
+
+        [Display(Name = "Has Milk")]
+
         public bool? hasMilk {  get; set; }
         //public string? FileName { get; set; } = null!;
 

@@ -10,7 +10,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ItemEdit">
+        <form asp-action="ItemEdit" method="post" enctype="multipart/form-data">
+
+        @* <form asp-action="ItemEdit"> *@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ItemId" />
             <div class="form-group">
@@ -39,7 +41,29 @@
                     <option value="">Select from Item Type options</option>
                 </select>
             <span asp-validation-for="ItemTypeId" class="text-danger"></span>
-            </div> 
+            </div>
+            <div class="form-group">
+                <label asp-for="hasMilk" class="control-label"></label>
+                <div>
+                    <label>
+                        <input asp-for="hasMilk" type="radio" value="true" />
+                        Yes
+                    </label>
+                    <label>
+                        <input asp-for="hasMilk" type="radio" value="false" />
+                        No
+                    </label>
+                </div>
+                <span asp-validation-for="hasMilk" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control"
+                       type="file" accept="image/*" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

@@ -122,7 +122,6 @@ namespace Sips.Controllers
             ItemVM itemVm = prorepo.GetById(id);
 
             //ViewBag.ItemType = prorepo.GetItemTypes();
-
             var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemTypeId);
 

@@ -35,6 +35,7 @@ namespace Sips.Repositories
                     Inventory = p.Inventory,
                     ItemTypeId = p.ItemType?.ItemTypeId,
                     ItemTypeName = p.ItemType?.ItemTypeName,
+                    hasMilk = p.HasMilk,
                 };
 
                 itemsVM.Add(itemVM);
@@ -61,6 +62,11 @@ namespace Sips.Repositories
         {
             var p = _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == id);
             var ItemTypeName = p.ItemType?.ItemTypeName;
+            ImageStore imageStore = _db.ImageStores.FirstOrDefault(item => item.ImageId == p.ImageId);
+
+            byte[] imageData = imageStore?.Image;
+            string imgName = imageStore?.FileName;
+            //string contentType = 
 
             var itemVM = new ItemVM
             {
@@ -71,8 +77,12 @@ namespace Sips.Repositories
                 Inventory = p.Inventory,
                 ItemTypeId = p.ItemTypeId,
                 ItemTypeName = p.ItemType?.ItemTypeName,
+                hasMilk = p.HasMilk,
+                //ImageFile = imageStore?.Image
 
-        };
+            };
+
+
 
             return itemVM;
         }
@@ -95,7 +105,8 @@ namespace Sips.Repositories
                 BasePrice = proVM.BasePrice,
                 Inventory = proVM.Inventory,
                 ItemTypeId = proVM.ItemTypeId,
-                ImageId = imageID
+                ImageId = imageID,
+                HasMilk = (bool)proVM.hasMilk
 
             };
             try
@@ -115,6 +126,21 @@ namespace Sips.Repositories
         {
             string message = string.Empty;
             Item item = _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == editingItem.ItemId);
+            ImageStore imageStoreToUpdate = _db.ImageStores.FirstOrDefault(p => p.ImageId == item.ImageId);
+
+
+
+            if (imageStoreToUpdate != null)
+            {
+                byte[] newImageData = ConvertIFormFileToByteArray(editingItem.ImageFile);
+
+                // Update properties
+                imageStoreToUpdate.FileName = editingItem.ImageFile.FileName;
+                imageStoreToUpdate.Image = newImageData;
+
+                // Save changes to the database
+                _db.SaveChanges();
+            }
 
             try
             {
@@ -123,6 +149,7 @@ namespace Sips.Repositories
                 item.ItemTypeId = editingItem.ItemTypeId;
                 item.BasePrice = editingItem.BasePrice;
                 item.Inventory = editingItem.Inventory;
+                item.HasMilk = (bool)editingItem.hasMilk;
                 //item.urlString = editingItem.urlString;
 
                 _db.SaveChanges();
@@ -133,6 +160,14 @@ namespace Sips.Repositories
                 message = $" Error updating Product {editingItem.Name} : {e.Message}";
             }
             return message;
+        }
+        private byte[] ConvertIFormFileToByteArray(IFormFile formFile)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                formFile.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
 
         public string Delete(int id)
