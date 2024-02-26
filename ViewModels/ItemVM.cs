@@ -19,7 +19,6 @@ namespace Sips.ViewModels
         [Range(0, double.MaxValue, ErrorMessage = "Inventory cannot be negative.")]
         public int Inventory { get; set; }
 
-        public string? UrlString { get; set; }
 
         [Display(Name = "Item Type")]
         [Required]
@@ -27,6 +26,13 @@ namespace Sips.ViewModels
 
         [Display(Name = "Item Type")]
         public string? ItemTypeName { get; set; }
+
+        [Required(ErrorMessage = "Please select a file.")]
+
+        public IFormFile? ImageFile { get; set; }
+        public bool? hasMilk {  get; set; }
+        //public string? FileName { get; set; } = null!;
+
 
 
         //public ItemType? ItemType { get; set; }

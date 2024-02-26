@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Sips.SipsModels;
@@ -17,8 +18,8 @@ namespace Sips.Repositories
 
         public IEnumerable<ItemVM> GetAll()
         {
-            //var products = _db.Items.Include(p => p.ItemType).ToList();
-            var products = _db.Items.ToList();
+            var products = _db.Items.Include(p => p.ItemType).ToList();
+            //var products = _db.Items.ToList();
 
             List<ItemVM> itemsVM = new List<ItemVM>();
 
@@ -32,9 +33,8 @@ namespace Sips.Repositories
                     Description = p.Description,
                     BasePrice = p.BasePrice,
                     Inventory = p.Inventory,
-                    ItemTypeId = p.ItemType?.ItemTypeId ?? 1,
+                    ItemTypeId = p.ItemType?.ItemTypeId,
                     ItemTypeName = p.ItemType?.ItemTypeName,
-
                 };
 
                 itemsVM.Add(itemVM);
@@ -77,9 +77,17 @@ namespace Sips.Repositories
             return itemVM;
         }
 
-        public string Add(ItemVM proVM)
+        public async Task<string> AddAsync(ItemVM proVM)
         {
             string message = string.Empty;
+            IFormFile ImageFile = proVM.ImageFile;
+            int imageID = await ImageSave(ImageFile);
+
+            //if (imageStore != null)
+            //{
+            //   imageID = imageStore.ImageId;
+            //}
+
             Item item = new Item
             {
                 Name = proVM.Name,
@@ -87,12 +95,14 @@ namespace Sips.Repositories
                 BasePrice = proVM.BasePrice,
                 Inventory = proVM.Inventory,
                 ItemTypeId = proVM.ItemTypeId,
+                ImageId = imageID
+
             };
             try
             {
-                _db.Items.Add(item);
-                _db.SaveChanges();
-                message = $"Product {item.Name} added successfully";
+                 _db.Items.Add(item);
+                 _db.SaveChanges();
+                 message = $"Product {item.Name} added successfully";
             }
             catch (Exception e)
             {
@@ -141,6 +151,61 @@ namespace Sips.Repositories
                 message = $" Error deleting product-{id}: {e.Message}";
             }
             return message;
+        }
+
+
+        public async Task<int> ImageSave(IFormFile ImageFile)
+        {
+            int  imageID = 0;
+            string message = string.Empty;
+            if (ImageFile != null && ImageFile.Length > 0)
+                {
+                    string contentType = ImageFile.ContentType;
+
+                    if (contentType == "image/png" ||
+                        contentType == "image/jpeg" ||
+                        contentType == "image/jpg")
+                    {
+                        try
+                        {
+                            byte[] imageData;
+
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                ImageFile.CopyToAsync(memoryStream);
+                                imageData = memoryStream.ToArray();
+                            }
+
+                            var image = new ImageStore
+                            {
+                                FileName = Path.
+                                   GetFileNameWithoutExtension(ImageFile.FileName),
+                                Image = imageData
+                            };
+
+                        _db.ImageStores.Add(image);
+                        await _db.SaveChangesAsync();  
+                        imageID = image.ImageId;
+
+                    }
+                    catch (Exception ex)
+                        {
+                        message = "An error occured uploading your image. Please try again.";
+                        
+                        }
+                    }
+                    else
+                    {
+                        message = "error, Please upload a PNG, JPG, or JPEG file.";
+                    }
+                }
+                else
+                {
+                    message =  "Please select an  image to upload.";
+                }
+            
+
+            return imageID;
         }
 
     }
