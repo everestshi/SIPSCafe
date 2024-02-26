@@ -116,6 +116,7 @@ CREATE TABLE Item (
     inventory INTEGER NOT NULL,
     itemTypeID INTEGER,
     imageID INTEGER,
+    hasMilk BIT NOT NULL
     FOREIGN KEY (itemTypeID) REFERENCES ItemType(itemTypeID) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (imageID) REFERENCES ImageStores(ImageID) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -176,6 +177,7 @@ INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Regular', 0.00);
 INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Soy', 0.80);
 INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Almond', 0.80);
 INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('Oat', 0.80);
+INSERT INTO MilkChoice (milkType, priceModifier) VALUES ('No Milk', 0.00);
 
 -- Pre-populate AddIn table
 INSERT INTO AddIn (addInName, priceModifier) VALUES ('Pearls', 1.25);
@@ -189,43 +191,44 @@ INSERT INTO ItemType (itemTypeName) VALUES ('Fruit Tea');
 INSERT INTO ItemType (itemTypeName) VALUES ('Slush');
 
 -- Milk Teas
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Matcha Milk Tea', 'A delightful blend of matcha and creamy milk.', 4.99, 100, 1);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Matcha Milk Tea', 'A delightful blend of matcha and creamy milk.', 4.99, 100, 1, 1);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Taro Milk Tea', 'Experience the unique flavor of taro in a refreshing milk tea.', 4.99, 100, 1);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Taro Milk Tea', 'Experience the unique flavor of taro in a refreshing milk tea.', 4.99, 100, 1, 1);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Brown Sugar Milk Tea', 'Indulge in the rich taste of brown sugar infused in milk tea.', 5.49, 100, 1);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Brown Sugar Milk Tea', 'Indulge in the rich taste of brown sugar infused in milk tea.', 5.49, 100, 1, 1);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Sips Milk Tea', 'Our classic and flavorful Sips Milk Tea.', 3.99, 100, 1);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Sips Milk Tea', 'Our classic and flavorful Sips Milk Tea.', 3.99, 100, 1, 1);
 
 -- Fruit Teas
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('PassionFruit Tea', 'A tropical burst of passion fruit in a refreshing tea.', 5.69, 100, 2);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('PassionFruit Tea', 'A tropical burst of passion fruit in a refreshing tea.', 5.69, 100, 2, 0);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Peach Kiwi Tea', 'Experience the perfect harmony of peach and kiwi in tea.', 5.99, 100, 2);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Peach Kiwi Tea', 'Experience the perfect harmony of peach and kiwi in tea.', 5.99, 100, 2, 0);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Mango Tea', 'Enjoy the sweetness of mango in our delightful tea blend.', 5.99, 100, 2);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Mango Tea', 'Enjoy the sweetness of mango in our delightful tea blend.', 5.99, 100, 2, 0);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Wintermelon Tea', 'Refresh yourself with the cooling taste of wintermelon tea.', 6.29, 100, 2);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Wintermelon Tea', 'Refresh yourself with the cooling taste of wintermelon tea.', 6.29, 100, 2, 0);
 
 -- Slushes
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Watermelon Raspberry Slush', 'Savor the unique and sweet taste of watermelon and raspberry in a slush.', 6.49, 100, 3);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Watermelon Raspberry Slush', 'Savor the unique and sweet taste of watermelon and raspberry in a slush.', 6.49, 100, 3, 0);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Taro Slush', 'Experience the rich and creamy taro in a delightful slush.', 6.29, 100, 3);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Taro Slush', 'Experience the rich and creamy taro in a delightful slush.', 6.29, 100, 3, 1);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Strawberry Slush', 'Enjoy the freshness of strawberry in a chilled slush drink.', 5.99, 100, 3);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Strawberry Slush', 'Enjoy the freshness of strawberry in a chilled slush drink.', 5.99, 100, 3, 0);
 
-INSERT INTO Item (name, description, basePrice, inventory, itemTypeID)
-VALUES ('Coffee Slush', 'A delightful mix of coffee flavor in a frosty slush.', 5.99, 100, 3);
+INSERT INTO Item (name, description, basePrice, inventory, itemTypeID, hasMilk)
+VALUES ('Coffee Slush', 'A delightful mix of coffee flavor in a frosty slush.', 5.99, 100, 3, 1);
+
 
 -- OrderStatus
 INSERT INTO [OrderStatus] (isCompleted) VALUES (0);

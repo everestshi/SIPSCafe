@@ -120,17 +120,57 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Get references to the customize and add to cart buttons
+            // Function to reset form elements inside the modal
+            function resetModal() {
+                // Reset radio buttons for ice level
+                var iceOptions = document.querySelectorAll('input[name="iceOptions"]');
+                iceOptions.forEach(function (input) {
+                    input.checked = input.defaultChecked;
+                });
+
+                // Reset radio buttons for sweetness level
+                var sweetnessOptions = document.querySelectorAll('input[name="sweetnessOptions"]');
+                sweetnessOptions.forEach(function (input) {
+                    input.checked = input.defaultChecked;
+                });
+
+                // Reset checkboxes for add-ins
+                var addInOptions = document.querySelectorAll('input[name="addInOptions"]');
+                addInOptions.forEach(function (input) {
+                    input.checked = input.defaultChecked;
+                });
+            }
+
+            // Get references to the modal and its close buttons
+            var customizeModal = document.getElementById('customizeModal');
+            var closeModalButtons = document.querySelectorAll('#closeModal, #closeModalButton');
+
+            // Add event listener for modal close buttons
+            closeModalButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Hide the modal
+                    customizeModal.classList.remove('show');
+                    customizeModal.style.display = 'none';
+                    // Reset form elements
+                    resetModal();
+                });
+            });
+
+            // Get references to the customize buttons
             var customizeButtons = document.querySelectorAll('.customize');
-            var addToCartButtons = document.querySelectorAll('.add-to-cart');
+
             // Add event listener for customize button click
             customizeButtons.forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Show the modal
-                    document.getElementById('customizeModal').classList.add('show');
-                    document.getElementById('customizeModal').style.display = 'block';
+                    customizeModal.classList.add('show');
+                    customizeModal.style.display = 'block';
                 });
             });
+
+            // Get references to the add to cart buttons
+            var addToCartButtons = document.querySelectorAll('.add-to-cart');
+
             // Add event listener for add to cart button click
             addToCartButtons.forEach(function (button) {
                 button.addEventListener('click', function () {
@@ -138,19 +178,10 @@
                     alert('Item added to cart!');
                 });
             });
-            // Hide the modal when close button is clicked
-            document.getElementById('closeModal').addEventListener('click', function () {
-                document.getElementById('customizeModal').classList.remove('show');
-                document.getElementById('customizeModal').style.display = 'none';
-            });
-
-            document.getElementById('closeModalButton').addEventListener('click', function () {
-                document.getElementById('customizeModal').classList.remove('show');
-                document.getElementById('customizeModal').style.display = 'none';
-            });
         });
     </script>
 }
+
 
 <style>
     /* Customize modal appearance */
