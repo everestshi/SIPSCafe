@@ -26,97 +26,83 @@
             {
                 <div class="tea-btns">
                     <button class="btn btn-primary add-to-cart">Add to Cart</button>
-                    <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal">Customize</button>
+                    <button class="btn btn-secondary customize" data-bs-toggle="modal" data-bs-target="#customizeModal_@tea.ItemId">Customize</button>
                 </div>
             }
+        </div>
+        <div class="modal fade" id="customizeModal_@tea.ItemId" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
+                        <button type="button" class="close" id="closeModal" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Customization options -->
+                        <div class="customization-options">
+                            <!-- Ice Level Options -->
+                            <div>
+                                <h4>Ice Level:</h4>
+                                <ul>
+                                    @foreach (var option in Model.IceOptions)
+                                    {
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                                @option.IcePercent
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <!-- Sweetness Level Options -->
+                            <div>
+                                <h4>Sweetness Level:</h4>
+                                <ul>
+                                    @foreach (var option in Model.SweetnessOptions)
+                                    {
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                                @option.SweetnessPercent
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <!-- Addon Options -->
+                            <div>
+                                <h4>Add Ins:</h4>
+                                <ul>
+                                    @foreach (var option in Model.AddInOptions)
+                                    {
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" name="addInOptions" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
+                                                @option.AddInName - $@option.PriceModifier
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
+                        <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
         </div>
     }
 </div>
 
-<div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Customization options -->
-                <div class="customization-options">
-                    <!-- Ice Level Options -->
-                    <div>
-                        <h4>Ice Level:</h4>
-                        <ul>
-                            @foreach (var option in Model.IceOptions)
-                            {
-                                <li>
-                                    <label>
-                                        <input type="radio" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
-                                        @option.IcePercent
-                                    </label>
-                                </li>
-                            }
-                        </ul>
-                    </div>
 
-                    <!-- Sweetness Level Options -->
-                    <div>
-                        <h4>Sweetness Level:</h4>
-                        <ul>
-                            @foreach (var option in Model.SweetnessOptions)
-                            {
-                                <li>
-                                    <label>
-                                        <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
-                                        @option.SweetnessPercent
-                                    </label>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-
-                    <!-- Milk Choice Options -->
-                    @* <div>
-                        <h4>Milk Choice:</h4>
-                        <ul>
-                            @foreach (var option in Model.MilkOptions)
-                            {
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="milkOptions" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
-                                        @option.MilkType
-                                    </label>
-                                </li>
-                            }
-                        </ul>
-                    </div> *@
-
-                    <!-- Addon Options -->
-                    <div>
-                        <h4>Add Ins:</h4>
-                        <ul>
-                            @foreach (var option in Model.AddInOptions)
-                            {
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="addInOptions" value="@option.AddInId">
-                                        @option.AddInName - $@option.PriceModifier
-                                    </label>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closeModalButton" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add to Cart</button>
-            </div>
-        </div>
-    </div>
-</div>
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -179,9 +165,32 @@
                 });
             });
         });
+
+        // Keep track of the current price modifier
+        var currentPriceModifier = 0;
+
+        //function to handle add on price modifiers
+        function AddOnPrice(priceModifier, id, checkbox) {
+            console.log(checkbox.checked)
+            // if checkbox is checked, add the price modifier to the total
+            if (checkbox.checked) {
+                var basePrice = document.getElementById('modalPrice_' + id);
+                console.log(basePrice.textContent);
+                var price = parseFloat(basePrice.textContent);
+                console.log(price == 4.99);
+                var newTotal = price + parseFloat(priceModifier);
+                basePrice.textContent = (newTotal).toFixed(2)
+            }
+            // if checkbox is unchecked, subtract the price modifier from the total
+            else {
+                var basePrice = document.getElementById('modalPrice_' + id);
+                var price = parseFloat(basePrice.textContent);
+                var newTotal = price - parseFloat(priceModifier);
+                basePrice.textContent = (newTotal).toFixed(2);
+            }
+        }
     </script>
 }
-
 
 <style>
     /* Customize modal appearance */

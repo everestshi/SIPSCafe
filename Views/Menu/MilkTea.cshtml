@@ -175,9 +175,6 @@
             return '$' + amount.toFixed(2) + ' ' + currency;
         }
 
-        // Keep track of the current price modifier
-        var currentPriceModifier = 0;
-
         // function to handle milk price modifiers
         function AdjustPrice(price, priceModifier, id, checkbox) {
             var basePrice = document.getElementById("modalPrice_" + id);
@@ -187,6 +184,9 @@
             basePrice.textContent = (newTotal).toFixed(2);
             currentPriceModifier = priceModifier;
         }
+
+        // Keep track of the current price modifier
+        var currentPriceModifier = 0;
 
         //function to handle add on price modifiers
         function AddOnPrice(priceModifier, id, checkbox) {
