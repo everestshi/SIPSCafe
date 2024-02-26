@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using Sips.Data;
 using Sips.Repositories;
 using Sips.SipsModels;
@@ -22,7 +26,6 @@ namespace Sips.Controllers
         public IActionResult Index()
         {
             //DbSet<OrderDetail> items = _db.OrderDetails;
-
             //return View(items);
             TransactionRepo transactionRepo = new TransactionRepo(_db);
 
@@ -37,11 +40,12 @@ namespace Sips.Controllers
         }
         public IActionResult Checkout()
         {
-            //IEnumerable<CheckoutVMs> checkouts;
-            //TransactionRepo transactionRepo = new TransactionRepo(_db);
-            //return View(transactionRepo.GetCheckout());
+            HttpContext.Session.SetString("Cart", User.Identity.Name);
+
+            // Other code for PayPal client ID
             var payPalClient = _configuration["PayPal:ClientId"];
             ViewData["PayPalClientId"] = payPalClient;
+
             return View();
 
         }
@@ -70,6 +74,44 @@ namespace Sips.Controllers
             _db.OrderDetails.FirstOrDefault(t => t.OrderDetailId == confirmationId);
 
             return View("Confirmation", transaction);
+        }
+
+        public JsonResult AddToCart(int id)
+        {
+            string cartSession = HttpContext.Session.GetString("Cart");
+            if (cartSession != null)
+            {
+                List<CheckoutVM> cartItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CheckoutVM>>(cartSession);
+                if (cartItems.Any(c => c.ItemId == id))
+                {
+                    CheckoutVM cartItem = cartItems.FirstOrDefault(c => c.ItemId == id);
+                    int index = cartItems.FindIndex(c => c.ItemId == id);
+                    if (index != -1)
+                    {
+                        cartItems[index] = new CheckoutVM
+                        {
+                            ItemId = id,
+                            Quantity = cartItem.Quantity + 1
+                        };
+                    }
+                    HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
+                }
+                else
+                {
+                    cartItems.Add(new CheckoutVM
+                    {
+                        ItemId = id,
+                        Quantity = 1
+                    });
+                }
+            }
+            else
+            {
+                List<CheckoutVM> cartItems = new List<CheckoutVM> { new CheckoutVM { ItemId = id,
+                                                                         Quantity = 1 } };
+                HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
+            }
+            return Json("Success");
         }
 
     }

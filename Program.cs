@@ -21,9 +21,15 @@ builder.Services.AddDbContext<SipsdatabaseContext>(options =>
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+});
+
+
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-builder.Services.AddSession();
+//builder.Services.AddSession();
 
 
 var app = builder.Build();
