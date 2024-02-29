@@ -418,7 +418,7 @@ footer {
 
 .bottom-footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     margin: 0 auto;
     justify-content: center;
     align-items: center;
