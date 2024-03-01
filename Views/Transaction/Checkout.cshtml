@@ -28,7 +28,8 @@
 
                     </tr>
                 </thead>
-                @*                 <tbody>
+                
+@*                                 <tbody>
                 @foreach (var item in Model)
                 {
                 <tr>
@@ -39,10 +40,10 @@
                 <td>@item.AddInPriceModifier</td>
                 <td>@item.SizeName</td>
                 <td>@item.SizePriceModifier</td>
-                <td>@item.Sweetness</td> *@
-                @*                             <td>@item.MilkName</td>
-                <td>@item.MilkPriceModifier</td> *@
-                @*                             <td>@item.Ice</td>
+                <td>@item.Sweetness</td> 
+                <td>@item.MilkType</td>
+                <td>@item.MilkPriceModifier</td> 
+                <td>@item.Ice</td>
                 <td>@item.Subtotal</td>
                 </tr>
                 }
@@ -51,12 +52,11 @@
         </div>
         <div class="checkout-details">
             <div class="order-details">
-                @*                 <p>Subtotal: $@Model.Sum(item => item.Subtotal)</p>
+                         @*  <p>Subtotal: $@Model.Sum(item => item.Subtotal)</p>
                 <p>Tax: $@Model.Sum(item => item.Subtotal) * 0.13</p>
-                <p>Total: $@Model.Sum(item => item.Subtotal) * 1.13</p> *@
+                <p>Total: $@Model.Sum(item => item.Subtotal) * 1.13</p> 
 
-
-                @* <button class="btn btn-primary">Checkout</button> *@
+                 <button class="btn btn-primary">Checkout</button> *@
                 <input type="hidden" value="USD" id="currency" />
 
                 <div id="paypal-button-container"></div>
@@ -77,7 +77,7 @@
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: parseFloat(document.getElementById('grandTotalAmount').innerText.replace('$', '')),
+                        value: parseFloat(document.getElementById('totalAmount').innerText.replace('$', '')),
                         currency:
                             document.getElementById('currency').value
                     }

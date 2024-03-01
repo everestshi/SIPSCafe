@@ -91,5 +91,16 @@ namespace Sips.Controllers
             };
             return View(viewModel);
         }
+
+        public IActionResult ShoppingCart()
+        {
+            List<CartVM> cartItems = new List<CartVM>();
+            string cartSession = HttpContext.Session.GetString("Cart");
+            if (cartSession != null)
+            {
+                List<CheckoutVM> sessionCartItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CheckoutVM>>(cartSession);
+            }
+            return View(cartItems);
+        }
     }
 }
