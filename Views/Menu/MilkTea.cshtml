@@ -32,7 +32,7 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="tea-btns">
-                    <button class="btn btn-primary add-to-cart" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
+                  @*   <button class="btn btn-primary add-to-cart" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button> *@
                     <button class="btn btn-secondary customize" data-bs-toggle="modal" data-bs-target="#customizeModal_@tea.ItemId" data-price="@tea.BasePrice">Customize</button>
                     <input type="hidden" id="itemPrice_@tea.ItemId" value="@tea.BasePrice" />
                 </div>
@@ -119,7 +119,7 @@
                     <div class="modal-footer">
                         <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
                         <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
+                        <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddToCart('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -129,7 +129,6 @@
 
 @section Scripts {
 
-    // Add event listener for customize button click, get the price from data attribute and update the modal price
     @* <script>
         document.addEventListener('DOMContentLoaded', function () {
             var customizeButtons = document.querySelectorAll('.customize');
@@ -153,50 +152,123 @@
 
         var totalQuantity = 0;
         var totalAmount = 0;
-
-        function AddOne(id, price, currency) {
-            var totalElement = document.getElementById('totalQuantity');
-            var total = parseInt(totalElement.textContent);
-            total += 1;
-            totalElement.textContent = total;
-
-            var itemPrice = parseFloat(price);
-            var subTotal = total * itemPrice;
-            document.getElementById('totalAmount').textContent = formatCurrency(subTotal);
-
-            // Update grand total
-            totalQuantity += 1;
-            totalAmount += itemPrice;
-
-            // Display grand total
-            document.getElementById('totalQuantity').textContent = totalQuantity;
-            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
-
-
-            fetch('/Transaction/AddToCart?id=' + id, {
-                method: 'GET',
+        document.addEventListener('DOMContentLoaded', function () {
+            var addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var itemId = button.getAttribute('data-item-id');
+                    var price = button.getAttribute('data-price');
+                    AddToCart(itemId, price);
+                });
+            });
+        });
+        function AddToCart(itemId, price) {
+            console.log("function triggered");
+            // Collect item details
+            var item = {
+                itemId: itemId,
+                price: parseFloat(price),
+                quantity: 1, // Assuming default quantity is 1, adjust as needed
+                addInName: "", // Placeholder for add-in name
+                addInPriceModifier: 0, // Placeholder for add-in price modifier
+                sizeName: "", // Placeholder for size name
+                sizePriceModifier: 0, // Placeholder for size price modifier
+                sweetness: "", // Placeholder for sweetness level
+                ice: "", // Placeholder for ice level
+                subtotal: 0, // Placeholder for subtotal
+                milkType: "", // Placeholder for milk type
+                milkPriceModifier: 0, // Placeholder for milk price modifier
+                addInNames: [], // Placeholder for list of add-in names
+                addInPriceModifiers: [] // Placeholder for list of add-in price modifiers
+            };
+            // Get selected options from the modal
+            var modalId = 'customizeModal_' + itemId;
+            var iceOptions = document.querySelectorAll('#' + modalId + ' input[name="iceOptions"]:checked');
+            var sweetnessOptions = document.querySelectorAll('#' + modalId + ' input[name="sweetnessOptions"]:checked');
+            var milkOption = document.querySelector('#' + modalId + ' input[name="milkOptions"]:checked');
+            var addInOptions = document.querySelectorAll('#' + modalId + ' input[name="addInOptions"]:checked');
+            // Update item object with selected options
+            if (iceOptions.length > 0) {
+                item.ice = iceOptions[0].value;
+            }
+            if (sweetnessOptions.length > 0) {
+                item.sweetness = sweetnessOptions[0].value;
+            }
+            if (milkOption) {
+                item.milkType = milkOption.value;
+                item.milkPriceModifier = parseFloat(milkOption.getAttribute('data-price-modifier'));
+            }
+            addInOptions.forEach(function (option) {
+                item.addInNames.push(option.value);
+                item.addInPriceModifiers.push(parseFloat(option.getAttribute('data-price-modifier')));
+            });
+            console.log(item);
+            // Send item details to the server to add to the cart
+            fetch('/Transaction/AddToCart', {
+                method: 'POST',
                 headers: {
-                    // 'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-                //,
-                // body: JSON.stringify({ id: 1 })
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(item)
             })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                    if (response.ok) {
+                        console.log("added to cart");
+                        // Optionally, update the UI to reflect that the item was added to the cart
+                    } else {
+                        // Handle errors if needed
+                        console.log('FAIL');
                     }
-                    return response.json(); // Parse the response body as JSON
-                })
-                .then(data => {
-                    console.log(data); // Example output: { Name: "John Doe", Age: 30, Occupation: "Software Developer" }
-     
                 })
                 .catch(error => {
-                    // Handle errors
-                    console.error('Fetch error:', error);
+                    console.error('Error:', error);
+                    // Handle errors if needed
                 });
         }
+
+        // function AddOne(id, price, currency) {
+        //     var totalElement = document.getElementById('totalQuantity');
+        //     var total = parseInt(totalElement.textContent);
+        //     total += 1;
+        //     totalElement.textContent = total;
+
+        //     var itemPrice = parseFloat(price);
+        //     var subTotal = total * itemPrice;
+        //     document.getElementById('totalAmount').textContent = formatCurrency(subTotal);
+
+        //     // Update grand total
+        //     totalQuantity += 1;
+        //     totalAmount += itemPrice;
+
+        //     // Display grand total
+        //     document.getElementById('totalQuantity').textContent = totalQuantity;
+        //     document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
+
+
+        //     fetch('/Transaction/AddToCart?id=' + id, {
+        //         method: 'GET',
+        //         headers: {
+        //             // 'Content-Type': 'application/json',
+        //             'X-Requested-With': 'XMLHttpRequest'
+        //         }
+        //         //,
+        //         // body: JSON.stringify({ id: 1 })
+        //     })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json(); // Parse the response body as JSON
+        //         })
+        //         .then(data => {
+        //             console.log(data); // Example output: { Name: "John Doe", Age: 30, Occupation: "Software Developer" }
+     
+        //         })
+        //         .catch(error => {
+        //             // Handle errors
+        //             console.error('Fetch error:', error);
+        //         });
+        // }
 
         function formatCurrency(amount) {
             return '$' + amount.toFixed(2) + ' ' + 'CAD';
