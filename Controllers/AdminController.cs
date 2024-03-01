@@ -290,6 +290,18 @@ namespace Sips.Controllers
             if (ModelState.IsValid)
             {
                 string repoMessage = customerrepo.Update(contactVM);
+                string userEmail = User.Identity.Name;
+                var user = _db.Contacts.Where(c => c.Email == userEmail).FirstOrDefault();
+
+                if (user != null)
+                {
+                    string userFirstName = user.FirstName;
+
+                    if (HttpContext.Session != null)
+                    {
+                        HttpContext.Session.SetString("SessionUserName", userFirstName);
+                    }
+                }
                 return RedirectToAction("ContactIndex", new { message = repoMessage });
             }
             return View(contactVM);

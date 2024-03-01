@@ -46,8 +46,11 @@ public partial class SipsdatabaseContext : DbContext
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
-    public virtual DbSet<PayPalVM> PayPalVMs { get; set; }
+    public virtual DbSet<PayPalVM> PayPalVMs {  get; set; }
+
     public virtual DbSet<CheckoutVM> CheckoutVMs { get; set; }
+
+    public virtual DbSet<CartVM> CartVMs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -57,7 +60,7 @@ public partial class SipsdatabaseContext : DbContext
     {
         modelBuilder.Entity<AddIn>(entity =>
         {
-            entity.HasKey(e => e.AddInId).HasName("PK__AddIn__806C395CE1F6B214");
+            entity.HasKey(e => e.AddInId).HasName("PK__AddIn__806C395CE0CAD473");
 
             entity.ToTable("AddIn");
 
@@ -73,7 +76,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<AddInOrderDetail>(entity =>
         {
-            entity.HasKey(e => new { e.AddInId, e.OrderDetailId }).HasName("PK__AddIn_Or__3E23D4BEFF4122DA");
+            entity.HasKey(e => new { e.AddInId, e.OrderDetailId }).HasName("PK__AddIn_Or__3E23D4BE9B2CB188");
 
             entity.ToTable("AddIn_OrderDetail");
 
@@ -86,16 +89,16 @@ public partial class SipsdatabaseContext : DbContext
 
             entity.HasOne(d => d.AddIn).WithMany(p => p.AddInOrderDetails)
                 .HasForeignKey(d => d.AddInId)
-                .HasConstraintName("FK__AddIn_Ord__addIn__6FD49106");
+                .HasConstraintName("FK__AddIn_Ord__addIn__4A6E022D");
 
             entity.HasOne(d => d.OrderDetail).WithMany(p => p.AddInOrderDetails)
                 .HasForeignKey(d => d.OrderDetailId)
-                .HasConstraintName("FK__AddIn_Ord__order__70C8B53F");
+                .HasConstraintName("FK__AddIn_Ord__order__4B622666");
         });
 
         modelBuilder.Entity<Contact>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Contact__CB9A1CDF4454EEBA");
+            entity.HasKey(e => e.UserId).HasName("PK__Contact__CB9A1CDF06AD582E");
 
             entity.ToTable("Contact");
 
@@ -141,7 +144,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<Ice>(entity =>
         {
-            entity.HasKey(e => e.IceId).HasName("PK__Ice__298F0B6777B8CF80");
+            entity.HasKey(e => e.IceId).HasName("PK__Ice__298F0B67014ADB18");
 
             entity.ToTable("Ice");
 
@@ -164,7 +167,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<Item>(entity =>
         {
-            entity.HasKey(e => e.ItemId).HasName("PK__Item__56A1284A81788E75");
+            entity.HasKey(e => e.ItemId).HasName("PK__Item__56A1284A579A8C8B");
 
             entity.ToTable("Item");
 
@@ -175,6 +178,7 @@ public partial class SipsdatabaseContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
+            entity.Property(e => e.HasMilk).HasColumnName("hasMilk");
             entity.Property(e => e.ImageId).HasColumnName("imageID");
             entity.Property(e => e.Inventory).HasColumnName("inventory");
             entity.Property(e => e.ItemTypeId).HasColumnName("itemTypeID");
@@ -186,17 +190,17 @@ public partial class SipsdatabaseContext : DbContext
             entity.HasOne(d => d.Image).WithMany(p => p.Items)
                 .HasForeignKey(d => d.ImageId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__Item__imageID__636EBA21");
+                .HasConstraintName("FK__Item__imageID__3E082B48");
 
             entity.HasOne(d => d.ItemType).WithMany(p => p.Items)
                 .HasForeignKey(d => d.ItemTypeId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__Item__itemTypeID__627A95E8");
+                .HasConstraintName("FK__Item__hasMilk__3D14070F");
         });
 
         modelBuilder.Entity<ItemSize>(entity =>
         {
-            entity.HasKey(e => e.SizeId).HasName("PK__ItemSize__55B1E577ABD8B703");
+            entity.HasKey(e => e.SizeId).HasName("PK__ItemSize__55B1E5774F1C604C");
 
             entity.ToTable("ItemSize");
 
@@ -212,7 +216,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<ItemType>(entity =>
         {
-            entity.HasKey(e => e.ItemTypeId).HasName("PK__ItemType__371A069652300528");
+            entity.HasKey(e => e.ItemTypeId).HasName("PK__ItemType__371A0696764E25DB");
 
             entity.ToTable("ItemType");
 
@@ -225,7 +229,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<MilkChoice>(entity =>
         {
-            entity.HasKey(e => e.MilkChoiceId).HasName("PK__MilkChoi__F73C851D71E6B392");
+            entity.HasKey(e => e.MilkChoiceId).HasName("PK__MilkChoi__F73C851D80D14DED");
 
             entity.ToTable("MilkChoice");
 
@@ -241,7 +245,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__E4FEDE2A1AC49893");
+            entity.HasKey(e => e.OrderDetailId).HasName("PK__OrderDet__E4FEDE2A0AD62830");
 
             entity.ToTable("OrderDetail");
 
@@ -270,34 +274,34 @@ public partial class SipsdatabaseContext : DbContext
             entity.HasOne(d => d.Ice).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.IceId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__OrderDeta__iceID__6C040022");
+                .HasConstraintName("FK__OrderDeta__iceID__469D7149");
 
             entity.HasOne(d => d.Item).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.ItemId)
-                .HasConstraintName("FK__OrderDeta__itemI__68336F3E");
+                .HasConstraintName("FK__OrderDeta__itemI__42CCE065");
 
             entity.HasOne(d => d.MilkChoice).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.MilkChoiceId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__OrderDeta__milkC__6CF8245B");
+                .HasConstraintName("FK__OrderDeta__milkC__47919582");
 
             entity.HasOne(d => d.Size).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.SizeId)
-                .HasConstraintName("FK__OrderDeta__sizeI__6A1BB7B0");
+                .HasConstraintName("FK__OrderDeta__sizeI__44B528D7");
 
             entity.HasOne(d => d.Sweetness).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.SweetnessId)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__OrderDeta__sweet__6B0FDBE9");
+                .HasConstraintName("FK__OrderDeta__sweet__45A94D10");
 
             entity.HasOne(d => d.Transaction).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.TransactionId)
-                .HasConstraintName("FK__OrderDeta__trans__69279377");
+                .HasConstraintName("FK__OrderDeta__trans__43C1049E");
         });
 
         modelBuilder.Entity<OrderStatus>(entity =>
         {
-            entity.HasKey(e => e.StatusId).HasName("PK__OrderSta__36257A389F32DAED");
+            entity.HasKey(e => e.StatusId).HasName("PK__OrderSta__36257A3886F1A2B1");
 
             entity.ToTable("OrderStatus");
 
@@ -307,7 +311,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<Rating>(entity =>
         {
-            entity.HasKey(e => e.RatingId).HasName("PK__Rating__2D290D497590096E");
+            entity.HasKey(e => e.RatingId).HasName("PK__Rating__2D290D49801ED505");
 
             entity.ToTable("Rating");
 
@@ -328,16 +332,16 @@ public partial class SipsdatabaseContext : DbContext
 
             entity.HasOne(d => d.Store).WithMany(p => p.Ratings)
                 .HasForeignKey(d => d.StoreId)
-                .HasConstraintName("FK__Rating__storeID__5EAA0504");
+                .HasConstraintName("FK__Rating__storeID__3943762B");
 
             entity.HasOne(d => d.User).WithMany(p => p.Ratings)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Rating__userID__5F9E293D");
+                .HasConstraintName("FK__Rating__userID__3A379A64");
         });
 
         modelBuilder.Entity<Store>(entity =>
         {
-            entity.HasKey(e => e.StoreId).HasName("PK__Store__1EA716336B30778C");
+            entity.HasKey(e => e.StoreId).HasName("PK__Store__1EA71633CE8D66F9");
 
             entity.ToTable("Store");
 
@@ -350,7 +354,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<Sweetness>(entity =>
         {
-            entity.HasKey(e => e.SweetnessId).HasName("PK__Sweetnes__84EB147CB1DCAC3E");
+            entity.HasKey(e => e.SweetnessId).HasName("PK__Sweetnes__84EB147C05BD2866");
 
             entity.ToTable("Sweetness");
 
@@ -363,7 +367,7 @@ public partial class SipsdatabaseContext : DbContext
 
         modelBuilder.Entity<Transaction>(entity =>
         {
-            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__9B57CF5273383CBC");
+            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__9B57CF52FE84C069");
 
             entity.ToTable("Transaction");
 
@@ -380,15 +384,15 @@ public partial class SipsdatabaseContext : DbContext
 
             entity.HasOne(d => d.Status).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.StatusId)
-                .HasConstraintName("FK__Transacti__statu__5BCD9859");
+                .HasConstraintName("FK__Transacti__statu__36670980");
 
             entity.HasOne(d => d.Store).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.StoreId)
-                .HasConstraintName("FK__Transacti__store__59E54FE7");
+                .HasConstraintName("FK__Transacti__store__347EC10E");
 
             entity.HasOne(d => d.User).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Transacti__userI__5AD97420");
+                .HasConstraintName("FK__Transacti__userI__3572E547");
         });
 
         OnModelCreatingPartial(modelBuilder);

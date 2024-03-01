@@ -13,9 +13,12 @@
 </div>
 <div class="tea-subtotal">
 
+<div class="tea-subtotal">
+
     <p>Quantity: <span id="totalQuantity"> 0</span></p>
     <p>Subtotal: <span id="totalAmount"> 0</span></p>
 
+</div>
 </div>
 <div class="tea-list">
     @foreach (var tea in Model.Items)
@@ -26,107 +29,132 @@
                 <h3>@tea.Name</h3>
                 <p>@tea.Description</p>
                 <p>Price: $@tea.BasePrice.ToString()</p>
+                @*                 <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal" data-price="@tea.BasePrice">Customize</button> *@
             </div>
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="tea-btns">
                     <button class="btn btn-primary add-to-cart" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
-                    <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal">Customize</button>
+                    <button class="btn btn-secondary customize" data-bs-toggle="modal" data-bs-target="#customizeModal_@tea.ItemId" data-price="@tea.BasePrice">Customize</button>
                     <input type="hidden" id="itemPrice_@tea.ItemId" value="@tea.BasePrice" />
                 </div>
             }
         </div>
-    }
-</div>
-<!-- Modal -->
-<div class="modal fade" id="customizeModal" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                <button type="button" class="close" id="closeModal" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Customization options -->
-                <div class="customization-options">
-                    <!-- Ice Level Options -->
-                    @* <div>
-                        <h4>Ice Level:</h4>
-                        <ul>
-                            @foreach (var option in Model.IceOptions)
-                            {
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
-                                        @option.IcePercent
-                                    </label>
-                                </li>
-                            }
-                        </ul>
-                    </div> *@
-
-                    <!-- Sweetness Level Options -->
-                    <div>
-                        <h4>Sweetness Level:</h4>
-                        <ul>
-                            @foreach (var option in Model.SweetnessOptions)
-                            {
-                                <li>
-                                    <label>
-                                        <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
-                                        @option.SweetnessPercent
-                                    </label>
-                                </li>
-                            }
-                        </ul>
+        <!-- Modal -->
+        <div class="modal fade" id="customizeModal_@tea.ItemId" tabindex="-1" role="dialog" aria-labelledby="customizeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
+                        <button type="button" class="close" id="closeModal" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                    <div class="modal-body">
+                        <!-- Customization options -->
+                        <div class="customization-options">
+                            <!-- Ice Level Options -->
+                            <div>
+                                <h4>Ice Level:</h4>
+                                <ul>
+                                    @foreach (var option in Model.IceOptions)
+                                    {
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                                @option.IcePercent
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
 
-                    <!-- Milk Choice Options -->
-                    <div>
-                        <h4>Milk Choice:</h4>
-                        <ul>
-                            @foreach (var option in Model.MilkOptions)
+                            <!-- Sweetness Level Options -->
+                            <div>
+                                <h4>Sweetness Level:</h4>
+                                <ul>
+                                    @foreach (var option in Model.SweetnessOptions)
+                                    {
+                                        <li>
+                                            <label>
+                                                <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                                @option.SweetnessPercent
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <!-- Milk Choice Options -->
+                            
+                            @if (tea.HasMilk)
                             {
-                                <li>
-                                    <label>
-                                        <input type="radio" name="milkOptions" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
-                                        @option.MilkType - $@option.PriceModifier
-                                    </label>
-                                </li>
+                            <div>
+                                <h4>Milk Choice:</h4>
+                                <ul>
+                                    @foreach (var option in Model.MilkOptions)
+                                    {
+                                        <li>
+                                            <label>
+                                                    <input type="radio" name="milkOptions" value="@option.MilkChoiceId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" @(option.MilkType == "Regular" ? "checked" : "")>
+                                                @option.MilkType - $@option.PriceModifier
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                                </div>
                             }
-                        </ul>
+                            @* else
+                            {
+                                <div>No milk options available.</div>
+                            } *@
+                            <!-- Addon Options -->
+                            <div>
+                                <h4>Add Ins:</h4>
+                                <ul>
+                                    @foreach (var option in Model.AddInOptions)
+                                    {
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" name="addInOptions" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
+                                                @option.AddInName - $@option.PriceModifier
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- Addon Options -->
-                    <div>
-                        <h4>Add Ins:</h4>
-                        <ul>
-                            @foreach (var option in Model.AddInOptions)
-                            {
-                                <li>
-                                    <label>
-                                        <input type="checkbox" name="addInOptions" value="@option.AddInId">
-                                        @option.AddInName - $@option.PriceModifier
-                                    </label>
-                                </li>
-                            }
-                        </ul>
+                    <div class="modal-footer">
+                        <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
+                        <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Add to Cart</button>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closeModalButton" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Add to Cart</button>
-            </div>
         </div>
-    </div>
+    }
 </div>
 @section Scripts {
+
+        // Add event listener for customize button click, get the price from data attribute and update the modal price
     <script>
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var customizeButtons = document.querySelectorAll('.customize');
+        //     var modalPrice = document.getElementById('modalPrice');
 
+        //     customizeButtons.forEach(function (button) {
+        //         button.addEventListener('click', function () {
+        //             // Get the price from data attribute
+        //             var price = button.getAttribute('data-price');
+        //             // Update the modal price
+        //             modalPrice.textContent = '$' + parseFloat(price).toFixed(2);
+        //         });
+        //     });
+        // });
+    </script>
 
+    <script>
 
         var totalQuantity = 0;
         var totalAmount = 0;
@@ -139,7 +167,7 @@
 
             var itemPrice = parseFloat(price);
             var subTotal = total * itemPrice;
-            document.getElementById('totalAmount').textContent = formatCurrency(subTotal);
+            document.getElementById('totalAmount').textContent = formatCurrency(subTotal, currency);
 
             // Update grand total
             totalQuantity += 1;
@@ -147,12 +175,13 @@
 
             // Display grand total
             document.getElementById('totalQuantity').textContent = totalQuantity;
-            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount, currency);
         }
 
-        function formatCurrency(amount) {
-            return '$' + amount.toFixed(2) + ' ' + 'CAD';
+        function formatCurrency(amount, currency) {
+            return '$' + amount.toFixed(2) + 'CAD';
         }
+
 
         document.addEventListener('DOMContentLoaded', function () {
             // Get references to the customize and add to cart buttons
@@ -170,20 +199,44 @@
             addToCartButtons.forEach(function (button) {
                 button.addEventListener('click', function () {
                     // Add your logic to add item to cart here
-                  
+                    // alert('Item added to cart!');
                 });
             });
-            // Hide the modal when close button is clicked
-            document.getElementById('closeModal').addEventListener('click', function () {
-                document.getElementById('customizeModal').classList.remove('show');
-                document.getElementById('customizeModal').style.display = 'none';
-            });
-
-            document.getElementById('closeModalButton').addEventListener('click', function () {
-                document.getElementById('customizeModal').classList.remove('show');
-                document.getElementById('customizeModal').style.display = 'none';
-            });
         });
+
+        // function to handle milk price modifiers
+        function AdjustPrice(price, priceModifier, id, checkbox) {
+            var basePrice = document.getElementById("modalPrice_" + id);
+            var price = parseFloat(basePrice.textContent);
+            var newPrice = price - currentPriceModifier;
+            newTotal = newPrice + parseFloat(priceModifier);
+            basePrice.textContent = (newTotal).toFixed(2);
+            currentPriceModifier = priceModifier;
+        }
+
+        // Keep track of the current price modifier
+        var currentPriceModifier = 0;
+
+        //function to handle add on price modifiers
+        function AddOnPrice(priceModifier, id, checkbox) {
+            console.log(checkbox.checked)
+            // if checkbox is checked, add the price modifier to the total
+            if (checkbox.checked) {
+                var basePrice = document.getElementById('modalPrice_' + id);
+                console.log(basePrice.textContent);
+                var price = parseFloat(basePrice.textContent);
+                console.log(price == 4.99);
+                var newTotal = price + parseFloat(priceModifier);
+                basePrice.textContent = (newTotal).toFixed(2)
+            }
+            // if checkbox is unchecked, subtract the price modifier from the total
+            else {
+                var basePrice = document.getElementById('modalPrice_' + id);
+                var price = parseFloat(basePrice.textContent);
+                var newTotal = price - parseFloat(priceModifier);
+                basePrice.textContent = (newTotal).toFixed(2);
+            }
+        }
     </script>
 }
 
