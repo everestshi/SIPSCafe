@@ -59,7 +59,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                                <input type="radio" name="iceOptions_@tea.ItemId" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
                                                 @option.IcePercent
                                             </label>
                                         </li>
@@ -75,7 +75,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                                <input type="radio" name="sweetnessOptions_@tea.ItemId" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
                                                 @option.SweetnessPercent
                                             </label>
                                         </li>
@@ -91,7 +91,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="milkOptions" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
+                                                <input type="radio" name="milkOptions_@tea.ItemId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
                                                 @option.MilkType - $@option.PriceModifier
                                             </label>
                                         </li>
@@ -107,7 +107,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="checkbox" name="addInOptions" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
+                                                <input type="checkbox" name="addInOptions_@tea.ItemId" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
                                                 @option.AddInName - $@option.PriceModifier
                                             </label>
                                         </li>
@@ -128,27 +128,59 @@
 </div>
 
 @section Scripts {
-
-    @* <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var customizeButtons = document.querySelectorAll('.customize');
-            var modalPrice = document.getElementById('modalPrice');
+            // Function to reset form elements inside the modal
+            function resetModal(modalId) {
+                // Reset radio buttons for ice level
+                var iceOptions = document.querySelectorAll('#' + modalId + ' input[name^="iceOptions_"]');
+                iceOptions.forEach(function (input) {
+                    input.checked = input.value === "3"; // Check if the value matches "Regular Ice"
+                });
+                // Reset radio buttons for sweetness level
+                var sweetnessOptions = document.querySelectorAll('#' + modalId + ' input[name^="sweetnessOptions_"]');
+                sweetnessOptions.forEach(function (input) {
+                    console.log(input)
+                    input.checked = input.value === "5"; // Check if the value matches "100% Sweet"
+                });
+                // Reset radio buttons for milk choice
+                var milkOptions = document.querySelectorAll('#' + modalId + ' input[name^="milkOptions_"]');
+                milkOptions.forEach(function (input) {
+                    console.log(input)
+                    input.checked = input.value === "1"; // Check if the value matches "Regular"
+                });
+                // Reset checkboxes for add-ins
+                var addInOptions = document.querySelectorAll('#' + modalId + ' input[name^="addInOptions_"]');
+                addInOptions.forEach(function (input) {
+                    input.checked = input.defaultChecked;
+                });
+                
+            }
 
-            customizeButtons.forEach(function (button) {
+            // Get references to the modal and its close buttons
+            var closeModalButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+            // Add event listener for modal close buttons
+            closeModalButtons.forEach(function (button) {
                 button.addEventListener('click', function () {
-                    // Get the price from data attribute
-                    var price = button.getAttribute('data-price');
-                    // Update the modal price
-                    modalPrice.textContent = '$' + parseFloat(price).toFixed(2);
+                    // Find the closest modal parent of the button
+                    var modal = button.closest('.modal');
+                    if (modal) {
+                        var modalId = modal.getAttribute('id');
+                        resetModal(modalId);
+                    }
+                });
+            });
+
+            // Get references to the add to cart buttons
+            var addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+            // Add event listener for add to cart button click
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Add your logic to add item to cart here
                 });
             });
         });
-    </script> *@
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    <!-- Your HTML and JavaScript code -->
-
-    <script>
 
         var totalQuantity = 0;
         var totalAmount = 0;
@@ -308,29 +340,29 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            // Get references to the customize and add to cart buttons
-            var customizeButtons = document.querySelectorAll('.customize');
-            var addToCartButtons = document.querySelectorAll('.add-to-cart');
-            // Add event listener for customize button click
-            customizeButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    // Show the modal
-                    document.getElementById('customizeModal').classList.add('show');
-                    document.getElementById('customizeModal').style.display = 'block';
-                });
-            });
-            // Add event listener for add to cart button click
-            addToCartButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    // Add your logic to add item to cart here
-                    // alert('Item added to cart!');
-                });
-            });
-        });
-
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     // Get references to the customize and add to cart buttons
+        //     var customizeButtons = document.querySelectorAll('.customize');
+        //     var addToCartButtons = document.querySelectorAll('.add-to-cart');
+        //     // Add event listener for customize button click
+        //     customizeButtons.forEach(function (button) {
+        //         button.addEventListener('click', function () {
+        //             // Show the modal
+        //             document.getElementById('customizeModal').classList.add('show');
+        //             document.getElementById('customizeModal').style.display = 'block';
+        //         });
+        //     });
+        //     // Add event listener for add to cart button click
+        //     addToCartButtons.forEach(function (button) {
+        //         button.addEventListener('click', function () {
+        //             // Add your logic to add item to cart here
+        //             // alert('Item added to cart!');
+        //         });
+        //     });
+        // });
     </script>
 }
+
 <style>
     /* Customize modal appearance */
     .modal-content {

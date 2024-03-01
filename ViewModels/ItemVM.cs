@@ -27,20 +27,19 @@ namespace Sips.ViewModels
         [Display(Name = "Item Type")]
         public string? ItemTypeName { get; set; }
 
-        [Required(ErrorMessage = "Please select a file.")]
+        //[Required(ErrorMessage = "Please select a file.")]
         [Display(Name = "Image File")]
 
         public IFormFile? ImageFile { get; set; }
 
-        //public byte[] ImageFile { get; set; } 
+        public byte[]? ImageData { get; set; }
+        public string? ImageBase64 { get; set; }
+
 
         [Display(Name = "Has Milk")]
+        [Required]
 
         public bool? hasMilk {  get; set; }
-        //public string? FileName { get; set; } = null!;
 
-
-
-        //public ItemType? ItemType { get; set; }
     }
 }

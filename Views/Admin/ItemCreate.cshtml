@@ -11,7 +11,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="ItemCreate" method="post" enctype="multipart/form-data">
+        <form asp-action="ItemCreate" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -57,44 +58,16 @@
 
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="form-control"
+                <input asp-for="ImageFile" class="form-control" id="ImageFile"
                     type="file" accept="image/*" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-
+                <span asp-validation-for="ImageFile" id="fileMessage" class="text-danger"></span>
+                <br />
             </div>
 
+            <br />
 
-
-           @*  <div class="container my-5">
-                <div class="jumbotron text-center">
-                    <h2 class="display-4" style="color:blue">Save Image</h2><br />
-
-                    @if (ViewData["SuccessMessage"] != null)
-                    {
-                        <div class="alert alert-success" role="alert">
-                            @ViewData["SuccessMessage"]
-                        </div>
-                    }
-
-                    <div class="row">
-                        <div class="col-sm-6 offset-3">
-                            <form method="post" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <input asp-for="ImageFile" class="form-control"
-                                           type="file" accept="image/*" />
-                                    <span asp-validation-for="ImageFile"
-                                          class="text-danger"></span>
-                                </div><br /><br />
-                                <button type="submit" class="uploadButton">
-                                    <img src="~/images/SaveImage.png" alt="Upload Image" />
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div> *@
-            @* </div> *@
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input onclick="validateForm()" type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -107,3 +80,20 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<script>
+
+    function validateForm() {
+        var fileInput = document.getElementById('ImageFile');
+
+        if (fileInput.files.length === 0) {
+
+            document.getElementById('fileMessage').textContent = 'The Image File field is required.'
+            // Prevent form submission
+            return false;
+        }
+        document.getElementById('fileMessage').textContent = ''
+
+        // Allow form submission if the file input is not empty
+        return true;
+    }
+</script>
