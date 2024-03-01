@@ -103,7 +103,9 @@ namespace Sips.Controllers
             ProductRepository prorepo = new ProductRepository(_db);
             if (ModelState.IsValid)
             {
-                string repoMessage = prorepo.Add(proVM);
+                string repoMessage = prorepo.AddAsync(proVM).Result;
+
+                //string repoMessage =string( prorepo.AddAsync(proVM));
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
@@ -120,7 +122,6 @@ namespace Sips.Controllers
             ItemVM itemVm = prorepo.GetById(id);
 
             //ViewBag.ItemType = prorepo.GetItemTypes();
-
             var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemTypeId);
 
@@ -323,6 +324,88 @@ namespace Sips.Controllers
 
             return RedirectToAction("ContactIndex", new { message = repoMessage });
         }
+
+
+
+        //images********************************************************************************
+
+        public IActionResult ImageIndex()
+        {
+            return View();
+        }
+
+        public IActionResult Images()
+        {
+            IEnumerable<ImageStore> images = _db.ImageStores;
+
+            return View(images);
+        }
+
+        public IActionResult ImageSave()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ImageSave(UploadModel uploadModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (uploadModel.ImageFile != null && uploadModel.ImageFile.Length > 0)
+                {
+                    string contentType = uploadModel.ImageFile.ContentType;
+
+                    if (contentType == "image/png" ||
+                        contentType == "image/jpeg" ||
+                        contentType == "image/jpg")
+                    {
+                        try
+                        {
+                            byte[] imageData;
+
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                await uploadModel.ImageFile.CopyToAsync(memoryStream);
+                                imageData = memoryStream.ToArray();
+                            }
+
+                            var image = new ImageStore
+                            {
+                                FileName = Path.
+                                   GetFileNameWithoutExtension(uploadModel.ImageFile.FileName),
+                                Image = imageData
+                            };
+
+                            _db.ImageStores.Add(image);
+
+                            await _db.SaveChangesAsync();
+                            return RedirectToAction("ImageIndex", "Admin");
+
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("imageUpload"
+                                                    , "An error occured uploading your image."
+                                                    + " Please try again.");
+                            System.Diagnostics.Debug.WriteLine(ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("imageUpload", "Please upload a PNG, " +
+                                                                "JPG, or JPEG file.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("imageUpload", "Please select an " +
+                                                            " image to upload.");
+                }
+            }
+
+            return View(uploadModel);
+        }
+
 
     }
 }

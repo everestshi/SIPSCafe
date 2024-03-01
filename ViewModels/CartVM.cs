@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Sips.ViewModels
 {
-    public class CheckoutVM
+    public class CartVM
     {
         [Key]
         public int ItemId { get; set; }

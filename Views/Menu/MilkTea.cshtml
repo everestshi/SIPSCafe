@@ -1,6 +1,5 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
-
 <div class="tea-container">
     <h1>Milk Teas</h1>
     <div>
@@ -120,7 +119,7 @@
                     <div class="modal-footer">
                         <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
                         <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Add to Cart</button>
+                        <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -160,7 +159,7 @@
 
             var itemPrice = parseFloat(price);
             var subTotal = total * itemPrice;
-            document.getElementById('totalAmount').textContent = formatCurrency(subTotal, currency);
+            document.getElementById('totalAmount').textContent = formatCurrency(subTotal);
 
             // Update grand total
             totalQuantity += 1;
@@ -168,11 +167,41 @@
 
             // Display grand total
             document.getElementById('totalQuantity').textContent = totalQuantity;
-            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount, currency);
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
+
+
+            fetch('/Transaction/AddToCart?id=' + id, {
+                method: 'GET',
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+                //,
+                // body: JSON.stringify({ id: 1 })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json(); // Parse the response body as JSON
+                })
+                .then(data => {
+                    // Handle the JSON data returned from the server
+                    console.log(data); // Example output: { Name: "John Doe", Age: 30, Occupation: "Software Developer" }
+                    // Manipulating the DOM based on the response
+                    // document.getElementById('personName').textContent = data.Name;
+                    // document.getElementById('personAge').textContent = data.Age;
+                    // document.getElementById('personOccupation').textContent = data.Occupation;
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error('Fetch error:', error);
+                });
+
         }
 
-        function formatCurrency(amount, currency) {
-            return '$' + amount.toFixed(2) + ' ' + currency;
+        function formatCurrency(amount) {
+            return '$' + amount.toFixed(2) + ' ' + 'CAD';
         }
 
         // function to handle milk price modifiers
@@ -231,7 +260,6 @@
         });
     </script>
 }
-
 <style>
     /* Customize modal appearance */
     .modal-content {
