@@ -145,6 +145,9 @@
             });
         });
     </script> *@
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Your HTML and JavaScript code -->
 
     <script>
 
@@ -186,18 +189,13 @@
                     return response.json(); // Parse the response body as JSON
                 })
                 .then(data => {
-                    // Handle the JSON data returned from the server
                     console.log(data); // Example output: { Name: "John Doe", Age: 30, Occupation: "Software Developer" }
-                    // Manipulating the DOM based on the response
-                    // document.getElementById('personName').textContent = data.Name;
-                    // document.getElementById('personAge').textContent = data.Age;
-                    // document.getElementById('personOccupation').textContent = data.Occupation;
+     
                 })
                 .catch(error => {
                     // Handle errors
                     console.error('Fetch error:', error);
                 });
-
         }
 
         function formatCurrency(amount) {
@@ -258,6 +256,7 @@
                 });
             });
         });
+
     </script>
 }
 <style>
