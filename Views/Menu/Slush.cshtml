@@ -61,7 +61,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="iceOptions" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                                <input type="radio" name="iceOptions_@tea.ItemId" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
                                                 @option.IcePercent
                                             </label>
                                         </li>
@@ -77,7 +77,7 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="sweetnessOptions" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                                <input type="radio" name="sweetnessOptions_@tea.ItemId" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
                                                 @option.SweetnessPercent
                                             </label>
                                         </li>
@@ -96,7 +96,7 @@
                                     {
                                         <li>
                                             <label>
-                                                    <input type="radio" name="milkOptions" value="@option.MilkChoiceId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" @(option.MilkType == "Regular" ? "checked" : "")>
+                                                    <input type="radio" name="milkOptions_@tea.ItemId" value="@option.MilkChoiceId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" @(option.MilkType == "Regular" ? "checked" : "")>
                                                 @option.MilkType - $@option.PriceModifier
                                             </label>
                                         </li>
