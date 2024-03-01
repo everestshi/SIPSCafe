@@ -124,7 +124,7 @@ h1, h2, h3, h5, h6 {
     justify-content: space-between;
     align-items: center;
     margin: 5vh auto;
-    width: 85%;
+    width: 100%;
 }
 
 #contact-address {
@@ -132,6 +132,11 @@ h1, h2, h3, h5, h6 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 50%
+}
+#map-image {
+    width: 50%;
+    display: flex;
 }
 
 .banner-cta {
