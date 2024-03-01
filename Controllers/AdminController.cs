@@ -42,6 +42,12 @@ namespace Sips.Controllers
             ViewData["CurrentSort"] = sortOrder;
             ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
             ViewData["NameSortParm"] = sortOrder == "Name" ? "nameSortDesc" : "Name";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "PriceSortDesc" : "Price";
+            ViewData["InventorySortParm"] = sortOrder == "Inventory" ? "InventorySortDesc" : "Inventory";
+            ViewData["TypeSortParm"] = sortOrder == "Type" ? "TypeSortDesc" : "Type";
+
+
+
 
             ProductRepository prorepo = new ProductRepository(_db);
             IEnumerable<ItemVM> products = prorepo.GetAll().ToList();
@@ -60,6 +66,26 @@ namespace Sips.Controllers
                     break;
                 case "Name":
                     products = products.OrderBy(p => p.Name).ToList();
+                    break;
+                case "InventorySortDesc":
+                    products = products.OrderByDescending(p => p.Inventory).ToList();
+                    break;
+                case "Inventory":
+                    products = products.OrderBy(p => p.Inventory).ToList();
+                    break;
+
+                case "TypeSortDesc":
+                    products = products.OrderByDescending(p => p.ItemTypeName).ToList();
+                    break;
+                case "Type":
+                    products = products.OrderBy(p => p.ItemTypeName).ToList();
+                    break;
+
+                case "PriceSortDesc":
+                    products = products.OrderByDescending(p => p.BasePrice).ToList();
+                    break;
+                case "Price":
+                    products = products.OrderBy(p => p.BasePrice).ToList();
                     break;
                 case "idSortDesc":
                     products = products.OrderByDescending(p => p.ItemId).ToList();
@@ -124,6 +150,7 @@ namespace Sips.Controllers
             //ViewBag.ItemType = prorepo.GetItemTypes();
             var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemTypeId);
+            //ViewBag.ImageFile = itemVm.ImageFile;
 
             return View(itemVm);
         }
@@ -140,8 +167,6 @@ namespace Sips.Controllers
             }
             var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemTypeId);
-
-
 
             return View(itemVm);
         }

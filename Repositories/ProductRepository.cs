@@ -26,6 +26,10 @@ namespace Sips.Repositories
 
             foreach (var p in products)
             {
+                ImageStore imageStore = _db.ImageStores.FirstOrDefault(item => item.ImageId == p.ImageId);
+                byte[] imageData = imageStore?.Image;
+
+
                 ItemVM itemVM = new ItemVM()
                 {
                     ItemId = p.ItemId,
@@ -36,6 +40,8 @@ namespace Sips.Repositories
                     ItemTypeId = p.ItemType?.ItemTypeId,
                     ItemTypeName = p.ItemType?.ItemTypeName,
                     hasMilk = p.HasMilk,
+                    ImageData = imageData,
+                    ImageBase64 = imageData != null ? Convert.ToBase64String(imageData) : null
                 };
 
                 itemsVM.Add(itemVM);
@@ -57,7 +63,7 @@ namespace Sips.Repositories
             return itemTypes;
         }
 
-        
+
         public ItemVM GetById(int id)
         {
             var p = _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == id);
@@ -66,7 +72,7 @@ namespace Sips.Repositories
 
             byte[] imageData = imageStore?.Image;
             string imgName = imageStore?.FileName;
-            //string contentType = 
+
 
             var itemVM = new ItemVM
             {
@@ -78,7 +84,9 @@ namespace Sips.Repositories
                 ItemTypeId = p.ItemTypeId,
                 ItemTypeName = p.ItemType?.ItemTypeName,
                 hasMilk = p.HasMilk,
-                //ImageFile = imageStore?.Image
+                ImageData = imageData,
+                ImageBase64 = imageData != null ? Convert.ToBase64String(imageData) : null,
+                ImageFile = null,
 
             };
 
@@ -91,12 +99,12 @@ namespace Sips.Repositories
         {
             string message = string.Empty;
             IFormFile ImageFile = proVM.ImageFile;
-            int imageID = await ImageSave(ImageFile);
+            int imageID = 0;
+            if (ImageFile != null)
+            {
+                imageID = await ImageSave(ImageFile);
 
-            //if (imageStore != null)
-            //{
-            //   imageID = imageStore.ImageId;
-            //}
+            }
 
             Item item = new Item
             {
@@ -130,7 +138,7 @@ namespace Sips.Repositories
 
 
 
-            if (imageStoreToUpdate != null)
+            if (imageStoreToUpdate != null && editingItem.ImageFile != null )
             {
                 byte[] newImageData = ConvertIFormFileToByteArray(editingItem.ImageFile);
 
@@ -174,10 +182,13 @@ namespace Sips.Repositories
         {
             string message = string.Empty;
             Item item= _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == id);
+            ImageStore imageStoreToDelete = _db.ImageStores.FirstOrDefault(p => p.ImageId == item.ImageId);
+
 
             try
             {
                 _db.Items.Remove(item);
+                _db.ImageStores.Remove(imageStoreToDelete);
                 _db.SaveChanges();
                 message = $"{item.Name} deleted successfully";
             }
@@ -242,6 +253,30 @@ namespace Sips.Repositories
 
             return imageID;
         }
+
+        //private string SaveImageToFile(byte[] imageData, string fileName)
+        //{
+        //    if (imageData != null && !string.IsNullOrEmpty(fileName))
+        //    {
+        //        // Specify the path where you want to save the image file
+        //        string directoryPath = "YourImagePath";
+        //        string filePath = Path.Combine(directoryPath, fileName);
+
+        //        // Write the byte array to the file
+        //        File.WriteAllBytes(filePath, imageData);
+
+        //        // Optionally, you can perform additional actions or validations here
+
+        //        // Return the file path
+        //        return filePath;
+        //    }
+        //    else
+        //    {
+        //        // Handle the case where either imageData or fileName is null or empty
+        //        Console.WriteLine("Invalid image data or file name");
+        //        return null; // or throw an exception, depending on your application's logic
+        //    }
+        //}
 
     }
 }
