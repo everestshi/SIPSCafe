@@ -692,3 +692,8 @@ a {
         flex-direction: row;
         margin-top: 20px;
     }
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
