@@ -10,6 +10,9 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+        <li class="nav-item">
+            <a class="sips-nav-link" asp-area="" asp-controller="Transaction" asp-action="Checkout">cart</a>
+        </li>
     <li class="nav-item">
             <a class="sips-nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@helloLink</a>
     </li>
@@ -25,6 +28,9 @@
 }
 else
 {
+        <li class="nav-item">
+            <a class="sips-nav-link" asp-area="" asp-controller="Transaction" asp-action="Checkout">cart</a>
+        </li>
     <li class="nav-item">
         <a class="nav-link" style="color: #519389;" asp-area="Identity" asp-page="/Account/Register">register</a>
     </li>

@@ -75,44 +75,81 @@ namespace Sips.Controllers
 
             return View("Confirmation", transaction);
         }
-
-        public JsonResult AddToCart(int id)
+        public JsonResult AddToCart([FromBody] CheckoutVM checkoutVM)
         {
             string cartSession = HttpContext.Session.GetString("Cart");
+
             if (cartSession != null)
             {
                 List<CheckoutVM> cartItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CheckoutVM>>(cartSession);
-                if (cartItems.Any(c => c.ItemId == id))
+
+                if (cartItems.Any(c => c.ItemId == checkoutVM.ItemId))
                 {
-                    CheckoutVM cartItem = cartItems.FirstOrDefault(c => c.ItemId == id);
-                    int index = cartItems.FindIndex(c => c.ItemId == id);
-                    if (index != -1)
-                    {
-                        cartItems[index] = new CheckoutVM
-                        {
-                            ItemId = id,
-                            Quantity = cartItem.Quantity + 1
-                        };
-                    }
+                    CheckoutVM checkoutVMZ = cartItems.FirstOrDefault(c => c.ItemId == checkoutVM.ItemId);
+                    // Update the quantity
+                    checkoutVMZ.Quantity = checkoutVM.Quantity;
+
+
                     HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
-                }
-                else
-                {
-                    cartItems.Add(new CheckoutVM
-                    {
-                        ItemId = id,
-                        Quantity = 1
-                    });
+
+                    // Return whatever response you need
+                    return Json(new { success = true, message = "Item quantity updated in the cart." });
                 }
             }
-            else
-            {
-                List<CheckoutVM> cartItems = new List<CheckoutVM> { new CheckoutVM { ItemId = id,
-                                                                         Quantity = 1 } };
-                HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
-            }
-            return Json("Success");
+
+            // If the item is not in the cart or there's no cartSession, you may want to add it to the cart.
+            // Add your logic here to add the item to the cart if needed.
+
+            return Json(new { success = false, message = "Item not found in the cart." });
         }
+
+        //public JsonResult AddToCart(CheckoutVM checkoutVM)
+        //{
+        //    string cartSession = HttpContext.Session.GetString("Cart");
+        //    if (cartSession != null)
+        //    {
+        //        List<CheckoutVM> cartItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CheckoutVM>>(cartSession);
+        //        if (cartItems.Any(c => c.ItemId == checkoutVM.ItemId))
+        //        {
+        //            CheckoutVM checkoutVMZ =cartItems.FirstOrDefault(c=> c.ItemId == checkoutVM.ItemId);
+        //            checkoutVMZ.Quantity += checkoutVM.Quantity;
+
+
+        //            HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
+
+
+
+        //            //CheckoutVM cartItem = cartItems.FirstOrDefault(c => c.ItemId == id);
+        //            //int index = cartItems.FindIndex(c => c.ItemId == id);
+        //            //if (index != -1)
+        //            //{
+        //            //    cartItems[index] = new CheckoutVM
+        //            //    {
+        //            //        ItemId = id,
+        //            //        Quantity = cartItem.Quantity + 1
+        //            //    };
+        //            //}
+        //            //HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
+        //        }
+        //        else
+        //        {
+        //            cartItems.Add(checkoutVM);
+
+        //            //cartItems.Add(new CheckoutVM
+        //            //{
+        //            //    ItemId = id,
+        //            //    Quantity = 1
+        //            //});
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //List<CheckoutVM> cartItems = new List<CheckoutVM> { new CheckoutVM { ItemId = id,
+        //        //                                                         Quantity = 1 } };
+        //        //HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
+        //    }
+        //    return Json("Success");
+        //}
 
     }
 }

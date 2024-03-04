@@ -522,9 +522,9 @@ a {
 .tea-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
-    align-items: flex-start;
-    width: 95%;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     max-width: 1440px;
 }
 
@@ -537,7 +537,13 @@ a {
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
-    width: 800px;
+    /*min-width: 500px;*/
+    width:45%;
+    gap:1vh;
+}
+
+.tea-item p{
+    padding:5px;
 }
 
     .tea-item img {
