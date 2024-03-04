@@ -24,15 +24,15 @@
         <div class="tea-item">
             <img src="~/images/boba-02.png" alt="@tea.Name" class="img-fluid">
             <div class="tea-copy">
-                <h3>@tea.Name</h3>
-                <p>@tea.Description</p>
-                <p>Price: $@tea.BasePrice.ToString()</p>
-@*                 <button class="btn btn-secondary customize" data-toggle="modal" data-target="#customizeModal" data-price="@tea.BasePrice">Customize</button> *@
+                <span id="item-@tea.ItemId-id" style="display: none;">@tea.ItemId</span>
+                <h3 id="item-@tea.ItemId-name">@tea.Name</h3>
+                <p id="item-@tea.ItemId-desc">@tea.Description</p>
+                <p>Price: $<span id="item-@tea.ItemId-price">@tea.BasePrice.ToString()</span></p>
             </div>
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="tea-btns">
-                  @*   <button class="btn btn-primary add-to-cart" id="addButton_@tea.ItemId" onclick="AddOne('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button> *@
+
                     <button class="btn btn-secondary customize" data-bs-toggle="modal" data-bs-target="#customizeModal_@tea.ItemId" data-price="@tea.BasePrice">Customize</button>
                     <input type="hidden" id="itemPrice_@tea.ItemId" value="@tea.BasePrice" />
                 </div>
@@ -59,8 +59,8 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="iceOptions_@tea.ItemId" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
-                                                @option.IcePercent
+                                                <input id="item-@tea.ItemId-ice-@option.IcePercent" class="item-@tea.ItemId-ice" type="radio" name="iceOptions_@tea.ItemId" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
+                                                 <span id="item-@tea.ItemId-pct-@option.IcePercent class="item-@tea.ItemId-pct">@option.IcePercent</span> 
                                             </label>
                                         </li>
                                     }
@@ -75,8 +75,8 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="sweetnessOptions_@tea.ItemId" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
-                                                @option.SweetnessPercent
+                                                <input id="item-@tea.ItemId-sweet-@option.SweetnessPercent" class="item-@tea.ItemId-sweet" type="radio" name="sweetnessOptions_@tea.ItemId" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
+                                               <span id="item-@tea.ItemId-pct-@option.SweetnessPercent" class="item-@tea.ItemId-pct"> @option.SweetnessPercent</span>
                                             </label>
                                         </li>
                                     }
@@ -91,8 +91,9 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="radio" name="milkOptions_@tea.ItemId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
-                                                @option.MilkType - $@option.PriceModifier
+                                                <input id="item-@tea.ItemId-milk-@option.MilkType" class="item-@tea.ItemId-milk" type="radio" name="milkOptions_@tea.ItemId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
+                                                <span id="item-@tea.ItemId-milktype-@option.MilkType" class="item-@tea.ItemId-milktype">
+                                                @option.MilkType</span> - $@option.PriceModifier
                                             </label>
                                         </li>
                                     }
@@ -107,8 +108,8 @@
                                     {
                                         <li>
                                             <label>
-                                                <input type="checkbox" name="addInOptions_@tea.ItemId" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
-                                                @option.AddInName - $@option.PriceModifier
+                                                <input id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin" type="checkbox" name="addInOptions_@tea.ItemId" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
+                                               <span id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin"> @option.AddInName</span> - $@option.PriceModifier
                                             </label>
                                         </li>
                                     }
@@ -119,7 +120,7 @@
                     <div class="modal-footer">
                         <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
                         <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddToCart('@tea.ItemId', '@tea.BasePrice')">Add to Cart</button>
+                        <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddToCart(@tea.ItemId)">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -194,25 +195,45 @@
                 });
             });
         });
-        function AddToCart(itemId, price) {
-            console.log("function triggered");
+        function AddToCart(itemId) {
             // Collect item details
-            var item = {
-                itemId: itemId,
-                price: parseFloat(price),
-                quantity: 1, // Assuming default quantity is 1, adjust as needed
-                addInName: "", // Placeholder for add-in name
-                addInPriceModifier: 0, // Placeholder for add-in price modifier
-                sizeName: "", // Placeholder for size name
-                sizePriceModifier: 0, // Placeholder for size price modifier
-                sweetness: "", // Placeholder for sweetness level
-                ice: "", // Placeholder for ice level
-                subtotal: 0, // Placeholder for subtotal
-                milkType: "", // Placeholder for milk type
-                milkPriceModifier: 0, // Placeholder for milk price modifier
-                addInNames: [], // Placeholder for list of add-in names
-                addInPriceModifiers: [] // Placeholder for list of add-in price modifiers
-            };
+            // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
+    var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
+    var ice = iceLabel ? iceLabel.textContent.trim() : '';
+    
+    var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
+    var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
+
+    var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
+
+    var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
+    var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
+    
+    // var addIns = [];
+    // addInOptions.forEach(function (option) {
+    //     addIns.push(option.value);
+    // });
+            var addInNames = [];
+            addInOptions.forEach(function (option) {
+                var addInLabel = option.nextElementSibling;
+                if (addInLabel) {
+                    var addInName = addInLabel.textContent.trim();
+                    addInNames.push(addInName);
+                }
+            });
+    alert("addInNames ==> " + JSON.stringify(addInNames));
+
+    var item = {
+        ItemId: itemId,
+        BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
+        Name: $('#item-' + itemId + '-name').html(),
+        IcePercent: ice,
+        SweetnessPercent: sweetness,
+        MilkType: milkType,
+        AddInName: JSON.stringify(addInNames)
+    };
+
+
             // Get selected options from the modal
             var modalId = 'customizeModal_' + itemId;
             var iceOptions = document.querySelectorAll('#' + modalId + ' input[name="iceOptions"]:checked');

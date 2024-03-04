@@ -75,7 +75,7 @@ namespace Sips.Controllers
 
             return View("Confirmation", transaction);
         }
-        public JsonResult AddToCart(CheckoutVM checkoutVM)
+        public JsonResult AddToCart([FromBody] CheckoutVM checkoutVM)
         {
             string cartSession = HttpContext.Session.GetString("Cart");
 
@@ -86,9 +86,9 @@ namespace Sips.Controllers
                 if (cartItems.Any(c => c.ItemId == checkoutVM.ItemId))
                 {
                     CheckoutVM checkoutVMZ = cartItems.FirstOrDefault(c => c.ItemId == checkoutVM.ItemId);
-
                     // Update the quantity
                     checkoutVMZ.Quantity = checkoutVM.Quantity;
+
 
                     HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
 
