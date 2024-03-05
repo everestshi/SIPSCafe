@@ -8,6 +8,7 @@ using Sips.Data;
 using Sips.Repositories;
 using Sips.SipsModels;
 using Sips.ViewModels;
+using Newtonsoft.Json;
 
 namespace Sips.Controllers
 {
@@ -75,33 +76,40 @@ namespace Sips.Controllers
 
             return View("Confirmation", transaction);
         }
-        public JsonResult AddToCart([FromBody] CheckoutVM checkoutVM)
+        public JsonResult AddToCart([FromBody] CartVM cartVM)
         {
             string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems;
 
             if (cartSession != null)
             {
-                List<CheckoutVM> cartItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CheckoutVM>>(cartSession);
-
-                if (cartItems.Any(c => c.ItemId == checkoutVM.ItemId))
-                {
-                    CheckoutVM checkoutVMZ = cartItems.FirstOrDefault(c => c.ItemId == checkoutVM.ItemId);
-                    // Update the quantity
-                    checkoutVMZ.Quantity = checkoutVM.Quantity;
-
-
-                    HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
-
-                    // Return whatever response you need
-                    return Json(new { success = true, message = "Item quantity updated in the cart." });
-                }
+                cartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartSession);
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
             }
 
-            // If the item is not in the cart or there's no cartSession, you may want to add it to the cart.
-            // Add your logic here to add the item to the cart if needed.
+            // Check if the item is already in the cart
+            var existingItem = cartItems.FirstOrDefault(c => c.ItemId == cartVM.ItemId);
+            if (existingItem != null)
+            {
+                // Update the quantity
+                existingItem.Quantity = cartVM.Quantity;
+            }
+            else
+            {
+                // Add the item to the cart
+                cartItems.Add(cartVM);
+            }
 
-            return Json(new { success = false, message = "Item not found in the cart." });
+            // Serialize and store the updated cart items in the session
+            HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cartItems));
+
+            // Return the response
+            return Json(new { success = true, message = "Item added/updated in the cart." });
         }
+
 
         //public JsonResult AddToCart(CheckoutVM checkoutVM)
         //{

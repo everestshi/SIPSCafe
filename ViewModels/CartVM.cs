@@ -19,7 +19,7 @@ namespace Sips.ViewModels
         public decimal Subtotal { get; set; }
         public string MilkType { get; set; }
         public decimal MilkPriceModifier { get; set; }
-        public List<AddInOrderDetail> AddInNames { get; set; } = new List<AddInOrderDetail>();
+        public List<AddIn> AddInNames { get; set; } = new List<AddIn>();
         public List<AddInOrderDetail> AddInPriceModifiers { get; set; } = new List<AddInOrderDetail>();
     }
 }
