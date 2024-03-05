@@ -218,20 +218,24 @@
                 var addInLabel = option.nextElementSibling;
                 if (addInLabel) {
                     var addInName = addInLabel.textContent.trim();
-                    addInNames.push(addInName);
+                    addInNames.push({
+                        AddInName: addInName,
+                        // You can add other properties of AddIn here if needed
+                    });
                 }
             });
-    alert("addInNames ==> " + JSON.stringify(addInNames));
+            alert("addInNames ==> " + JSON.stringify(addInNames));
 
-    var item = {
-        ItemId: itemId,
-        BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
-        Name: $('#item-' + itemId + '-name').html(),
-        IcePercent: ice,
-        SweetnessPercent: sweetness,
-        MilkType: milkType,
-        AddInName: JSON.stringify(addInNames)
-    };
+            var item = {
+                ItemId: itemId,
+                BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
+                Name: $('#item-' + itemId + '-name').html(),
+                IcePercent: ice,
+                SweetnessPercent: sweetness,
+                MilkType: milkType,
+                AddInNames: addInNames  // Assign the populated list of AddInOrderDetail objects
+            };
+
 
 
             // Get selected options from the modal
