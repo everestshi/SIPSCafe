@@ -10,48 +10,7 @@
 <div>
     <h4>@Model.Name </h4>
     <hr />
-    <div style="display:flex; flex-direction:row; margin-left:100px;">
-        <div>
-            @if (!string.IsNullOrEmpty(Model.ImageBase64))
-            {
-                <img style="width:250px;height:250px;" src="data:image/jpeg;base64, @Model.ImageBase64" alt="Item Image" />
-            }
-            else
-            {
-                <p>No image available</p>
-            }
-
-        </div>
-        <div style="text-align:left;margin-top:50px;">
-            @Html.DisplayNameFor(model => model.Name):
-            @Html.DisplayFor(model => model.Name)<br />
-
-            @Html.DisplayNameFor(model => model.Description):
-            @Html.DisplayFor(model => model.Description)<br />
-
-            @Html.DisplayNameFor(model => model.BasePrice):
-            @Html.DisplayFor(model => model.BasePrice)<br />
-
-            @Html.DisplayNameFor(model => model.Inventory):
-            @Html.DisplayFor(model => model.Inventory)<br />
-
-            @Html.DisplayNameFor(model => model.ItemTypeName):
-            @Html.DisplayFor(model => model.ItemTypeName)<br />
-
-            @Html.DisplayNameFor(model => model.hasMilk):
-            @if (milk)
-            {
-                <text>Yes</text>
-            }
-            else
-            {
-                <text>No</text>
-            }
-
-        </div>
-    </div>
-
-@*     <dl class="row">
+    <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -95,6 +54,7 @@
             {
                 <text>No</text>
             }
+            @* @Html.DisplayFor(model => model.hasMilk) *@
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImageData)
@@ -110,7 +70,7 @@
                 <p>No image available</p>
             }
         </dd>
-    </dl> *@
+    </dl>
 </div>
 <div>
     <a asp-action="ItemEdit" asp-route-id="@Model?.ItemId">Edit</a> |

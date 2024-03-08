@@ -12,6 +12,9 @@ namespace Sips.ViewModels
         public List<MilkChoice> MilkOptions { get; set; } // List of milk options
         public List<AddIn> AddInOptions { get; set; } // List of addon options
 
+        //public byte[]? ImageData { get; set; }
+        //public string? ImageBase64 { get; set; }
+
         // Constructor to initialize lists
         public MenuItemVM()
         {
