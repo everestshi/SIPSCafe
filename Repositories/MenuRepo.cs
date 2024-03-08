@@ -1,4 +1,5 @@
-﻿using Sips.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Sips.Data;
 using Sips.SipsModels;
 using Sips.ViewModels;
 
@@ -17,21 +18,21 @@ namespace Sips.Repositories
 
         public IEnumerable<Item> GetMilkTeas()
         {
-            List<Item> items = _db.Items.Where(item => item.ItemTypeId == 1).ToList();
+            List<Item> items = _db.Items.Where(item => item.ItemTypeId == 1).Include(p => p.Image).ToList();
 
             return items;
         }
 
         public IEnumerable<Item> GetFruitTeas()
         {
-            List<Item> items = _db.Items.Where(item => item.ItemTypeId == 2).ToList();
+            List<Item> items = _db.Items.Where(item => item.ItemTypeId == 2).Include(p => p.Image).ToList();
 
             return items;
         }
 
         public IEnumerable<Item> GetSlushes()
         {
-            List<Item> items = _db.Items.Where(item => item.ItemTypeId == 3).ToList();
+            List<Item> items = _db.Items.Where(item => item.ItemTypeId == 3).Include(p => p.Image).ToList();
 
             return items;
         }

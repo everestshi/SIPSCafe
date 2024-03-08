@@ -130,13 +130,13 @@ namespace Sips.Repositories
             return message;
         }
 
-        public string Update(ItemVM editingItem)
+        public async Task<string> UpdateAsync(ItemVM editingItem)
         {
             string message = string.Empty;
             Item item = _db.Items.Include(p => p.ItemType).FirstOrDefault(p => p.ItemId == editingItem.ItemId);
             ImageStore imageStoreToUpdate = _db.ImageStores.FirstOrDefault(p => p.ImageId == item.ImageId);
 
-
+            int imageID = 0;
 
             if (imageStoreToUpdate != null && editingItem.ImageFile != null )
             {
@@ -148,6 +148,12 @@ namespace Sips.Repositories
 
                 // Save changes to the database
                 _db.SaveChanges();
+            }
+            else if(imageStoreToUpdate == null && editingItem.ImageFile != null)
+            {
+                imageID = await ImageSave(editingItem.ImageFile);
+                item.ImageId = imageID;
+
             }
 
             try

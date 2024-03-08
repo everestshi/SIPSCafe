@@ -162,7 +162,7 @@ namespace Sips.Controllers
             if (ModelState.IsValid)
             {
 
-                string repoMessage = prorepo.Update(itemVm);
+                string repoMessage = prorepo.UpdateAsync(itemVm).Result;
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
             var itemTypeList = _db.ItemTypes.ToList(); 
