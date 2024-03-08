@@ -93,7 +93,8 @@
                                             <label>
                                                 <input id="item-@tea.ItemId-milk-@option.MilkType" class="item-@tea.ItemId-milk" type="radio" name="milkOptions_@tea.ItemId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
                                                 <span id="item-@tea.ItemId-milktype-@option.MilkType" class="item-@tea.ItemId-milktype">
-                                                @option.MilkType</span> - $@option.PriceModifier
+                                                    @option.MilkType
+                                                </span> - <span id="item-@tea.ItemId-milktype-@option.PriceModifier" class="item-@tea.ItemId-milktypeprice">$@option.PriceModifier</span>
                                             </label>
                                         </li>
                                     }
@@ -109,7 +110,7 @@
                                         <li>
                                             <label>
                                                 <input id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin" type="checkbox" name="addInOptions_@tea.ItemId" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
-                                               <span id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin"> @option.AddInName</span> - $@option.PriceModifier
+                                               <span id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin"> @option.AddInName</span> - $@option.MilkPriceModifier
                                             </label>
                                         </li>
                                     }
@@ -200,14 +201,16 @@
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
     var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
     var ice = iceLabel ? iceLabel.textContent.trim() : '';
-    alert ("ice ==> " + ice);
+
     var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
     var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
-    alert ("sweetness ==> " + sweetness);
+
     var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
 
     var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
     var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
+    var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
+    alert ("milkType ==> " + milkType + ", milkPriceModifier ==> " + milkPriceModifier);
     
     // var addIns = [];
     // addInOptions.forEach(function (option) {
@@ -225,6 +228,7 @@
                 }
             });
             alert("addInNames ==> " + JSON.stringify(addInNames));
+
 
             var item = {
                 ItemId: itemId,

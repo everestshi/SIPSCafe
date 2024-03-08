@@ -17,10 +17,8 @@
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Add Ins</th>
-                        <th>Add In Price</th>
                         <th>Sweetness</th>
                         <th>Milk Type</th>
-                        <th>Milk Price</th>
                         <th>Ice</th>
                         <th>Subtotal</th>
 
@@ -34,10 +32,15 @@
                 <td>@item.Name</td>
                 <td>@item.BasePrice</td>
                 <td>@item.Quantity</td>
-                <td>@item.AddInName</td>
-                <td>@item.Sweetness</td> 
+                @foreach (var addIn in item.AddInNames)
+                {
+                    <td>@addIn.AddInName</td>
+                    <td>@addIn.PriceModifier</td>
+                }
+                @* <td>@item.AddInNames</td> *@
+                <td>@item.SweetnessPercent</td> 
                 <td>@item.MilkType</td>
-                <td>@item.Ice</td>
+                <td>@item.IcePercent</td>
                 <td>@item.Subtotal</td>
                 </tr>
                 }
