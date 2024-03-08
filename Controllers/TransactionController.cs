@@ -41,13 +41,24 @@ namespace Sips.Controllers
         }
         public IActionResult Checkout()
         {
-            HttpContext.Session.SetString("Cart", User.Identity.Name);
+            //HttpContext.Session.SetString("Cart", User.Identity.Name);
 
             // Other code for PayPal client ID
             var payPalClient = _configuration["PayPal:ClientId"];
             ViewData["PayPalClientId"] = payPalClient;
+            string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems;
 
-            return View();
+            if (cartSession != null)
+            {
+                cartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartSession);
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
+            }
+
+            return View(cartItems);
 
         }
 

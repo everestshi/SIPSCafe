@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Sips.ViewModels.CheckoutVM>
+﻿@model IEnumerable<Sips.ViewModels.CartVM>
 
 @{
     ViewData["Title"] = "Checkout";
@@ -18,8 +18,6 @@
                         <th>Quantity</th>
                         <th>Add Ins</th>
                         <th>Add In Price</th>
-                        <th>Size</th>
-                        <th>Size Price</th>
                         <th>Sweetness</th>
                         <th>Milk Type</th>
                         <th>Milk Price</th>
@@ -29,7 +27,7 @@
                     </tr>
                 </thead>
                 
-@*                                 <tbody>
+                                <tbody>
                 @foreach (var item in Model)
                 {
                 <tr>
@@ -37,17 +35,13 @@
                 <td>@item.BasePrice</td>
                 <td>@item.Quantity</td>
                 <td>@item.AddInName</td>
-                <td>@item.AddInPriceModifier</td>
-                <td>@item.SizeName</td>
-                <td>@item.SizePriceModifier</td>
                 <td>@item.Sweetness</td> 
                 <td>@item.MilkType</td>
-                <td>@item.MilkPriceModifier</td> 
                 <td>@item.Ice</td>
                 <td>@item.Subtotal</td>
                 </tr>
                 }
-                </tbody> *@
+                </tbody>
             </table>
         </div>
         <div class="checkout-details">

@@ -12,8 +12,6 @@ namespace Sips.ViewModels
         public int Quantity { get; set; }
         public string AddInName { get; set; } = null!;
         public decimal AddInPriceModifier { get; set; }
-        public string SizeName { get; set; } = null!;
-        public decimal SizePriceModifier { get; set; }
         public string Sweetness { get; set; }
         public string Ice { get; set; }
         public decimal Subtotal { get; set; }
