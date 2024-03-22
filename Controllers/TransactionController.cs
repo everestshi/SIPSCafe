@@ -41,13 +41,42 @@ namespace Sips.Controllers
         }
         public IActionResult Checkout()
         {
-            HttpContext.Session.SetString("Cart", User.Identity.Name);
+            //HttpContext.Session.SetString("Cart", User.Identity.Name);
 
             // Other code for PayPal client ID
+
             var payPalClient = _configuration["PayPal:ClientId"];
             ViewData["PayPalClientId"] = payPalClient;
+            string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems = new List<CartVM>();
 
-            return View();
+            if (cartSession != null)
+            {
+                List<CartVM>  sessionCartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartSession);
+
+                decimal total = 0;
+                int quantity = 0;
+                int lastItemId = 0;
+
+                foreach (var item in sessionCartItems.OrderBy(c => c.ItemId))
+                {
+                    if (item.ItemId != lastItemId)
+                    {
+                        lastItemId = item.ItemId;
+                        cartItems.Add(item);
+                    }
+                    else {
+                        cartItems.Last().Quantity += item.Quantity;
+                        cartItems.Last().Subtotal += item.Subtotal;
+                    }
+                }
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
+            }
+
+            return View(cartItems);
 
         }
 
@@ -76,6 +105,27 @@ namespace Sips.Controllers
 
             return View("Confirmation", transaction);
         }
+
+        [Produces("application/json")]
+        [HttpGet]
+        public JsonResult GetCartItems(string itemId)
+        {
+            string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems;
+
+            if (cartSession != null)
+            {
+                cartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartSession);
+                cartItems = cartItems.Where(c => c.ItemId == Int32.Parse(itemId)).ToList();
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
+            }
+
+            return Json(cartItems);
+        }
+        
         public JsonResult AddToCart([FromBody] CartVM cartVM)
         {
             string cartSession = HttpContext.Session.GetString("Cart");
@@ -92,16 +142,16 @@ namespace Sips.Controllers
 
             // Check if the item is already in the cart
             var existingItem = cartItems.FirstOrDefault(c => c.ItemId == cartVM.ItemId);
-            if (existingItem != null)
-            {
-                // Update the quantity
-                existingItem.Quantity = cartVM.Quantity;
-            }
-            else
-            {
+            //if (existingItem != null)
+            //{
+            //    // Update the quantity
+            //    existingItem.Quantity = cartVM.Quantity;
+            //}
+            //else
+            //{
                 // Add the item to the cart
-                cartItems.Add(cartVM);
-            }
+            cartItems.Add(cartVM);
+            //}
 
             // Serialize and store the updated cart items in the session
             HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cartItems));

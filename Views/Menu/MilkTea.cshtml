@@ -109,7 +109,7 @@
                                             <label>
                                                 <input id="item-@tea.ItemId-milk-@option.MilkType" class="item-@tea.ItemId-milk" type="radio" name="milkOptions_@tea.ItemId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
                                                 <span id="item-@tea.ItemId-milktype-@option.MilkType" class="item-@tea.ItemId-milktype">
-                                                @option.MilkType</span> - $@option.PriceModifier
+                                                @option.MilkType</span> - <span id="item-@tea.ItemId-milktype-@option.PriceModifier" class="item-@tea.ItemId-milktype">$@option.PriceModifier</span>
                                             </label>
                                         </li>
                                     }
@@ -136,7 +136,7 @@
                     <div class="modal-footer">
                         <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
                         <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddToCart(@tea.ItemId)">Add to Cart</button>
+                        <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddToCart(@tea.ItemId)" data-bs-dismiss="modal">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -216,7 +216,7 @@
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
     var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
     var ice = iceLabel ? iceLabel.textContent.trim() : '';
-    
+
     var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
     var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
 
@@ -224,6 +224,8 @@
 
     var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
     var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
+    var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
+    //alert ("milkType ==> " + milkType + ", milkPriceModifier ==> " + milkPriceModifier);
     
     // var addIns = [];
     // addInOptions.forEach(function (option) {
@@ -240,19 +242,20 @@
                     });
                 }
             });
-            alert("addInNames ==> " + JSON.stringify(addInNames));
+            // alert('#modalPrice_' + itemId + ' ==> ' + $('#modalPrice_' + itemId).html());
+
 
             var item = {
                 ItemId: itemId,
                 BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
+                SubTotal: parseFloat($('#modalPrice_' + itemId).html()),
                 Name: $('#item-' + itemId + '-name').html(),
                 IcePercent: ice,
                 SweetnessPercent: sweetness,
                 MilkType: milkType,
-                AddInNames: addInNames  // Assign the populated list of AddInOrderDetail objects
+                AddInNames: addInNames,
+                Quantity: 1// Assign the populated list of AddInOrderDetail objects
             };
-
-
 
             // Get selected options from the modal
             var modalId = 'customizeModal_' + itemId;
@@ -298,50 +301,6 @@
                     // Handle errors if needed
                 });
         }
-
-        // function AddOne(id, price, currency) {
-        //     var totalElement = document.getElementById('totalQuantity');
-        //     var total = parseInt(totalElement.textContent);
-        //     total += 1;
-        //     totalElement.textContent = total;
-
-        //     var itemPrice = parseFloat(price);
-        //     var subTotal = total * itemPrice;
-        //     document.getElementById('totalAmount').textContent = formatCurrency(subTotal);
-
-        //     // Update grand total
-        //     totalQuantity += 1;
-        //     totalAmount += itemPrice;
-
-        //     // Display grand total
-        //     document.getElementById('totalQuantity').textContent = totalQuantity;
-        //     document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
-
-
-        //     fetch('/Transaction/AddToCart?id=' + id, {
-        //         method: 'GET',
-        //         headers: {
-        //             // 'Content-Type': 'application/json',
-        //             'X-Requested-With': 'XMLHttpRequest'
-        //         }
-        //         //,
-        //         // body: JSON.stringify({ id: 1 })
-        //     })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Network response was not ok');
-        //             }
-        //             return response.json(); // Parse the response body as JSON
-        //         })
-        //         .then(data => {
-        //             console.log(data); // Example output: { Name: "John Doe", Age: 30, Occupation: "Software Developer" }
-     
-        //         })
-        //         .catch(error => {
-        //             // Handle errors
-        //             console.error('Fetch error:', error);
-        //         });
-        // }
 
         function formatCurrency(amount) {
             return '$' + amount.toFixed(2) + ' ' + 'CAD';

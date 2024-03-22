@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Sips.ViewModels.CheckoutVM>
+﻿@model IEnumerable<Sips.ViewModels.CartVM>
 
 @{
     ViewData["Title"] = "Checkout";
@@ -16,47 +16,40 @@
                         <th>Item Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Add Ins</th>
-                        <th>Add In Price</th>
-                        <th>Size</th>
-                        <th>Size Price</th>
-                        <th>Sweetness</th>
+@*                         <th>Add Ins</th>
+ *@@*                         <th>Sweetness</th>
                         <th>Milk Type</th>
-                        <th>Milk Price</th>
                         <th>Ice</th>
-                        <th>Subtotal</th>
+                        <th>Subtotal</th> *@
 
                     </tr>
-                </thead>
-                
-@*                                 <tbody>
+                </thead>                
+            <tbody>
                 @foreach (var item in Model)
                 {
-                <tr>
-                <td>@item.Name</td>
-                <td>@item.BasePrice</td>
-                <td>@item.Quantity</td>
-                <td>@item.AddInName</td>
-                <td>@item.AddInPriceModifier</td>
-                <td>@item.SizeName</td>
-                <td>@item.SizePriceModifier</td>
-                <td>@item.Sweetness</td> 
-                <td>@item.MilkType</td>
-                <td>@item.MilkPriceModifier</td> 
-                <td>@item.Ice</td>
-                <td>@item.Subtotal</td>
-                </tr>
+                    <tr>
+                            <td><button class="btn btn-outline-dark" data-modal="myModal" itemid="@item.ItemId">@item.Name</button></td>
+                            <td>@item.Subtotal</td>
+                            <td>@item.Quantity</td>
+@*                                 @foreach (var addIn in item.AddInNames)
+                            {
+                                <td>@addIn.AddInName</td>
+                                @* <td>@addIn.PriceModifier</td>
+                            } *@
+                            @* <td>@item.AddInNames</td> *@
+@*                                 <td>@item.SweetnessPercent</td> 
+                            <td>@item.MilkType</td>
+                            <td>@item.IcePercent</td>
+                            <td>@item.Subtotal</td> *@
+                            
+                    </tr>
                 }
-                </tbody> *@
+                </tbody>
             </table>
         </div>
         <div class="checkout-details">
             <div class="order-details">
-                         @*  <p>Subtotal: $@Model.Sum(item => item.Subtotal)</p>
-                <p>Tax: $@Model.Sum(item => item.Subtotal) * 0.13</p>
-                <p>Total: $@Model.Sum(item => item.Subtotal) * 1.13</p> 
-
-                 <button class="btn btn-primary">Checkout</button> *@
+                <p>Total: </p>
                 <input type="hidden" value="USD" id="currency" />
 
                 <div id="paypal-button-container"></div>
@@ -68,9 +61,130 @@
 </div>
 
 
+<!-- Modals -->
+@* @foreach (var item in Model)
+{ *@
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-dialog cart-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Cart</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div id="cart-container" class="modal-body cart-container">
+@*                         <h5>@item.Name</h5>
+                        <p>Sweetness: @item.SweetnessPercent</p>
+                        <p>Milk: @item.MilkType</p>
+                        <p>Ice: @item.IcePercent</p>
+
+                        <div class="add-ins">
+                            <p style="font-weight:bold">Add-Ins: </p>
+                            @foreach (var addIn in item.AddInNames)
+                            {
+                                <p>@addIn.AddInName</p>
+                            }
+                        </div>                           
+                        <h5 class="subtotal">Subtotal: $@item.Subtotal</h5> *@
+                    </div>                    
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Understood</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@* }
+ *@
 <script src="https://www.paypal.com/sdk/js?client-id=@ViewData["PayPalClientId"]"></script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get all buttons with the class "btn-outline-dark"
+        var buttons = document.querySelectorAll('.btn-outline-dark');
+
+        //Add event listener to each button
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Get the modal ID from the button's data-modal attribute
+                var cartContainer = document.getElementById('cart-container');
+                cartContainer.innerHTML = '';
+
+                var modalId = button.getAttribute('data-modal');
+                var itemId = button.getAttribute('itemId');
+
+                fetch('/Transaction/GetCartItems?itemId=' + itemId, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        // Add any other headers if needed
+                    },
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Process the data returned from the server
+                        console.log(JSON.stringify(data));
+                        if (data && data.length > 0) {
+
+                            data.forEach(item => {
+                                // Create elements and append them to the cart container
+                                var itemElement = document.createElement('div');
+                                itemElement.innerHTML = `
+                                    <h5>${item.name}</h5>
+                                    <p>Sweetness: ${item.sweetnessPercent}</p>
+                                    <p>Milk: ${item.milkType}</p>
+                                    <p>Ice: ${item.icePercent}</p>
+                                    <div class="add-ins">
+                                    <p style="font-weight:bold">Add-Ins: </p>
+                                    ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
+                                    </div>
+                                    <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
+                                `;
+                                cartContainer.appendChild(itemElement);
+                            });
+                            alert(itemElement);
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                    // Display the modal using Bootstrap's modal method
+                    var modal = new bootstrap.Modal(document.getElementById(modalId));
+                    modal.show();
+
+            });
+        });
+    });
+    var grandTotalAmount = 0;
+
+    function AddTotal(id, price, currency) {
+        var totalElement = document.getElementById('total_' + id);
+        var total = parseInt(totalElement.textContent);
+        total += 1;
+        totalElement.textContent = total;
+      
+
+        var itemPrice = parseFloat(price);
+        var subTotal = total * itemPrice;
+        document.getElementById('subTotal_' + id).textContent = formatCurrency(subTotal, currency);
+
+        // Update grand total
+        grandTotalAmount += itemPrice;
+
+        // Display grand total
+        document.getElementById('grandTotalAmount').textContent = formatCurrency(grandTotalAmount, currency);
+    }
+
     paypal.Buttons({
         // Set up the transaction
         createOrder: function (data, actions) {
