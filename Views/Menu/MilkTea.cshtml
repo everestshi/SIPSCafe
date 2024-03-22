@@ -1,7 +1,7 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
 <div id="message-container">
-    <p id="add-to-cart-message">Item added to cart!</p>
+    <p id="add-to-cart-message" style="display:none">Item added to cart!</p>
 </div>
 <div class="tea-container">
     <h1>Milk Teas</h1>
@@ -221,6 +221,17 @@
             setTimeout(function () {
                 $('#add-to-cart-message').fadeOut('slow');
             }, 1500);
+            // temporarily update the cart total until page is refreshed
+            var checkoutTotal = document.getElementById('checkout-icon');
+            var quantity = checkoutTotal.getAttribute('value');
+            console.log('quantity:', quantity);
+
+            var intTotal = parseInt(quantity) + 1;
+            console.log('intTotal:', intTotal);
+
+            // Update the data-value attribute with the new total
+            checkoutTotal.setAttribute('value', intTotal);
+
             // Collect item details
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
     var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
