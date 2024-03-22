@@ -143,7 +143,6 @@
     function calculateTotal() {
         var subtotalElements = document.querySelectorAll('.subtotal-amount');
         var subTotalQty = document.querySelectorAll('.subtotal-qty');
-        console.log(subTotalQty);
         var grandTotalAmount = 0;
         var grandTotalQty = 0;
 
@@ -165,7 +164,9 @@
     paypal.Buttons({
         // Set up the transaction
         createOrder: function (data, actions) {
-            var totalAmount = parseFloat(document.getElementById('grandTotalAmount').innerText);
+            var totalAmount = parseFloat(document.getElementById('grandTotalAmount').innerText.replace(/[^\d.-]/g, ''));
+            console.log('Total Amount:', totalAmount); // Log the total amount for debugging
+
 
             return actions.order.create({
                 purchase_units: [{
@@ -235,6 +236,7 @@
         },
         onError: function (err) {
             alert('An error occurred during the transaction.');
+            console.log(err);
         },
         style: {
             layout: 'horizontal', // 'vertical', 'horizontal'
