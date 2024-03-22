@@ -160,54 +160,5 @@ namespace Sips.Controllers
             return Json(new { success = true, message = "Item added/updated in the cart." });
         }
 
-
-        //public JsonResult AddToCart(CheckoutVM checkoutVM)
-        //{
-        //    string cartSession = HttpContext.Session.GetString("Cart");
-        //    if (cartSession != null)
-        //    {
-        //        List<CheckoutVM> cartItems = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CheckoutVM>>(cartSession);
-        //        if (cartItems.Any(c => c.ItemId == checkoutVM.ItemId))
-        //        {
-        //            CheckoutVM checkoutVMZ =cartItems.FirstOrDefault(c=> c.ItemId == checkoutVM.ItemId);
-        //            checkoutVMZ.Quantity += checkoutVM.Quantity;
-
-
-        //            HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
-
-
-
-        //            //CheckoutVM cartItem = cartItems.FirstOrDefault(c => c.ItemId == id);
-        //            //int index = cartItems.FindIndex(c => c.ItemId == id);
-        //            //if (index != -1)
-        //            //{
-        //            //    cartItems[index] = new CheckoutVM
-        //            //    {
-        //            //        ItemId = id,
-        //            //        Quantity = cartItem.Quantity + 1
-        //            //    };
-        //            //}
-        //            //HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
-        //        }
-        //        else
-        //        {
-        //            cartItems.Add(checkoutVM);
-
-        //            //cartItems.Add(new CheckoutVM
-        //            //{
-        //            //    ItemId = id,
-        //            //    Quantity = 1
-        //            //});
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //List<CheckoutVM> cartItems = new List<CheckoutVM> { new CheckoutVM { ItemId = id,
-        //        //                                                         Quantity = 1 } };
-        //        //HttpContext.Session.SetString("Cart", JsonSerializer.Serialize(cartItems));
-        //    }
-        //    return Json("Success");
-        //}
-
     }
 }
