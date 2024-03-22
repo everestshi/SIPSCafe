@@ -60,7 +60,7 @@ namespace Sips.Controllers
 
             var viewModel = new MenuItemVM
             {
-                Title = "Milk Tea Menu",
+                Title = "Fruit Tea Menu",
                 Items = fruitTeas.ToList(),
                 IceOptions = iceOptions.ToList(),
                 SweetnessOptions = sweetnessOptions.ToList(),

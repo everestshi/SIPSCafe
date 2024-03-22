@@ -16,12 +16,6 @@
                         <th>Item Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-@*                         <th>Add Ins</th>
- *@@*                         <th>Sweetness</th>
-                        <th>Milk Type</th>
-                        <th>Ice</th>
-                        <th>Subtotal</th> *@
-
                     </tr>
                 </thead>                
             <tbody>
@@ -29,19 +23,8 @@
                 {
                     <tr>
                             <td><button class="btn btn-outline-dark" data-modal="myModal" itemid="@item.ItemId">@item.Name</button></td>
-                            <td>@item.Subtotal</td>
-                            <td>@item.Quantity</td>
-@*                                 @foreach (var addIn in item.AddInNames)
-                            {
-                                <td>@addIn.AddInName</td>
-                                @* <td>@addIn.PriceModifier</td>
-                            } *@
-                            @* <td>@item.AddInNames</td> *@
-@*                                 <td>@item.SweetnessPercent</td> 
-                            <td>@item.MilkType</td>
-                            <td>@item.IcePercent</td>
-                            <td>@item.Subtotal</td> *@
-                            
+                            <td class="subtotal-amount">@item.Subtotal</td>
+                            <td class="subtotal-qty">@item.Quantity</td>
                     </tr>
                 }
                 </tbody>
@@ -49,14 +32,12 @@
         </div>
         <div class="checkout-details">
             <div class="order-details">
-                <p>Total: </p>
+                <p>Quantity: <span id="grandTotalQty">0</span></p>
+                <p>Total: <span id="grandTotalAmount">$0.00</span></p>
                 <input type="hidden" value="USD" id="currency" />
-
                 <div id="paypal-button-container"></div>
             </div>
-
         </div>
-
     </div>
 </div>
 
@@ -75,24 +56,11 @@
                     </div>
 
                     <div id="cart-container" class="modal-body cart-container">
-@*                         <h5>@item.Name</h5>
-                        <p>Sweetness: @item.SweetnessPercent</p>
-                        <p>Milk: @item.MilkType</p>
-                        <p>Ice: @item.IcePercent</p>
-
-                        <div class="add-ins">
-                            <p style="font-weight:bold">Add-Ins: </p>
-                            @foreach (var addIn in item.AddInNames)
-                            {
-                                <p>@addIn.AddInName</p>
-                            }
-                        </div>                           
-                        <h5 class="subtotal">Subtotal: $@item.Subtotal</h5> *@
                     </div>                    
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Understood</button>
+                        @* <button type="button" class="btn btn-primary">Understood</button> *@
                     </div>
                 </div>
             </div>
@@ -104,6 +72,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
         // Get all buttons with the class "btn-outline-dark"
         var buttons = document.querySelectorAll('.btn-outline-dark');
 
@@ -158,6 +127,8 @@
                     .catch(error => {
                         console.error('Error:', error);
                     });
+
+
                     // Display the modal using Bootstrap's modal method
                     var modal = new bootstrap.Modal(document.getElementById(modalId));
                     modal.show();
@@ -165,65 +136,114 @@
             });
         });
     });
-    var grandTotalAmount = 0;
 
-    function AddTotal(id, price, currency) {
-        var totalElement = document.getElementById('total_' + id);
-        var total = parseInt(totalElement.textContent);
-        total += 1;
-        totalElement.textContent = total;
-      
+    // Calculate total when the page loads
+    calculateTotal();
 
-        var itemPrice = parseFloat(price);
-        var subTotal = total * itemPrice;
-        document.getElementById('subTotal_' + id).textContent = formatCurrency(subTotal, currency);
+    function calculateTotal() {
+        var subtotalElements = document.querySelectorAll('.subtotal-amount');
+        var subTotalQty = document.querySelectorAll('.subtotal-qty');
+        var grandTotalAmount = 0;
+        var grandTotalQty = 0;
 
-        // Update grand total
-        grandTotalAmount += itemPrice;
+        subtotalElements.forEach(function (subtotalElement, index) {
+            var subtotal = parseFloat(subtotalElement.textContent.replace('$', ''));
+            grandTotalAmount += subtotal;
+            var qty = parseInt(subTotalQty[index].textContent);
+            grandTotalQty += qty;
+        });
 
         // Display grand total
-        document.getElementById('grandTotalAmount').textContent = formatCurrency(grandTotalAmount, currency);
-    }
+        document.getElementById('grandTotalAmount').textContent = '$' + grandTotalAmount.toFixed(2);
+        document.getElementById('grandTotalQty').textContent = grandTotalQty;
 
+    }
+</script>
+
+<script>
     paypal.Buttons({
         // Set up the transaction
         createOrder: function (data, actions) {
+            var totalAmount = parseFloat(document.getElementById('grandTotalAmount').innerText.replace(/[^\d.-]/g, ''));
+            console.log('Total Amount:', totalAmount); // Log the total amount for debugging
+
+
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: parseFloat(document.getElementById('totalAmount').innerText.replace('$', '')),
-                        currency:
-                            document.getElementById('currency').value
+                        value: totalAmount.toFixed(2), // Format the value as needed
+                        currency: 'CAD' // Replace with the appropriate currency code
                     }
                 }]
             });
         },
+
         // Finalize the transaction
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
-                const redirectUrl =
-                    '/Home/PayPalConfirmation?TransactionId=' +
-                    encodeURIComponent(details.id) + '&Amount=' +
-                    encodeURIComponent(details.purchase_units[0].amount.value) + '&PayerName=' +
-                    encodeURIComponent(details.payer.name.given_name) + '&PayerEmail=' +
-                    encodeURIComponent(details.payer.email_address) + '&CreatedDate=' +
-                    encodeURIComponent(details.create_time) + '&PaymentMethod=' +
-                    encodeURIComponent('paypal') + '&Currency=' +
-                    encodeURIComponent('CAD');
-                window.location.href = redirectUrl
-            }).catch(err => alert('An error occurred during the transaction.'))
+                // Prepare transaction details
+                const transactionData = {
+                    PaymentId: details.id,
+                    Amount: details.purchase_units[0].amount.value,
+                    Currency: details.purchase_units[0].amount.currency_code,
+                    PaymentMethod: 'PayPal',
+                    PayerName: details.payer.name.given_name,
+                    Create_time: details.create_time,
+                    PayerEmail: details.payer.email_address
+                };
+
+                // Send transaction details to the server using fetch
+                fetch('/Transaction/PaySuccess', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json' // Update Accept header to expect JSON
+                    },
+                    body: JSON.stringify(transactionData)
+                })
+                    .then(response => {
+                        console.log(response); // Log the raw response
+                        // Check if the response is HTML
+                        if (response.headers.get('Content-Type').includes('text/html')) {
+                            // Handle HTML response
+                            return response.text(); // or use response.text() directly
+                        }
+                        // Otherwise, proceed with JSON parsing
+                        return response.json();
+                    })
+                    .then(responseData => {
+                        // Handle the JSON response from the server
+                        console.log(responseData);
+
+                        // Check if responseData contains redirectUrl
+                        if (responseData.redirectUrl) {
+                            // Redirect to the specified URL
+                            window.location.href = responseData.redirectUrl;
+                        } else {
+                            // Handle the response data accordingly
+                        }
+                    })
+                    .catch(error => {
+                        // Handle any errors that occur during the fetch
+                        console.error('Error:', error);
+                    });
+            });
         },
+
+
         onCancel: function (data) {
             alert('Transaction was cancelled.');
         },
         onError: function (err) {
             alert('An error occurred during the transaction.');
+            console.log(err);
         },
         style: {
             layout: 'horizontal', // 'vertical', 'horizontal'
             color: 'silver',      // 'gold', 'blue', 'silver', 'black'
-            shape: 'rect',      // 'rect', 'pill'
-            label: 'checkout'     // 'checkout', 'pay', 'buynow', 'paypal'
+            shape: 'rect',        // 'rect', 'pill'
+            label: 'checkout',    // 'checkout', 'pay', 'buynow', 'paypal'
+            fundingicons: false,  // Hide the funding icons (debit/credit card)
         }
     }).render('#paypal-button-container');
 </script>
