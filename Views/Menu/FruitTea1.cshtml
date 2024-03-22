@@ -217,6 +217,12 @@
             });
         });
         function AddToCart(itemId) {
+            // Show the add to cart message
+            $('#add-to-cart-message').fadeIn('slow');
+            // Set a timeout to hide the message after 5 seconds
+            setTimeout(function () {
+                $('#add-to-cart-message').fadeOut('slow');
+            }, 1500);
             // Collect item details
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
 
