@@ -1,23 +1,22 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
 <div class="tea-container">
-    <h1>Fruit Teas</h1>
+    <h1>Milk Teas</h1>
     <div>
-
         <a href="@Url.Action("Slush", "Menu")">
             <h4>Slushes</h4>
         </a>
         <a href="@Url.Action("MilkTea", "Menu")">
-            <h4>Milk Teas</h4>
+            <h4>Fruit Teas</h4>
         </a>
     </div>
 </div>
-<div class="tea-subtotal">
+  <div class="tea-subtotal">
+        
+            <p>Quantity: <span id="totalQuantity"> 0</span></p>
+            <p>Subtotal: <span id="totalAmount"> 0</span></p>
 
-    <p>Quantity: <span id="totalQuantity"> 0</span></p>
-    <p>Subtotal: <span id="totalAmount"> 0</span></p>
-
-</div>
+    </div>
 </div>
 <div class="tea-list">
     @foreach (var tea in Model.Items)
@@ -25,7 +24,7 @@
         <div class="tea-item">
             <img src="data:image/jpeg;base64,
                                  @Convert.ToBase64String(tea.Image?.Image)"
-                 alt="@tea.Image?.FileName" class="img-fluid" />
+        alt="@tea.Image?.FileName" class="img-fluid"/>
 
             @* <img src="~/images/boba-02.png" alt="@tea.Name" class="img-fluid"> *@
             <div class="tea-copy">
@@ -48,14 +47,14 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        @*                         <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                    <img style="width:100px;height:100px;" src="data:image/jpeg;base64,
-                    @Convert.ToBase64String(tea.Image?.Image)"
-                    alt="@tea.Image?.FileName"  /> *@
-                        @*                         <div style="display: flex;">
-                    <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                    <img style="width:100px;height:100px;" src="data:image/jpeg;base64, @Convert.ToBase64String(tea.Image?.Image)" alt="@tea.Image?.FileName" />
-                    </div> *@
+@*                         <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
+                        <img style="width:100px;height:100px;" src="data:image/jpeg;base64,
+                                 @Convert.ToBase64String(tea.Image?.Image)"
+                             alt="@tea.Image?.FileName"  /> *@
+@*                         <div style="display: flex;">
+                            <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
+                            <img style="width:100px;height:100px;" src="data:image/jpeg;base64, @Convert.ToBase64String(tea.Image?.Image)" alt="@tea.Image?.FileName" />
+                        </div> *@
                         <div style="margin: 0 auto;">
                             @* <h5 class="modal-title" id="customizeModalLabel" style="margin-left: 10px;">Customize Your Drink</h5> *@
                             <img style="width: 200px; height: 200px;" src="data:image/jpeg;base64, @Convert.ToBase64String(tea.Image?.Image)" alt="@tea.Image?.FileName" />
@@ -77,7 +76,7 @@
                                         <li>
                                             <label>
                                                 <input id="item-@tea.ItemId-ice-@option.IcePercent" class="item-@tea.ItemId-ice" type="radio" name="iceOptions_@tea.ItemId" value="@option.IceId" @(option.IcePercent == "Regular Ice" ? "checked" : "")>
-                                                <span id="item-@tea.ItemId-pct-@option.IcePercent class="item-@tea.ItemId-pct">@option.IcePercent</span>
+                                                 <span id="item-@tea.ItemId-pct-@option.IcePercent class="item-@tea.ItemId-pct">@option.IcePercent</span> 
                                             </label>
                                         </li>
                                     }
@@ -93,7 +92,7 @@
                                         <li>
                                             <label>
                                                 <input id="item-@tea.ItemId-sweet-@option.SweetnessPercent" class="item-@tea.ItemId-sweet" type="radio" name="sweetnessOptions_@tea.ItemId" value="@option.SweetnessId" @(option.SweetnessPercent == "100% Sweet" ? "checked" : "")>
-                                                <span id="item-@tea.ItemId-pct-@option.SweetnessPercent" class="item-@tea.ItemId-pct"> @option.SweetnessPercent</span>
+                                               <span id="item-@tea.ItemId-pct-@option.SweetnessPercent" class="item-@tea.ItemId-pct"> @option.SweetnessPercent</span>
                                             </label>
                                         </li>
                                     }
@@ -101,7 +100,7 @@
                             </div>
 
                             <!-- Milk Choice Options -->
-@*                             <div>
+                            <div>
                                 <h4>Milk Choice:</h4>
                                 <ul>
                                     @foreach (var option in Model.MilkOptions)
@@ -110,13 +109,12 @@
                                             <label>
                                                 <input id="item-@tea.ItemId-milk-@option.MilkType" class="item-@tea.ItemId-milk" type="radio" name="milkOptions_@tea.ItemId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
                                                 <span id="item-@tea.ItemId-milktype-@option.MilkType" class="item-@tea.ItemId-milktype">
-                                                    @option.MilkType
-                                                </span> - <span id="item-@tea.ItemId-milktype-@option.PriceModifier" class="item-@tea.ItemId-milktype">$@option.PriceModifier</span>
+                                                @option.MilkType</span> - <span id="item-@tea.ItemId-milktype-@option.PriceModifier" class="item-@tea.ItemId-milktype">$@option.PriceModifier</span>
                                             </label>
                                         </li>
                                     }
                                 </ul>
-                            </div> *@
+                            </div>
 
                             <!-- Addon Options -->
                             <div>
@@ -127,7 +125,7 @@
                                         <li>
                                             <label>
                                                 <input id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin" type="checkbox" name="addInOptions_@tea.ItemId" value="@option.AddInId" onchange="AddOnPrice('@option.PriceModifier', '@tea.ItemId', this)">
-                                                <span id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin"> @option.AddInName</span> - $@option.PriceModifier
+                                               <span id="item-@tea.ItemId-addin-@option.AddInName" class="item-@tea.ItemId-addin"> @option.AddInName</span> - $@option.PriceModifier
                                             </label>
                                         </li>
                                     }
@@ -173,7 +171,7 @@
                 addInOptions.forEach(function (input) {
                     input.checked = input.defaultChecked;
                 });
-
+                
             }
 
             // Get references to the modal and its close buttons
@@ -216,30 +214,23 @@
         function AddToCart(itemId) {
             // Collect item details
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
+    var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
+    var ice = iceLabel ? iceLabel.textContent.trim() : '';
 
-            console.log("AddToCart() itemId ==> " + itemId);
-            var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
-            var ice = iceLabel ? iceLabel.textContent.trim() : '';
-            // console.log("AddToCart() 1 ==> ");
+    var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
+    var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
 
-            var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
-            var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
-            // console.log("AddToCart() 2 ==> ");
+    var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
 
-            var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
-            // console.log("AddToCart() 3 ==> ");
-
-            // var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
-            // var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
-            // var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
-            // console.log("AddToCart() 4 ==> ");
-
-            //alert ("milkType ==> " + milkType + ", milkPriceModifier ==> " + milkPriceModifier);
-
-            // var addIns = [];
-            // addInOptions.forEach(function (option) {
-            //     addIns.push(option.value);
-            // });
+    var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
+    var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
+    var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
+    //alert ("milkType ==> " + milkType + ", milkPriceModifier ==> " + milkPriceModifier);
+    
+    // var addIns = [];
+    // addInOptions.forEach(function (option) {
+    //     addIns.push(option.value);
+    // });
             var addInNames = [];
             addInOptions.forEach(function (option) {
                 var addInLabel = option.nextElementSibling;
@@ -261,7 +252,7 @@
                 Name: $('#item-' + itemId + '-name').html(),
                 IcePercent: ice,
                 SweetnessPercent: sweetness,
-                // MilkType: milkType,
+                MilkType: milkType,
                 AddInNames: addInNames,
                 Quantity: 1// Assign the populated list of AddInOrderDetail objects
             };
@@ -270,7 +261,7 @@
             var modalId = 'customizeModal_' + itemId;
             var iceOptions = document.querySelectorAll('#' + modalId + ' input[name="iceOptions"]:checked');
             var sweetnessOptions = document.querySelectorAll('#' + modalId + ' input[name="sweetnessOptions"]:checked');
-            // var milkOption = document.querySelector('#' + modalId + ' input[name="milkOptions"]:checked');
+            var milkOption = document.querySelector('#' + modalId + ' input[name="milkOptions"]:checked');
             var addInOptions = document.querySelectorAll('#' + modalId + ' input[name="addInOptions"]:checked');
             // Update item object with selected options
             if (iceOptions.length > 0) {
@@ -279,10 +270,10 @@
             if (sweetnessOptions.length > 0) {
                 item.sweetness = sweetnessOptions[0].value;
             }
-            // if (milkOption) {
-            //     item.milkType = milkOption.value;
-            //     item.milkPriceModifier = parseFloat(milkOption.getAttribute('data-price-modifier'));
-            // }
+            if (milkOption) {
+                item.milkType = milkOption.value;
+                item.milkPriceModifier = parseFloat(milkOption.getAttribute('data-price-modifier'));
+            }
             addInOptions.forEach(function (option) {
                 item.addInNames.push(option.value);
                 item.addInPriceModifiers.push(parseFloat(option.getAttribute('data-price-modifier')));
