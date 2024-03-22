@@ -20,11 +20,28 @@ html {
 body {
   margin-bottom: 60px;
 }
-<<<<<<< HEAD
-
-=======
 
 .sips-nav {
     background: #E4F2EE;
 }
->>>>>>> ce20e16b0d31c294693b2d09bdbf52371655f5bd
+
+.cart-container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+justify-content:center;
+}
+
+.cart-container p{
+    margin:0;
+    padding:0;
+    font-size:14px;
+    line-height:20px;
+}
+.cart-dialog{
+    max-width:900px;
+}
+.add-ins{
+    display:flex;
+flex-direction:column;
+}

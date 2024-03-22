@@ -228,6 +228,7 @@ h1, h2, h3, h5, h6 {
     text-align: center;
     justify-content: center;
     align-items: center;
+    padding-top: 20px;
 }
 
 .home-about-container {
@@ -707,4 +708,41 @@ a {
 .navbar-nav {
     display: flex;
     align-items: center;
+}
+#menu-title {
+    margin-top: 28px;
+}
+.customize-order-text {
+    margin-top: 20px;
+}
+.menu-subheading {
+    display: flex;
+    padding-top: 35px;
+}
+/*.menu-subheading h4, p {
+    line-height: 0;
+}*/
+.menu-subheading p {
+    padding: 0 15px;
+    font-size: 1.6rem;
+    line-height: 0;
+}
+.menu-subheading h4 {
+    font-size: 1.4rem;
+    line-height: 0;
+}
+
+/*cart styles*/
+
+.badge:after {
+    content: attr(value);
+    font-size: 12px;
+    color: #519389;
+    background: white;
+    border-radius: 50%;
+    padding: 0 5px;
+    position: relative;
+    left: -8px;
+    top: -10px;
+    opacity: 0.9;
 }

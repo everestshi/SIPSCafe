@@ -5,7 +5,7 @@ namespace Sips.SipsModels;
 
 public partial class OrderDetail
 {
-    public string OrderDetailId { get; set; } = null!;
+    public int OrderDetailId { get; set; }
 
     public decimal Price { get; set; }
 
