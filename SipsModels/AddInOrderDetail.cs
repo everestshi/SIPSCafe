@@ -7,7 +7,7 @@ public partial class AddInOrderDetail
 {
     public int AddInId { get; set; }
 
-    public string OrderDetailId { get; set; } = null!;
+    public int OrderDetailId { get; set; }
 
     public int Quantity { get; set; }
 
