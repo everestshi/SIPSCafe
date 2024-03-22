@@ -1,5 +1,8 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
+<div id="message-container">
+    <p id="add-to-cart-message">Item added to cart!</p>
+</div>
 <div class="tea-container">
     <h1>Milk Teas</h1>
     <div class="menu-subheading">
@@ -12,13 +15,12 @@
         </a>
     </div>
 </div>
-  <div class="tea-subtotal">
-        
-            <p>Quantity: <span id="totalQuantity"> 0</span></p>
-            <p>Subtotal: <span id="totalAmount"> 0</span></p>
+    @* <div class="tea-subtotal">
+        <p>Quantity: <span id="totalQuantity"> 0</span></p>
+        <p>Subtotal: <span id="totalAmount"> 0</span></p>
+    </div> *@
+    
 
-    </div>
-</div>
 <div class="tea-list">
     @foreach (var tea in Model.Items)
     {
@@ -202,17 +204,23 @@
 
         var totalQuantity = 0;
         var totalAmount = 0;
-        document.addEventListener('DOMContentLoaded', function () {
-            var addToCartButtons = document.querySelectorAll('.add-to-cart');
-            addToCartButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var itemId = button.getAttribute('data-item-id');
-                    var price = button.getAttribute('data-price');
-                    AddToCart(itemId, price);
-                });
-            });
-        });
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var addToCartButtons = document.querySelectorAll('.add-to-cart');
+        //     addToCartButtons.forEach(function (button) {
+        //         button.addEventListener('click', function () {
+        //             var itemId = button.getAttribute('data-item-id');
+        //             var price = button.getAttribute('data-price');
+        //             AddToCart(itemId, price);
+        //         });
+        //     });
+        // });
         function AddToCart(itemId) {
+            // Show the add to cart message
+            $('#add-to-cart-message').fadeIn('slow');
+            // Set a timeout to hide the message after 5 seconds
+            setTimeout(function () {
+                $('#add-to-cart-message').fadeOut('slow');
+            }, 1500);
             // Collect item details
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
     var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
@@ -301,6 +309,9 @@
                     console.error('Error:', error);
                     // Handle errors if needed
                 });
+            // var message = document.getElementById('add-to-cart-message');
+            // message.textContent = "Item added to cart!";
+
         }
 
         function formatCurrency(amount) {
@@ -340,6 +351,20 @@
                 basePrice.textContent = (newTotal).toFixed(2);
             }
         }
+
+        // function showMessage() {
+        //     var message = document.getElementById('add-to-cart-message');
+        //     message.classList.add('show-message');
+
+        //     // After 5 seconds, remove the show-message class to hide the message again
+        //     setTimeout(function () {
+        //         // Delay the removal of the show-message class
+        //         setTimeout(function () {
+        //             message.classList.remove('show-message');
+        //         }, 1000); // Add a delay of 1000 milliseconds (1 second) before removing the class
+        //     }, 5000); // 5000 milliseconds = 5 seconds
+        // }
+
 
         // document.addEventListener('DOMContentLoaded', function () {
         //     // Get references to the customize and add to cart buttons
@@ -415,4 +440,27 @@
         background: none;
         cursor: pointer;
     }
+    #add-to-cart-message {
+        display: none;
+        position: absolute;
+        background-color: #E4F2EE;
+        color: #519389;
+        margin-right: 40px;
+        margin-top: 5px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    #message-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+    @* #add-to-cart-message {
+        display: block; /* Ensure it's visible */
+        opacity: 0; /* Initially hidden */
+    }
+
+    .show-message {
+        opacity: 1; /* Make the message visible */
+        transition: opacity 0.5s ease-in-out; /* Transition effect */
+    } *@
 </style>
