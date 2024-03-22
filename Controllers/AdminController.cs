@@ -351,6 +351,99 @@ namespace Sips.Controllers
         }
 
 
+        // Order Detail CRUD********************************************************************
+
+        public IActionResult OrderIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
+        {
+            message = message ?? string.Empty;
+            ViewData["Message"] = message;
+            OrderDetailRepo orderDetailRepo = new OrderDetailRepo(_db);
+            IEnumerable<OrderDetailVM> ordersVM = orderDetailRepo.GetAll().ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                ordersVM = ordersVM.Where(c => c.UserEmail.ToLower().Contains(searchString.ToLower()) ||
+                                               c.ItemTypes.Select(item => item.ToLower()).Contains(searchString.ToLower()) ||
+                                                c.StoreId.ToString().Contains(searchString)
+
+
+
+                                        ).ToList();
+            }
+
+            ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
+            ViewData["StorIDSortParm"] = sortOrder == "StrorID" ? "StrorIDDesc" : "StrorID";
+            ViewData["EmailSortParm"] = sortOrder == "Email" ? "EmailSortDesc" : "Email";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "DateDesc" : "Date";
+
+            switch (sortOrder)
+            {
+                case "idSortDesc":
+                    ordersVM = ordersVM.OrderByDescending(p => p.TransactionId).ToList();
+                    break;
+                case "StrorIDDesc":
+                    ordersVM = ordersVM.OrderByDescending(p => p.StoreId).ToList();
+                    break;
+                case "StrorID":
+                    ordersVM = ordersVM.OrderBy(p => p.StoreId).ToList();
+                    break;
+
+                case "DateDesc":
+                    ordersVM = ordersVM.OrderByDescending(p => p.DateOrdered).ToList();
+                    break;
+                case "Date":
+                    ordersVM = ordersVM.OrderBy(p => p.DateOrdered).ToList();
+                    break;
+
+                case "EmailSortDesc":
+                    ordersVM = ordersVM.OrderByDescending(p => p.UserEmail).ToList();
+                    break;
+                case "Email":
+                    ordersVM = ordersVM.OrderBy(p => p.UserEmail).ToList();
+                    break;
+
+
+                default:
+                    ordersVM = ordersVM.OrderBy(p => p.TransactionId).ToList();
+                    break;
+            }
+
+            int pageIndex = pageNumber ?? 1;
+            var count = ordersVM.Count();
+            var items = ordersVM.Skip((pageIndex - 1) * pageSize)
+                                            .Take(pageSize).ToList();
+            var paginatedOrders = new PaginatedList<OrderDetailVM>(items
+                                                                , count
+                                                                , pageIndex
+                                                                , pageSize);
+
+            return View(paginatedOrders);
+
+
+        }
+
+
+        public IActionResult OrderDetails(string id)
+        {
+            OrderDetailRepo orderRepo = new OrderDetailRepo(_db);
+            return View(orderRepo.GetById(id));
+        }
+
+        public IActionResult OrderDelete(string id)
+        {
+            OrderDetailRepo orderRepo = new OrderDetailRepo(_db);
+            return View(orderRepo.GetById(id));
+        }
+
+        [HttpPost]
+        public IActionResult OrderDelete(OrderDetailVM orderVM)
+        {
+            OrderDetailRepo orderRepo = new OrderDetailRepo(_db);
+            string repoMessage = orderRepo.Delete(orderVM);
+            return RedirectToAction("OrderIndex", new { message = repoMessage });
+        }
+
+
 
         //images********************************************************************************
 
