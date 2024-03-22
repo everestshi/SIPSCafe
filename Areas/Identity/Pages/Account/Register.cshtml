@@ -13,7 +13,7 @@
             
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div><br />
+            
             <div class ="sip-reg">
                 <div class="form-floating mb-3">
                     <input asp-for="Input.FirstName" class="form-control"  aria-required="true" placeholder="First Name" />
@@ -82,6 +82,7 @@
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
                 <button id="registerSubmit" type="submit" class="btn btn-lg btn-primary">Register</button>
+                <div class="g-recaptcha" data-sitekey='@ViewData["SiteKey"]'></div><br />
             </div>
             
         </form>
