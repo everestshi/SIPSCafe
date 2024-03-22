@@ -13,7 +13,7 @@ namespace Sips.Controllers
     {
         //private readonly ILogger<HomeController> _logger;
         private readonly SipsdatabaseContext _db;
-        private IEnumerable<Item> products;
+        //private IEnumerable<Item> products;
 
         public AdminController(SipsdatabaseContext db)
         {

@@ -7,7 +7,7 @@ namespace Sips.ViewModels
     {
         [Display(Name = "Order Detail Ids")]
 
-        public List<string>? OrderDetailIds { get; set; }
+        public List<int>? OrderDetailIds { get; set; }
         [Display(Name = "Item Types")]
 
         public List<string>? ItemTypes { get; set; }
