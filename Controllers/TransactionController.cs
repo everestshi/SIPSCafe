@@ -82,19 +82,83 @@ namespace Sips.Controllers
 
         // This method receives and stores
         // the Paypal transaction details.
+        //[HttpPost]
+        //public IActionResult PaySuccess([FromBody] OrderDetail orderDetail)
+        //{
+        //    try
+        //    {
+        //        _db.OrderDetails.Add(orderDetail);
+        //        _db.SaveChanges();
+
+        //        // Save the PaymentId of the PayPalVM item to the session variable as a string
+        //        HttpContext.Session.SetString("PayPalConfirmationModelId", orderDetail.TransactionId);
+
+        //        // Construct the redirect URL
+        //        var redirectUrl = Url.Action("Transaction", "PayPal");
+
+        //        // Return a JSON response with the redirect URL
+        //        return Json(new { redirectUrl });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        return StatusCode(500);
+        //    }
+        //}
+
         [HttpPost]
-        public IActionResult PaySuccess([FromBody] OrderDetail orderDetail)
+        public IActionResult PaySuccess([FromBody] PayPalVM payPalVM)
         {
+
             try
             {
-                _db.OrderDetails.Add(orderDetail);
-                _db.SaveChanges();
+                // Get the email of the currently logged-in user
+                var userEmail = User.Identity.Name;
+
+                // Find the user in the Contact table based on the email
+                var user = _db.Contacts.FirstOrDefault(c => c.Email == userEmail);
+
+
+                if (user == null)
+                {
+                    return BadRequest("User not found.");
+                }
+
+                // Construct the Transaction object using properties from the OrderDetail
+                var transaction = new Transaction
+                {
+                    TransactionId = payPalVM.TransactionId,
+                    DateOrdered = payPalVM.CreatedDate, // Assuming CreatedDate is in correct format
+                    StoreId = 1,
+                    UserId = user.UserId
+                };
+                _db.Transactions.Add(transaction);
+
+                // Retrieve cart data from the session
+                var cartJson = HttpContext.Session.GetString("Cart");
+                var cartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartJson);
+
+                // Parse the cart items and create OrderDetail objects
+                foreach (var cartItem in cartItems)
+                {
+                    var cartOrderDetail = new OrderDetail
+                    {
+                        TransactionId = payPalVM.TransactionId, // Assuming TransactionId is already set in OrderDetail
+                                                                // Map properties from the CartVM to the OrderDetail
+                        ItemId = cartItem.ItemId,
+                        Price = cartItem.BasePrice,
+                        Quantity = cartItem.Quantity,
+                        // Map other properties as needed
+                    };
+                    _db.OrderDetails.Add(cartOrderDetail);
+                }
+
 
                 // Save the PaymentId of the PayPalVM item to the session variable as a string
-                HttpContext.Session.SetString("PayPalConfirmationModelId", orderDetail.TransactionId);
+                HttpContext.Session.SetString("PayPalConfirmationModelId", payPalVM.TransactionId);
 
                 // Construct the redirect URL
-                var redirectUrl = Url.Action("Transaction", "PayPal");
+                var redirectUrl = Url.Action("Confirmation", "Transaction");
 
                 // Return a JSON response with the redirect URL
                 return Json(new { redirectUrl });

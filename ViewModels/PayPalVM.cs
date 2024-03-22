@@ -15,7 +15,7 @@ namespace Sips.ViewModels
         [Display(Name = "Created")]
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = false)]
-        public string CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         [Display(Name = "MOP")]
         public string PaymentMethod { get; set; }
         public string Currency { get; set; }
