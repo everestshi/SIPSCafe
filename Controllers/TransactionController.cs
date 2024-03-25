@@ -248,7 +248,7 @@ namespace Sips.Controllers
             }
 
             // Check if the item is already in the cart
-            var existingItem = cartItems.FirstOrDefault(c => c.ItemId == cartVM.ItemId);
+            //var existingItem = cartItems.FirstOrDefault(c => c.ItemId == cartVM.ItemId);
             //if (existingItem != null)
             //{
             //    // Update the quantity
@@ -256,7 +256,9 @@ namespace Sips.Controllers
             //}
             //else
             //{
-                // Add the item to the cart
+            // Add the item to the cart
+            cartVM.ItemIdQuantity = cartVM.ItemId + "-" + cartVM.Quantity;
+
             cartItems.Add(cartVM);
             //}
 
@@ -265,6 +267,74 @@ namespace Sips.Controllers
 
             // Return the response
             return Json(new { success = true, message = "Item added/updated in the cart." });
+        }
+
+        public JsonResult AddOneToCart([FromBody] string itemIdQuantity)
+        {
+            string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems;
+
+            if (cartSession != null)
+            {
+                cartItems = System.Text.Json.JsonSerializer.Deserialize<List<CartVM>>(cartSession);
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
+            }
+            string itemId = itemIdQuantity.Split('-')[0];
+            string quantity = itemIdQuantity.Split('-')[1];
+            // Check if the item is already in the cart
+            var existingItem = cartItems.FirstOrDefault(c => c.ItemIdQuantity == itemIdQuantity);
+            if (existingItem != null)
+            {
+                // Add to cart
+                // Parse existing quantity to int, increment by 1, and convert back to string
+                int existingQuantity = int.Parse(existingItem.Quantity.ToString());
+                int newQuantity = existingQuantity + 1;
+
+                existingItem.Quantity = newQuantity; // Update quantity
+
+                // Update ItemIdQuantity
+                existingItem.ItemIdQuantity = itemId + '-' + newQuantity.ToString();                                                                // existingItem.ItemIdQuantity = itemId + '-' + quantity + 1;
+                cartItems.Add(existingItem);
+
+            }
+
+            // Serialize and store the updated cart items in the session
+            HttpContext.Session.SetString("Cart", System.Text.Json.JsonSerializer.Serialize(cartItems));
+
+            // Return the response
+            return Json(new { newItem = existingItem });
+        }
+
+        public JsonResult RemoveFromCart([FromBody] int itemId)
+        {
+            string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems;
+
+            if (cartSession != null)
+            {
+                cartItems = System.Text.Json.JsonSerializer.Deserialize<List<CartVM>>(cartSession);
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
+            }
+
+            // Check if the item is already in the cart
+            var existingItem = cartItems.FirstOrDefault(c => c.ItemId == itemId);
+            if (existingItem != null)
+            {
+                // Remove the item from the cart
+                cartItems.Remove(existingItem);
+            }
+
+            // Serialize and store the updated cart items in the session
+            HttpContext.Session.SetString("Cart", System.Text.Json.JsonSerializer.Serialize(cartItems));
+
+            // Return the response
+            return Json(new { success = true, message = "Item removed from the cart." });
         }
 
     }

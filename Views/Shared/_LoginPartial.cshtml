@@ -30,6 +30,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
         <li class="nav-item">
+
             <a class="sips-nav-link" asp-area="" asp-controller="Transaction" asp-action="Checkout"><i class="fa badge fa-lg" id="checkout-icon" value=@quantity style="color: #519389;">&#xf290;</i></a>
         </li>
 
