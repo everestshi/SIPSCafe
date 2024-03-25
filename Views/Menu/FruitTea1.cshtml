@@ -2,22 +2,15 @@
 
 <div class="tea-container">
     <h1>Fruit Teas</h1>
-    <div>
-
+    <div class="menu-subheading">
         <a href="@Url.Action("Slush", "Menu")">
             <h4>Slushes</h4>
         </a>
+        <p>|</p>
         <a href="@Url.Action("MilkTea", "Menu")">
             <h4>Milk Teas</h4>
         </a>
     </div>
-</div>
-<div class="tea-subtotal">
-
-    <p>Quantity: <span id="totalQuantity"> 0</span></p>
-    <p>Subtotal: <span id="totalAmount"> 0</span></p>
-
-</div>
 </div>
 <div class="tea-list">
     @foreach (var tea in Model.Items)

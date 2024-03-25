@@ -12,6 +12,18 @@ h1, h2, h3, h5, h6 {
     font-weight: 700;
 }
 
+main{
+    overflow:hidden;
+}
+
+#login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top:10vh;
+    padding:10px;
+}
+
 .sips-nav {
     background: #E4F2EE;
 }
@@ -114,7 +126,7 @@ h1, h2, h3, h5, h6 {
     align-items: center;
     position: relative;
     z-index: 1;
-    padding-top: 150px;
+    padding-top: 30px;
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add text shadow */
 }
@@ -123,7 +135,7 @@ h1, h2, h3, h5, h6 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 5vh auto;
+    margin: 10vh auto;
     width: 100%;
 }
 
@@ -294,6 +306,10 @@ h1, h2, h3, h5, h6 {
     text-align: left;
     width: 100%;
 }
+
+    .about-info p {
+        color: #403C34;
+    }
 /*Admin page style****************************/
 .admin-buttons {
     width: 200px;
@@ -325,27 +341,37 @@ h1, h2, h3, h5, h6 {
     flex-direction: column;
     text-align: left;
 }
-
+    .home-copy p {
+        color: #403C34;
+    }
 /*REG page style****************************/
 .sip-reg {
     display: flex;
     flex-direction: column;
     width: 33%;
-    margin: 0 20px;
+    margin:  20px;
 }
 
 .sip-reg-container {
     display: flex;
     flex-direction: column;
     width: 85%;
-    margin: 0 auto;
-}
+    margin: 10vh auto;
+    justify-content: center;
 
+}
+.g-recaptcha{
+    display:flex;
+    flex-direction:column;
+    margin-top:5px;
+    width:100%;
+}
 .container-sips {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
     text-align: center;
+    min-height:90vh;
 }
 
 #registerForm {
@@ -517,7 +543,8 @@ a {
     margin: 0 auto;
     justify-content: center;
     align-items: center;
-    padding: 40px 20px;
+    margin-top: 10vh;
+    padding: 0 20px 40px 20px;
 }
 
 .tea-list {
@@ -697,6 +724,7 @@ a {
     flex-direction: column;
     align-items: center;
     min-height: 80vh;
+    justify-content:center;
 }
 
     .checkout-section h1 {

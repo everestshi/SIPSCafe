@@ -12,13 +12,6 @@
         </a>
     </div>
 </div>
-  <div class="tea-subtotal">
-        
-            <p>Quantity: <span id="totalQuantity"> 0</span></p>
-            <p>Subtotal: <span id="totalAmount"> 0</span></p>
-
-    </div>
-</div>
 <div class="tea-list">
     @foreach (var tea in Model.Items)
     {
@@ -215,23 +208,18 @@
         function AddToCart(itemId) {
             // Collect item details
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
-    var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
-    var ice = iceLabel ? iceLabel.textContent.trim() : '';
+            var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
+            var ice = iceLabel ? iceLabel.textContent.trim() : '';
 
-    var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
-    var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
+            var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
+            var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
 
-    var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
+            var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
 
-    var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
-    var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
-    var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
-    //alert ("milkType ==> " + milkType + ", milkPriceModifier ==> " + milkPriceModifier);
-    
-    // var addIns = [];
-    // addInOptions.forEach(function (option) {
-    //     addIns.push(option.value);
-    // });
+            var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
+            var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
+            var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
+
             var addInNames = [];
             addInOptions.forEach(function (option) {
                 var addInLabel = option.nextElementSibling;
