@@ -130,7 +130,7 @@ CREATE TABLE MilkChoice (
 
 -- Create OrderDetail table
 CREATE TABLE OrderDetail (
-    orderDetailID VARCHAR(30) PRIMARY KEY,
+    orderDetailID INT IDENTITY(1,1) PRIMARY KEY, -- Use INT for auto-incrementing ID
     price DECIMAL(10, 2) NOT NULL,
     quantity INTEGER NOT NULL,
     isBirthdayDrink BIT NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE OrderDetail (
 -- Create AddIn_OrderDetail table
 CREATE TABLE AddIn_OrderDetail (
     addInID INTEGER NOT NULL,
-    orderDetailID VARCHAR(30) NOT NULL,
+    orderDetailID INT NOT NULL,
     quantity INTEGER NOT NULL,
     PRIMARY KEY (addInID, orderDetailID),
     FOREIGN KEY (addInID) REFERENCES AddIn(addInID) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -233,3 +233,15 @@ VALUES ('Coffee Slush', 'A delightful mix of coffee flavor in a frosty slush.', 
 -- OrderStatus
 INSERT INTO [OrderStatus] (isCompleted) VALUES (0);
 INSERT INTO [OrderStatus] (isCompleted) VALUES (1);
+
+INSERT INTO Contact (firstName, lastName, phoneNumber, email, unit, street, city, province, postalCode, birthDate, isDrinkRedeemed)
+VALUES ('everest', 'shi', 'YOUR_PHONE_NUMBER', 'shi.everest@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO Contact (firstName, lastName, phoneNumber, email, unit, street, city, province, postalCode, birthDate, isDrinkRedeemed)
+VALUES ('eunice', 'ssd', 'YOUR_PHONE_NUMBER', 'eunicezh10@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO Contact (firstName, lastName, phoneNumber, email, unit, street, city, province, postalCode, birthDate, isDrinkRedeemed)
+VALUES ('sydnee', 'ssd', 'YOUR_PHONE_NUMBER', 's.snowball@hotmail.com', NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO Contact (firstName, lastName, phoneNumber, email, unit, street, city, province, postalCode, birthDate, isDrinkRedeemed)
+VALUES ('pam', 'ssd', 'YOUR_PHONE_NUMBER', 'pampragides@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO Contact (firstName, lastName, phoneNumber, email, unit, street, city, province, postalCode, birthDate, isDrinkRedeemed)
+VALUES ('samaneh', 'ssd', 'YOUR_PHONE_NUMBER', 'sama.heshmatzadeh@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, 0);
+

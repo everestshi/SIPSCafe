@@ -1,17 +1,37 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Sips.ViewModels;
+@using Newtonsoft.Json;
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
 @{
     var firstName = Context.Session.GetString("SessionUserName");
     var helloLink = !string.IsNullOrEmpty(firstName) ? $"Hello, {firstName}!" : "";
+    var cartSession = Context.Session.GetString("Cart");
+    List<CartVM> cartItems;
+
+    if (cartSession != null)
+    {
+        cartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartSession);
+    }
+    else
+    {
+        cartItems = new List<CartVM>();
+    }
+
+    int quantity = 0;
+    foreach (var item in cartItems)
+        {
+            quantity += item.Quantity;
+        }
 }
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
         <li class="nav-item">
-                <a class="sips-nav-link" asp-area="" asp-controller="Transaction" asp-action="Checkout">Cart</a>
+
+            <a class="sips-nav-link" asp-area="" asp-controller="Transaction" asp-action="Checkout"><i class="fa badge fa-lg" id="checkout-icon" value=@quantity style="color: #519389;">&#xf290;</i></a>
         </li>
 
     <li class="nav-item">

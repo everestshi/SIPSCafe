@@ -1,0 +1,42 @@
+﻿@model Sips.ViewModels.OrderDetailVM
+
+@{
+    ViewData["Title"] = "OrderDetails";
+}
+
+<h1>Details</h1>
+
+<div>
+    @* <h4>@Model.Name </h4> *@
+    <hr />
+    <div style="text-align:left;margin-left:100px;">
+        @Html.DisplayNameFor(model => model.TransactionId):
+        @Html.DisplayFor(model => model.TransactionId)<br />
+
+        @Html.DisplayNameFor(model => model.UserEmail):
+        @Html.DisplayFor(model => model.UserEmail)<br />
+
+        @Html.DisplayNameFor(model => model.DateOrdered):
+        @Html.DisplayFor(model => model.DateOrdered)<br />
+
+        @Html.DisplayNameFor(model => model.totalPrice):
+        @Html.DisplayFor(model => model.totalPrice)<br />
+
+        @Html.DisplayNameFor(model => model.totalQuantity):
+        @Html.DisplayFor(model => model.totalQuantity)<br />
+
+        @Html.DisplayNameFor(model => model.StoreId):
+        @Html.DisplayFor(model => model.StoreId)<br />
+
+        @Html.DisplayNameFor(model => model.ItemTypes):
+        @Html.DisplayFor(model => model.ItemTypes)<br />
+
+        @Html.DisplayNameFor(model => model.OrderDetailIds):
+        @Html.DisplayFor(model => model.OrderDetailIds)<br />
+
+    </div>
+</div>
+<div>
+    @* <a asp-action="ContactEdit" asp-route-id="@Model?.UserId">Edit</a> | *@
+    <a asp-action="OrderIndex">Back to List</a>
+</div>
