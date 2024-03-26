@@ -1,5 +1,8 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
+<div id="message-container">
+    <p id="add-to-cart-message" style="display:none">Item added to cart!</p>
+</div>
 <div class="tea-container">
     <h1>Slushes</h1>
     <div class="menu-subheading">
@@ -12,13 +15,7 @@
         </a>
     </div>
 </div>
-<div class="tea-subtotal">
 
-    <p>Quantity: <span id="totalQuantity"> 0</span></p>
-    <p>Subtotal: <span id="totalAmount"> 0</span></p>
-
-</div>
-</div>
 <div class="tea-list">
     @foreach (var tea in Model.Items)
     {
@@ -203,17 +200,33 @@
 
         var totalQuantity = 0;
         var totalAmount = 0;
-        document.addEventListener('DOMContentLoaded', function () {
-            var addToCartButtons = document.querySelectorAll('.add-to-cart');
-            addToCartButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var itemId = button.getAttribute('data-item-id');
-                    var price = button.getAttribute('data-price');
-                    AddToCart(itemId, price);
-                });
-            });
-        });
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var addToCartButtons = document.querySelectorAll('.add-to-cart');
+        //     addToCartButtons.forEach(function (button) {
+        //         button.addEventListener('click', function () {
+        //             var itemId = button.getAttribute('data-item-id');
+        //             var price = button.getAttribute('data-price');
+        //             AddToCart(itemId, price);
+        //         });
+        //     });
+        // });
         function AddToCart(itemId) {
+            // Show the add to cart message
+            $('#add-to-cart-message').fadeIn('slow');
+            // Set a timeout to hide the message after 5 seconds
+            setTimeout(function () {
+                $('#add-to-cart-message').fadeOut('slow');
+            }, 1500);
+            // temporarily update the cart total until page is refreshed
+            var checkoutTotal = document.getElementById('checkout-icon');
+            var quantity = checkoutTotal.getAttribute('value');
+            console.log('quantity:', quantity);
+
+            var intTotal = parseInt(quantity) + 1;
+            console.log('intTotal:', intTotal);
+
+            // Update the data-value attribute with the new total
+            checkoutTotal.setAttribute('value', intTotal);
             // Collect item details
             // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
             var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
@@ -415,5 +428,21 @@
         border: none;
         background: none;
         cursor: pointer;
+    }
+
+    #add-to-cart-message {
+        display: none;
+        position: absolute;
+        background-color: #E4F2EE;
+        color: #519389;
+        margin-right: 40px;
+        margin-top: 5px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    #message-container {
+        display: flex;
+        justify-content: flex-end;
     }
 </style>

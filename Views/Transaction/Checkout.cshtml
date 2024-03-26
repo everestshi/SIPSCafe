@@ -16,6 +16,7 @@
                         <th>Item Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
+                        @* <th></th> *@
                     </tr>
                 </thead>                
             <tbody>
@@ -25,6 +26,9 @@
                             <td><button class="btn btn-outline-dark" data-modal="myModal" itemid="@item.ItemId">@item.Name</button></td>
                             <td class="subtotal-amount">@item.Subtotal</td>
                             <td class="subtotal-qty">@item.Quantity</td>
+                             <td><button type="button" onclick="RemoveOne(@item.ItemId)">-</button></td> 
+
+                           
                     </tr>
                 }
                 </tbody>
@@ -60,7 +64,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        @* <button type="button" class="btn btn-primary">Understood</button> *@
+                        <button type="button" class="btn btn-primary">Understood</button>
                     </div>
                 </div>
             </div>
@@ -103,24 +107,24 @@
                         // Process the data returned from the server
                         console.log(JSON.stringify(data));
                         if (data && data.length > 0) {
-
                             data.forEach(item => {
                                 // Create elements and append them to the cart container
                                 var itemElement = document.createElement('div');
                                 itemElement.innerHTML = `
-                                    <h5>${item.name}</h5>
-                                    <p>Sweetness: ${item.sweetnessPercent}</p>
-                                    <p>Milk: ${item.milkType}</p>
-                                    <p>Ice: ${item.icePercent}</p>
-                                    <div class="add-ins">
+                                <h5>${item.name}</h5>
+                                <p>Sweetness: ${item.sweetnessPercent}</p>
+                                <p>Milk: ${item.milkType}</p>
+                                <p>Ice: ${item.icePercent}</p>
+                                <div class="add-ins">
                                     <p style="font-weight:bold">Add-Ins: </p>
                                     ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
-                                    </div>
-                                    <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
-                                `;
+                                </div>
+                                <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
+                                <button type="button" onclick="AddOne(11)">+</button>
+                                <button type="button" onclick="RemoveOne(${item.itemId})">-</button>
+                            `;
                                 cartContainer.appendChild(itemElement);
                             });
-                            alert(itemElement);
                         }
 
                     })
@@ -158,6 +162,159 @@
         document.getElementById('grandTotalQty').textContent = grandTotalQty;
 
     }
+
+    // add same product to cart
+
+    // function AddOne(id, price) {
+    //     var totalElement = document.getElementById('total_' + id);
+    //     var total = parseInt(totalElement.textContent);
+    //     total += 1;
+    //     totalElement.textContent = total;
+
+    //     var itemPrice = parseFloat(price);
+    //     var subTotal = total * itemPrice;
+    //    document.getElementById('subTotal_' + id).textContent = formatCurrency(subTotal);
+
+    //     // Update grand total
+    //     grandTotalQuantity += 1;
+    //     grandTotalAmount += itemPrice;
+
+    //     // Display grand total
+    //     document.getElementById('grandTotalQuantity').textContent = grandTotalQuantity;
+    //     document.getElementById('grandTotalAmount').textContent = formatCurrency(grandTotalAmount, currency);
+    // }
+    function AddOne(itemIdQuantity) {
+        console.log('itemIdQuantity ==> ' + itemIdQuantity);
+        // Display a confirmation dialog before removing the item
+        fetch(`/Transaction/AddOneToCart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(itemIdQuantity)
+        })
+            .then(data => {
+                // Process the data returned from the server
+                console.log(JSON.stringify(data));
+                if (data && data.length > 0) {
+                    
+                    // Create elements and append them to the cart container
+                    var itemElement = document.createElement('div');
+                    itemElement.innerHTML = `
+                                    <h5>${item.name}</h5>
+                                    <p>Sweetness: ${item.sweetnessPercent}</p>
+                                    <p>Milk: ${item.milkType}</p>
+                                    <p>Ice: ${item.icePercent}</p>
+                                    <div class="add-ins">
+                                    <p style="font-weight:bold">Add-Ins: </p>
+                                    ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
+                                    </div>
+                                    <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
+
+                                    <button type="button" onclick="AddOne('11')">+</button>
+                                    <button type="button" onclick="RemoveOne(${item.itemId})">-</button>
+                                `;
+                    cartContainer.appendChild(itemElement);
+                    alert(itemElement);
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors if the fetch request fails
+                // Optionally, display an error message to the user
+            });
+    }
+
+// remove same product from cart
+
+    function RemoveOne(itemId) {
+        // Display a confirmation dialog before removing the item
+        fetch(`/Transaction/RemoveFromCart`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: itemId
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Item removed from cart successfully");
+                    // Optionally, update the UI to reflect that the item was removed from the cart
+                } else {
+                    // Handle errors if removal fails
+                    console.log('Failed to remove item from cart');
+                    // Optionally, display an error message to the user
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors if the fetch request fails
+                // Optionally, display an error message to the user
+            });
+    }
+
+
+    // var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
+    // var ice = iceLabel ? iceLabel.textContent.trim() : '';
+
+    // var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
+    // var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
+
+    // var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
+
+    // var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
+    // var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
+    // var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
+
+    // var addInNames = [];
+    // addInOptions.forEach(function (option) {
+    //     var addInLabel = option.nextElementSibling;
+    //     if (addInLabel) {
+    //         var addInName = addInLabel.textContent.trim();
+    //         addInNames.push({
+    //             AddInName: addInName,
+    //             // You can add other properties of AddIn here if needed
+    //         });
+    //     }
+    // });
+
+    // var item = {
+    //     ItemId: itemId,
+    //     BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
+    //     SubTotal: parseFloat($('#modalPrice_' + itemId).html()),
+    //     Name: $('#item-' + itemId + '-name').html(),
+    //     IcePercent: ice,
+    //     SweetnessPercent: sweetness,
+    //     MilkType: milkType,
+    //     AddInNames: addInNames,
+    //     Quantity: 1// Assign the populated list of AddInOrderDetail objects
+    // };
+
+    // // Get selected options from the modal
+    // var modalId = 'customizeModal_' + itemId;
+    // var iceOptions = document.querySelectorAll('#' + modalId + ' input[name="iceOptions"]:checked');
+    // var sweetnessOptions = document.querySelectorAll('#' + modalId + ' input[name="sweetnessOptions"]:checked');
+    // var milkOption = document.querySelector('#' + modalId + ' input[name="milkOptions"]:checked');
+    // var addInOptions = document.querySelectorAll('#' + modalId + ' input[name="addInOptions"]:checked');
+    // Update item object with selected options
+    // if (iceOptions.length > 0) {
+    //     item.ice = iceOptions[0].value;
+    // }
+    // if (sweetnessOptions.length > 0) {
+    //     item.sweetness = sweetnessOptions[0].value;
+    // }
+    // if (milkOption) {
+    //     item.milkType = milkOption.value;
+    //     item.milkPriceModifier = parseFloat(milkOption.getAttribute('data-price-modifier'));
+    // }
+    // addInOptions.forEach(function (option) {
+    //     item.addInNames.push(option.value);
+    //     item.addInPriceModifiers.push(parseFloat(option.getAttribute('data-price-modifier')));
+    // });
+    // console.log(item);
+    // Send item details to the server to add to the cart
+
 </script>
 
 <script>
@@ -181,25 +338,29 @@
         // Finalize the transaction
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
-                // Prepare transaction details
-                const transactionData = {
-                    PaymentId: details.id,
+                // Prepare PayPalVM object
+                const payPalVM = {
+                    TransactionId: details.id,
                     Amount: details.purchase_units[0].amount.value,
                     Currency: details.purchase_units[0].amount.currency_code,
                     PaymentMethod: 'PayPal',
-                    PayerName: details.payer.name.given_name,
-                    Create_time: details.create_time,
-                    PayerEmail: details.payer.email_address
+                    PayerName: "",
+                    CreatedDate: details.create_time, // Assuming this is in the correct format
+                    PayerEmail: details.payer.email_address,
+                    isFullfilled: false
                 };
 
-                // Send transaction details to the server using fetch
+                console.log(JSON.stringify(payPalVM));
+
+                // Send PayPalVM object to the server using fetch
                 fetch('/Transaction/PaySuccess', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json' // Update Accept header to expect JSON
                     },
-                    body: JSON.stringify(transactionData)
+                    body: JSON.stringify(payPalVM)
+                    
                 })
                     .then(response => {
                         console.log(response); // Log the raw response

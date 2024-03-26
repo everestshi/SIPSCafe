@@ -82,19 +82,83 @@ namespace Sips.Controllers
 
         // This method receives and stores
         // the Paypal transaction details.
+        //[HttpPost]
+        //public IActionResult PaySuccess([FromBody] OrderDetail orderDetail)
+        //{
+        //    try
+        //    {
+        //        _db.OrderDetails.Add(orderDetail);
+        //        _db.SaveChanges();
+
+        //        // Save the PaymentId of the PayPalVM item to the session variable as a string
+        //        HttpContext.Session.SetString("PayPalConfirmationModelId", orderDetail.TransactionId);
+
+        //        // Construct the redirect URL
+        //        var redirectUrl = Url.Action("Transaction", "PayPal");
+
+        //        // Return a JSON response with the redirect URL
+        //        return Json(new { redirectUrl });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        return StatusCode(500);
+        //    }
+        //}
+
         [HttpPost]
-        public IActionResult PaySuccess([FromBody] OrderDetail orderDetail)
+        public IActionResult PaySuccess([FromBody] PayPalVM payPalVM)
         {
+
             try
             {
-                _db.OrderDetails.Add(orderDetail);
-                _db.SaveChanges();
+                // Get the email of the currently logged-in user
+                var userEmail = User.Identity.Name;
+
+                // Find the user in the Contact table based on the email
+                var user = _db.Contacts.FirstOrDefault(c => c.Email == userEmail);
+
+
+                if (user == null)
+                {
+                    return BadRequest("User not found.");
+                }
+
+                // Construct the Transaction object using properties from the OrderDetail
+                var transaction = new Transaction
+                {
+                    TransactionId = payPalVM.TransactionId,
+                    DateOrdered = payPalVM.CreatedDate, // Assuming CreatedDate is in correct format
+                    StoreId = 1,
+                    UserId = user.UserId
+                };
+                _db.Transactions.Add(transaction);
+
+                // Retrieve cart data from the session
+                var cartJson = HttpContext.Session.GetString("Cart");
+                var cartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartJson);
+
+                // Parse the cart items and create OrderDetail objects
+                foreach (var cartItem in cartItems)
+                {
+                    var cartOrderDetail = new OrderDetail
+                    {
+                        TransactionId = payPalVM.TransactionId, // Assuming TransactionId is already set in OrderDetail
+                                                                // Map properties from the CartVM to the OrderDetail
+                        ItemId = cartItem.ItemId,
+                        Price = cartItem.BasePrice,
+                        Quantity = cartItem.Quantity,
+                        // Map other properties as needed
+                    };
+                    _db.OrderDetails.Add(cartOrderDetail);
+                }
+
 
                 // Save the PaymentId of the PayPalVM item to the session variable as a string
-                HttpContext.Session.SetString("PayPalConfirmationModelId", orderDetail.TransactionId);
+                HttpContext.Session.SetString("PayPalConfirmationModelId", payPalVM.TransactionId);
 
                 // Construct the redirect URL
-                var redirectUrl = Url.Action("Transaction", "PayPal");
+                var redirectUrl = Url.Action("Confirmation", "Transaction");
 
                 // Return a JSON response with the redirect URL
                 return Json(new { redirectUrl });
@@ -184,7 +248,7 @@ namespace Sips.Controllers
             }
 
             // Check if the item is already in the cart
-            var existingItem = cartItems.FirstOrDefault(c => c.ItemId == cartVM.ItemId);
+            //var existingItem = cartItems.FirstOrDefault(c => c.ItemId == cartVM.ItemId);
             //if (existingItem != null)
             //{
             //    // Update the quantity
@@ -192,7 +256,9 @@ namespace Sips.Controllers
             //}
             //else
             //{
-                // Add the item to the cart
+            // Add the item to the cart
+            cartVM.ItemIdQuantity = cartVM.ItemId + "-" + cartVM.Quantity;
+
             cartItems.Add(cartVM);
             //}
 
@@ -201,6 +267,74 @@ namespace Sips.Controllers
 
             // Return the response
             return Json(new { success = true, message = "Item added/updated in the cart." });
+        }
+
+        public JsonResult AddOneToCart([FromBody] string itemIdQuantity)
+        {
+            string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems;
+
+            if (cartSession != null)
+            {
+                cartItems = System.Text.Json.JsonSerializer.Deserialize<List<CartVM>>(cartSession);
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
+            }
+            string itemId = itemIdQuantity.Split('-')[0];
+            string quantity = itemIdQuantity.Split('-')[1];
+            // Check if the item is already in the cart
+            var existingItem = cartItems.FirstOrDefault(c => c.ItemIdQuantity == itemIdQuantity);
+            if (existingItem != null)
+            {
+                // Add to cart
+                // Parse existing quantity to int, increment by 1, and convert back to string
+                int existingQuantity = int.Parse(existingItem.Quantity.ToString());
+                int newQuantity = existingQuantity + 1;
+
+                existingItem.Quantity = newQuantity; // Update quantity
+
+                // Update ItemIdQuantity
+                existingItem.ItemIdQuantity = itemId + '-' + newQuantity.ToString();                                                                // existingItem.ItemIdQuantity = itemId + '-' + quantity + 1;
+                cartItems.Add(existingItem);
+
+            }
+
+            // Serialize and store the updated cart items in the session
+            HttpContext.Session.SetString("Cart", System.Text.Json.JsonSerializer.Serialize(cartItems));
+
+            // Return the response
+            return Json(new { newItem = existingItem });
+        }
+
+        public JsonResult RemoveFromCart([FromBody] int itemId)
+        {
+            string cartSession = HttpContext.Session.GetString("Cart");
+            List<CartVM> cartItems;
+
+            if (cartSession != null)
+            {
+                cartItems = System.Text.Json.JsonSerializer.Deserialize<List<CartVM>>(cartSession);
+            }
+            else
+            {
+                cartItems = new List<CartVM>();
+            }
+
+            // Check if the item is already in the cart
+            var existingItem = cartItems.FirstOrDefault(c => c.ItemId == itemId);
+            if (existingItem != null)
+            {
+                // Remove the item from the cart
+                cartItems.Remove(existingItem);
+            }
+
+            // Serialize and store the updated cart items in the session
+            HttpContext.Session.SetString("Cart", System.Text.Json.JsonSerializer.Serialize(cartItems));
+
+            // Return the response
+            return Json(new { success = true, message = "Item removed from the cart." });
         }
 
     }
