@@ -13,13 +13,10 @@ namespace Sips.Controllers
     [Authorize(Roles="Admin")]
     public class AdminController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
         private readonly SipsdatabaseContext _db;
-        //private IEnumerable<Item> products;
 
         public AdminController(SipsdatabaseContext db)
         {
-            //_logger = logger;
             _db = db;
         }
         public IActionResult Index()
@@ -47,9 +44,6 @@ namespace Sips.Controllers
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "PriceSortDesc" : "Price";
             ViewData["InventorySortParm"] = sortOrder == "Inventory" ? "InventorySortDesc" : "Inventory";
             ViewData["TypeSortParm"] = sortOrder == "Type" ? "TypeSortDesc" : "Type";
-
-
-
 
             ProductRepository prorepo = new ProductRepository(_db);
             IEnumerable<ItemVM> products = prorepo.GetAll().ToList();
@@ -117,8 +111,6 @@ namespace Sips.Controllers
         public IActionResult ItemCreate()
         {
             ProductRepository prorepo = new ProductRepository(_db);
-
-            //ViewBag.ItemTypes = prorepo.GetItemTypes();
             var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName");
 
@@ -132,12 +124,9 @@ namespace Sips.Controllers
             if (ModelState.IsValid)
             {
                 string repoMessage = prorepo.AddAsync(proVM).Result;
-
-                //string repoMessage =string( prorepo.AddAsync(proVM));
                 return RedirectToAction("ItemIndex", new { message = repoMessage });
             }
 
-            //ViewBag.ItemTypes = prorepo.GetItemTypes();
             var itemTypeList = _db.ItemTypes.ToList(); // Make sure it's materialized
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName");
 
@@ -149,10 +138,8 @@ namespace Sips.Controllers
             ProductRepository prorepo = new ProductRepository(_db);
             ItemVM itemVm = prorepo.GetById(id);
 
-            //ViewBag.ItemType = prorepo.GetItemTypes();
             var itemTypeList = _db.ItemTypes.ToList(); 
             ViewBag.ItemTypes = new SelectList(itemTypeList, "ItemTypeId", "ItemTypeName", itemVm.ItemTypeId);
-            //ViewBag.ImageFile = itemVm.ImageFile;
 
             return View(itemVm);
         }
@@ -274,7 +261,6 @@ namespace Sips.Controllers
 
             return View(paginatedContacts);
         }
-
 
         public IActionResult ContactDetails(int id)
         {
@@ -534,7 +520,5 @@ namespace Sips.Controllers
 
             return View(uploadModel);
         }
-
-
     }
 }

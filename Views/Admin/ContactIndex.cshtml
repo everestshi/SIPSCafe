@@ -1,5 +1,4 @@
-﻿@* @model IEnumerable<Sips.ViewModels.ContactVM> *@
-@model PaginatedList<Sips.ViewModels.ContactVM>
+﻿@model PaginatedList<Sips.ViewModels.ContactVM>
 
 @{
     ViewData["Title"] = "ContactIndex";
@@ -26,9 +25,6 @@
     </div>
 </form>
 
-@* <p>
-    <a asp-action="ContactCreate">Create a New contact</a>
-</p> *@
 <table class="table">
     <thead>
         <tr>
@@ -50,9 +46,6 @@
             <th>
                 @Html.ActionLink("City", "ContactIndex", new { sortOrder = ViewBag.CitySortParm })
             </th>
-
-
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -79,8 +72,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.City)
                 </td>
-
-
                 <td>
                     <a asp-action="ContactEdit" asp-route-id="@item.UserId">Edit</a> |
                     <a asp-action="ContactDetails" asp-route-id="@item.UserId">Details</a> |
@@ -108,4 +99,3 @@
     </ul>
 </nav>
 <a asp-action="Index">Back</a>
-
