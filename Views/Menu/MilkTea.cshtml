@@ -1,7 +1,7 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
-<div id="message-container">
-    <p id="add-to-cart-message" style="display:none">Item added to cart!</p>
+<div class="message-container">
+    <p class="add-to-cart-message" style="display:none">Item added to cart!</p>
 </div>
 <div class="tea-container">
     <h1>Milk Teas</h1>
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
+                        <p>$<span id="modalPrice_@tea.ItemId" data-base-price="@tea.BasePrice">@tea.BasePrice</span></p>
                         <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddToCart(@tea.ItemId)" data-bs-dismiss="modal">Add to Cart</button>
                     </div>
@@ -169,6 +169,13 @@
                 addInOptions.forEach(function (input) {
                     input.checked = input.defaultChecked;
                 });
+
+                    // Reset the base price
+                var basePriceElement = document.querySelector('#' + modalId + ' span[id^="modalPrice_"]');
+                if (basePriceElement) {
+                    var initialPrice = basePriceElement.getAttribute('data-base-price');
+                    basePriceElement.textContent = initialPrice;
+                }
                 
             }
 
@@ -209,12 +216,22 @@
         //         });
         //     });
         // });
+
+        function generateUniqueItemId(itemId, ice, sweetness, milkType, addInNames) {
+            // Convert add-in names array to a string
+            let addInNamesStr = addInNames.map(addIn => addIn.AddInName).join(",");
+            // Create a unique identifier by combining the item ID with selected options
+            let uniqueItemId = `${itemId}-${ice}-${sweetness}-${milkType}-${addInNamesStr}`;
+            // Use a simple hash function or encoding if necessary to shorten or standardize the unique ID
+            return uniqueItemId;
+        }
+
         function AddToCart(itemId) {
             // Show the add to cart message
-            $('#add-to-cart-message').fadeIn('slow');
+            $('.add-to-cart-message').fadeIn('slow');
             // Set a timeout to hide the message after 5 seconds
             setTimeout(function () {
-                $('#add-to-cart-message').fadeOut('slow');
+                $('.add-to-cart-message').fadeOut('slow');
             }, 1500);
             // temporarily update the cart total until page is refreshed
             var checkoutTotal = document.getElementById('checkout-icon');
@@ -253,10 +270,17 @@
                 }
             });
             // alert('#modalPrice_' + itemId + ' ==> ' + $('#modalPrice_' + itemId).html());
-
+            var uniqueItemId = generateUniqueItemId(
+                itemId, 
+                ice, 
+                sweetness, 
+                milkType, 
+                addInNames // Make sure this is the array of objects {AddInName: "name"}
+            );
 
             var item = {
                 ItemId: itemId,
+                UniqueItemId: uniqueItemId,
                 BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
                 SubTotal: parseFloat($('#modalPrice_' + itemId).html()),
                 Name: $('#item-' + itemId + '-name').html(),
@@ -441,7 +465,7 @@
         background: none;
         cursor: pointer;
     }
-    #add-to-cart-message {
+    .add-to-cart-message {
         display: none;
         position: absolute;
         background-color: #E4F2EE;
@@ -451,17 +475,9 @@
         padding: 10px;
         border-radius: 5px;
     }
-    #message-container {
+    .message-container {
         display: flex;
         justify-content: flex-end;
     }
-    @* #add-to-cart-message {
-        display: block; /* Ensure it's visible */
-        opacity: 0; /* Initially hidden */
-    }
 
-    .show-message {
-        opacity: 1; /* Make the message visible */
-        transition: opacity 0.5s ease-in-out; /* Transition effect */
-    } *@
 </style>

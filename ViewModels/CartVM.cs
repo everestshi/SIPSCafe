@@ -7,7 +7,7 @@ namespace Sips.ViewModels
     {
         [Key]
         public int ItemId { get; set; }
-        public string ItemIdQuantity { get; set; }
+        public string UniqueItemId { get; set; }
         public string Name { get; set; } = null!;
         public decimal BasePrice { get; set; }
         public int Quantity { get; set; }

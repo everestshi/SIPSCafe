@@ -10,9 +10,11 @@ using Sips.SipsModels;
 using Sips.ViewModels;
 using Newtonsoft.Json;
 using SendGrid.Helpers.Mail;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sips.Controllers
 {
+    [Authorize]
     public class TransactionController : Controller
     {
         private readonly SipsdatabaseContext _db;
@@ -56,13 +58,13 @@ namespace Sips.Controllers
 
                 decimal total = 0;
                 int quantity = 0;
-                int lastItemId = 0;
+                string lastItemId = "0";
 
-                foreach (var item in sessionCartItems.OrderBy(c => c.ItemId))
+                foreach (var item in sessionCartItems.OrderBy(c => c.UniqueItemId))
                 {
-                    if (item.ItemId != lastItemId)
+                    if (item.UniqueItemId != lastItemId)
                     {
-                        lastItemId = item.ItemId;
+                        lastItemId = item.UniqueItemId;
                         cartItems.Add(item);
                     }
                     else {
@@ -130,9 +132,11 @@ namespace Sips.Controllers
                     TransactionId = payPalVM.TransactionId,
                     DateOrdered = payPalVM.CreatedDate, // Assuming CreatedDate is in correct format
                     StoreId = 1,
-                    UserId = user.UserId
+                    UserId = user.UserId,
+                    StatusId = 1,
                 };
                 _db.Transactions.Add(transaction);
+                _db.SaveChanges();
 
                 // Retrieve cart data from the session
                 var cartJson = HttpContext.Session.GetString("Cart");
@@ -141,16 +145,32 @@ namespace Sips.Controllers
                 // Parse the cart items and create OrderDetail objects
                 foreach (var cartItem in cartItems)
                 {
+                    Sweetness swettness = _db.Sweetnesses.FirstOrDefault(s => s.SweetnessPercent == cartItem.SweetnessPercent);
+                    Ice ice = _db.Ices.FirstOrDefault(I => I.IcePercent == cartItem.IcePercent);
+                    MilkChoice milk = _db.MilkChoices.FirstOrDefault(m => m.MilkType == cartItem.MilkType);
+                    // If milk is null, set it to "No Milk" which has ID 5
+                    if (milk == null)
+                    {
+                        milk = _db.MilkChoices.FirstOrDefault(m => m.MilkChoiceId == 5); // Assuming ID 5 corresponds to "No Milk"
+                    }
+
                     var cartOrderDetail = new OrderDetail
                     {
+
                         TransactionId = payPalVM.TransactionId, // Assuming TransactionId is already set in OrderDetail
-                                                                // Map properties from the CartVM to the OrderDetail
                         ItemId = cartItem.ItemId,
                         Price = cartItem.BasePrice,
                         Quantity = cartItem.Quantity,
-                        // Map other properties as needed
+                        SweetnessId = swettness.SweetnessId,
+                        IceId = ice.IceId,
+                        MilkChoiceId = milk.MilkChoiceId,
+                        IsBirthdayDrink = false, // Assuming this property is not available in CartVM
+                        PromoValue = null, // Assuming this property is not available in CartVM
+                        SizeId = 1, // Assuming this property is not available in CartVM
+
                     };
                     _db.OrderDetails.Add(cartOrderDetail);
+                    _db.SaveChanges();
                 }
 
 
@@ -223,7 +243,7 @@ namespace Sips.Controllers
             if (cartSession != null)
             {
                 cartItems = JsonConvert.DeserializeObject<List<CartVM>>(cartSession);
-                cartItems = cartItems.Where(c => c.ItemId == Int32.Parse(itemId)).ToList();
+                cartItems = cartItems.Where(c => c.UniqueItemId == itemId).ToList();
             }
             else
             {
@@ -257,9 +277,20 @@ namespace Sips.Controllers
             //else
             //{
             // Add the item to the cart
-            cartVM.ItemIdQuantity = cartVM.ItemId + "-" + cartVM.Quantity;
 
-            cartItems.Add(cartVM);
+            // Assuming UniqueItemId is already set in cartVM based on the item and its selected options
+            var existingItem = cartItems.FirstOrDefault(c => c.UniqueItemId == cartVM.UniqueItemId);
+            if (existingItem != null)
+            {
+                // Update the quantity of the existing item
+                existingItem.Quantity += cartVM.Quantity;
+            }
+            else
+            {
+                // If the item is new, add it to the cart
+                cartItems.Add(cartVM);
+            }
+
             //}
 
             // Serialize and store the updated cart items in the session
@@ -269,7 +300,7 @@ namespace Sips.Controllers
             return Json(new { success = true, message = "Item added/updated in the cart." });
         }
 
-        public JsonResult AddOneToCart([FromBody] string itemIdQuantity)
+        public JsonResult AddOneToCart([FromBody] string uniqueItemId)
         {
             string cartSession = HttpContext.Session.GetString("Cart");
             List<CartVM> cartItems;
@@ -282,33 +313,25 @@ namespace Sips.Controllers
             {
                 cartItems = new List<CartVM>();
             }
-            string itemId = itemIdQuantity.Split('-')[0];
-            string quantity = itemIdQuantity.Split('-')[1];
+
             // Check if the item is already in the cart
-            var existingItem = cartItems.FirstOrDefault(c => c.ItemIdQuantity == itemIdQuantity);
+            var existingItem = cartItems.FirstOrDefault(c => c.UniqueItemId == uniqueItemId);
             if (existingItem != null)
             {
-                // Add to cart
-                // Parse existing quantity to int, increment by 1, and convert back to string
-                int existingQuantity = int.Parse(existingItem.Quantity.ToString());
-                int newQuantity = existingQuantity + 1;
-
-                existingItem.Quantity = newQuantity; // Update quantity
-
-                // Update ItemIdQuantity
-                existingItem.ItemIdQuantity = itemId + '-' + newQuantity.ToString();                                                                // existingItem.ItemIdQuantity = itemId + '-' + quantity + 1;
-                cartItems.Add(existingItem);
-
+                // Increment the quantity
+                existingItem.Quantity++;
+                // Update the UniqueItemId
+                existingItem.UniqueItemId = uniqueItemId;
             }
 
             // Serialize and store the updated cart items in the session
             HttpContext.Session.SetString("Cart", System.Text.Json.JsonSerializer.Serialize(cartItems));
 
-            // Return the response
             return Json(new { newItem = existingItem });
         }
 
-        public JsonResult RemoveFromCart([FromBody] int itemId)
+
+        public JsonResult RemoveFromCart([FromBody] string uniqueItemId)
         {
             string cartSession = HttpContext.Session.GetString("Cart");
             List<CartVM> cartItems;
@@ -323,11 +346,17 @@ namespace Sips.Controllers
             }
 
             // Check if the item is already in the cart
-            var existingItem = cartItems.FirstOrDefault(c => c.ItemId == itemId);
+            var existingItem = cartItems.FirstOrDefault(c => c.UniqueItemId == uniqueItemId);
             if (existingItem != null)
             {
-                // Remove the item from the cart
-                cartItems.Remove(existingItem);
+                // Reduce the quantity by 1
+                existingItem.Quantity--;
+
+                // If the remaining quantity is 0 or the current quantity is 1, remove the item completely
+                if (existingItem.Quantity <= 0)
+                {
+                    cartItems.Remove(existingItem);
+                }
             }
 
             // Serialize and store the updated cart items in the session
@@ -336,6 +365,5 @@ namespace Sips.Controllers
             // Return the response
             return Json(new { success = true, message = "Item removed from the cart." });
         }
-
     }
 }

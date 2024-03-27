@@ -52,14 +52,15 @@
                 @Html.ActionLink("Store ID", "OrderIndex", new { sortOrder = ViewBag.StorIDSortParm })
 
             </th>
-            <th>
-                User ID
 
-            </th>
             <th>
                 
                 @* UserEmail *@
                 @Html.ActionLink("Email", "OrderIndex", new { sortOrder = ViewBag.EmailSortParm })
+
+            </th>
+            <th>
+                @Html.ActionLink("Total Price", "OrderIndex", new { sortOrder = ViewBag.TotalPriceSortParm })
 
             </th>
 
@@ -81,16 +82,17 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.StoreId)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.UserEmail)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totalPrice)
+                </td>
 
 
                 <td>
-                    <a asp-action="OrderEdit" asp-route-id="@item.TransactionId">Edit</a> |
+                    @* <a asp-action="OrderEdit" asp-route-id="@item.TransactionId">Edit</a> | *@
                     <a asp-action="OrderDetails" asp-route-id="@item.TransactionId">Details</a> |
                     <a asp-action="OrderDelete" asp-route-id="@item.TransactionId">Delete</a>
                 </td>
