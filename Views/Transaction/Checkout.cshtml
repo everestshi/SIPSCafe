@@ -23,12 +23,11 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                            <td><button class="btn btn-outline-dark" data-modal="myModal" itemid="@item.ItemId">@item.Name</button></td>
+                            <td><button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button></td>
                             <td class="subtotal-amount">@item.Subtotal</td>
                             <td class="subtotal-qty">@item.Quantity</td>
-                             <td><button type="button" onclick="RemoveOne(@item.ItemId)">-</button></td> 
-
-                           
+                            <td><button type="button" onclick="AddOne('@item.UniqueItemId')">+</button></td>
+                            <td><button type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button></td> 
                     </tr>
                 }
                 </tbody>
@@ -88,9 +87,9 @@
                 cartContainer.innerHTML = '';
 
                 var modalId = button.getAttribute('data-modal');
-                var itemId = button.getAttribute('itemId');
+                var uniqueItemId = button.getAttribute('uniqueitemid');
 
-                fetch('/Transaction/GetCartItems?itemId=' + itemId, {
+                fetch('/Transaction/GetCartItems?itemId=' + uniqueItemId, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -120,9 +119,9 @@
                                     ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
                                 </div>
                                 <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
-                                <button type="button" onclick="AddOne(11)">+</button>
-                                <button type="button" onclick="RemoveOne(${item.itemId})">-</button>
-                            `;
+                                <button type="button" onclick="AddOne('${item.uniqueItemId}')">+</button>
+                                <button type="button" onclick="RemoveOne('${item.uniqueItemId}')">-</button>
+                                `;
                                 cartContainer.appendChild(itemElement);
                             });
                         }
@@ -163,61 +162,24 @@
 
     }
 
-    // add same product to cart
 
-    // function AddOne(id, price) {
-    //     var totalElement = document.getElementById('total_' + id);
-    //     var total = parseInt(totalElement.textContent);
-    //     total += 1;
-    //     totalElement.textContent = total;
-
-    //     var itemPrice = parseFloat(price);
-    //     var subTotal = total * itemPrice;
-    //    document.getElementById('subTotal_' + id).textContent = formatCurrency(subTotal);
-
-    //     // Update grand total
-    //     grandTotalQuantity += 1;
-    //     grandTotalAmount += itemPrice;
-
-    //     // Display grand total
-    //     document.getElementById('grandTotalQuantity').textContent = grandTotalQuantity;
-    //     document.getElementById('grandTotalAmount').textContent = formatCurrency(grandTotalAmount, currency);
-    // }
-    function AddOne(itemIdQuantity) {
-        console.log('itemIdQuantity ==> ' + itemIdQuantity);
-        // Display a confirmation dialog before removing the item
+    function AddOne(uniqueItemId) {
         fetch(`/Transaction/AddOneToCart`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(itemIdQuantity)
+            body: JSON.stringify(uniqueItemId)
         })
+            .then(response => response.json()) // Extract JSON from the response
             .then(data => {
-                // Process the data returned from the server
-                console.log(JSON.stringify(data));
-                if (data && data.length > 0) {
-                    
-                    // Create elements and append them to the cart container
-                    var itemElement = document.createElement('div');
-                    itemElement.innerHTML = `
-                                    <h5>${item.name}</h5>
-                                    <p>Sweetness: ${item.sweetnessPercent}</p>
-                                    <p>Milk: ${item.milkType}</p>
-                                    <p>Ice: ${item.icePercent}</p>
-                                    <div class="add-ins">
-                                    <p style="font-weight:bold">Add-Ins: </p>
-                                    ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
-                                    </div>
-                                    <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
-
-                                    <button type="button" onclick="AddOne('11')">+</button>
-                                    <button type="button" onclick="RemoveOne(${item.itemId})">-</button>
-                                `;
-                    cartContainer.appendChild(itemElement);
-                    alert(itemElement);
+                console.log(data);
+                if (data && data.newItem) {
+                    // You can access newItem properties here and update the UI accordingly
+                    console.log(data.newItem);
+                    // Example: Update the quantity displayed on the UI
+                    document.getElementById('quantityDisplay').textContent = data.newItem.Quantity;
                 }
-
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -226,16 +188,17 @@
             });
     }
 
+
 // remove same product from cart
 
-    function RemoveOne(itemId) {
+    function RemoveOne(uniqueItemId) {
         // Display a confirmation dialog before removing the item
         fetch(`/Transaction/RemoveFromCart`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: itemId
+            body: JSON.stringify(uniqueItemId)
         })
             .then(response => {
                 if (response.ok) {

@@ -133,7 +133,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <p>$<span id="modalPrice_@tea.ItemId">@tea.BasePrice</span></p>
+                        <p>$<span id="modalPrice_@tea.ItemId" data-base-price="@tea.BasePrice">@tea.BasePrice</span></p>
                         <button type="button" class="btn btn-secondary" id="closeModalButton" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="addButton_@tea.ItemId" onclick="AddToCart(@tea.ItemId)" data-bs-dismiss="modal">Add to Cart</button>
                     </div>
@@ -170,6 +170,13 @@
                 addInOptions.forEach(function (input) {
                     input.checked = input.defaultChecked;
                 });
+
+                // Reset the base price
+                var basePriceElement = document.querySelector('#' + modalId + ' span[id^="modalPrice_"]');
+                if (basePriceElement) {
+                    var initialPrice = basePriceElement.getAttribute('data-base-price');
+                    basePriceElement.textContent = initialPrice;
+                }
 
             }
 
