@@ -130,7 +130,8 @@ namespace Sips.Controllers
                     TransactionId = payPalVM.TransactionId,
                     DateOrdered = payPalVM.CreatedDate, // Assuming CreatedDate is in correct format
                     StoreId = 1,
-                    UserId = user.UserId
+                    UserId = user.UserId,
+                    StatusId = 1,
                 };
                 _db.Transactions.Add(transaction);
                 _db.SaveChanges();
@@ -145,6 +146,11 @@ namespace Sips.Controllers
                     Sweetness swettness = _db.Sweetnesses.FirstOrDefault(s => s.SweetnessPercent == cartItem.SweetnessPercent);
                     Ice ice = _db.Ices.FirstOrDefault(I => I.IcePercent == cartItem.IcePercent);
                     MilkChoice milk = _db.MilkChoices.FirstOrDefault(m => m.MilkType == cartItem.MilkType);
+                    // If milk is null, set it to "No Milk" which has ID 5
+                    if (milk == null)
+                    {
+                        milk = _db.MilkChoices.FirstOrDefault(m => m.MilkChoiceId == 5); // Assuming ID 5 corresponds to "No Milk"
+                    }
 
                     var cartOrderDetail = new OrderDetail
                     {
