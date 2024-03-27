@@ -52,6 +52,18 @@ main{
     transform: translateX(-50%);
     top: 0;
 }
+/*Tablet banner style*/
+
+    @media (min-width: 760px) {
+        .sips-logo-nav {
+            width: 100px;
+            position: absolute;
+            left: 54%;
+            transform: translateX(-50%);
+            top: 0;
+        }
+    }
+
 
 .sips-nav-link {
     color: #519389;

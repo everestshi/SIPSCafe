@@ -17,12 +17,12 @@
             <div class="checkout-items">
                 @foreach (var item in Model)
                 {
-                    <div class="checkout-item">
+                    <div class="checkout-item" id="checkout-item_@item.UniqueItemId">
                     <button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button>
                    
                     <div class="item-subqty">
                         <button class="qty-btn" type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button>
-                        <p class="subtotal-qty">@item.Quantity</p>
+                            <p class="subtotal-qty" id="subtotal-qty_@item.UniqueItemId">@item.Quantity</p>
                         <button class="qty-btn" type="button" onclick="AddOne('@item.UniqueItemId')">+</button>
                     </div>
                         <p class="subtotal-amount">$@item.Subtotal</p>
@@ -145,33 +145,73 @@
     // Calculate total when the page loads
     calculateTotal();
 
+    // function calculateTotal() {
+    //     var subtotalElements = document.querySelectorAll('.subtotal-amount');
+    //     var subtotalQtys = document.querySelectorAll('.subtotal-qty');
+    //     console.log(subtotalElements);
+    //     console.log(subtotalQtys);
+    //     var grandTotalAmount = 0;
+    //     var grandTotalQty = 0;
+
+    //     subtotalElements.forEach(function (subtotalElement, index) {
+    //         var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
+    //         console.log(subtotal);
+    //         var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
+    //         console.log(qty);
+
+    //         var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
+    //         grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
+
+    //         grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
+    //     });
+
+    //     // Update grand total only if the elements exist
+    //     var grandTotalAmountElement = document.getElementById('grandTotalAmount');
+    //     var grandTotalQtyElement = document.getElementById('grandTotalQty');
+
+    //     if (grandTotalAmountElement && grandTotalQtyElement) {
+    //         grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
+    //         grandTotalQtyElement.textContent = grandTotalQty;
+    //     } else {
+    //         console.error("One or both of the grand total elements are not found.");
+    //     }
+    // }
     function calculateTotal() {
-        var subtotalElements = document.querySelectorAll('.subtotal-amount');
-        var subtotalQtys = document.querySelectorAll('.subtotal-qty');
-        var grandTotalAmount = 0;
-        var grandTotalQty = 0;
+        try {
+            var subtotalElements = document.querySelectorAll('.subtotal-amount');
+            var subtotalQtys = document.querySelectorAll('.subtotal-qty');
+            console.log(subtotalElements);
+            console.log(subtotalQtys);
+            var grandTotalAmount = 0;
+            var grandTotalQty = 0;
 
-        subtotalElements.forEach(function (subtotalElement, index) {
-            var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
-            var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
+            subtotalElements.forEach(function (subtotalElement, index) {
+                var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
+                console.log(subtotal);
+                var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
+                console.log(qty);
 
-            var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
-            grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
+                var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
+                grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
 
-            grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
-        });
+                grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
+            });
 
-        // Update grand total only if the elements exist
-        var grandTotalAmountElement = document.getElementById('grandTotalAmount');
-        var grandTotalQtyElement = document.getElementById('grandTotalQty');
+            // Update grand total only if the elements exist
+            var grandTotalAmountElement = document.getElementById('grandTotalAmount');
+            var grandTotalQtyElement = document.getElementById('grandTotalQty');
 
-        if (grandTotalAmountElement && grandTotalQtyElement) {
-            grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
-            grandTotalQtyElement.textContent = grandTotalQty;
-        } else {
-            console.error("One or both of the grand total elements are not found.");
+            if (grandTotalAmountElement && grandTotalQtyElement) {
+                grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
+                grandTotalQtyElement.textContent = grandTotalQty;
+            } else {
+                throw new Error("One or both of the grand total elements are not found.");
+            }
+        } catch (error) {
+            console.error("Error in calculateTotal:", error.message);
         }
     }
+
 
     function AddOne(uniqueItemId) {
         fetch(`/Transaction/AddOneToCart`, {
@@ -188,7 +228,7 @@
                     // You can access newItem properties here and update the UI accordingly
                     console.log(data.newItem);
                     // Example: Update the quantity displayed on the UI
-                    document.getElementById('quantityDisplay').textContent = data.newItem.Quantity;
+                    //document.getElementById('quantityDisplay').textContent = data.newItem.Quantity;
                 }
             })
             .catch(error => {
@@ -203,8 +243,8 @@
         setTimeout(function () {
             $('.add-to-cart-message').fadeOut('slow');
         }, 1500);
-
-        calculateTotal();
+        
+        
         // temporarily update the cart total until page is refreshed
         var checkoutTotal = document.getElementById('checkout-icon');
         var quantity = checkoutTotal.getAttribute('value');
@@ -216,6 +256,15 @@
         // Update the data-value attribute with the new total
         checkoutTotal.setAttribute('value', intTotal);
 
+        // var grandTotalQty = document.querySelector('grandTotalQty');
+        // var intQuantity = parseInt(grandTotalQty.textContent);
+        // grandTotalQty.textContent = intQuantity + 1;
+        //calculateTotal();
+        var grandtotalQuantity = document.getElementById("subtotal-qty_" + uniqueItemId);
+        console.log(grandtotalQuantity);
+        var intQuantity = parseInt(grandtotalQuantity.textContent);
+        grandtotalQuantity.textContent = intQuantity + 1;
+        calculateTotal();
     }
 
 
@@ -253,7 +302,7 @@
             $('#remove-from-cart-message').fadeOut('slow');
         }, 1500);
 
-        calculateTotal();
+        
         // temporarily update the cart total until page is refreshed
         var checkoutTotal = document.getElementById('checkout-icon');
         var quantity = checkoutTotal.getAttribute('value');
@@ -270,6 +319,28 @@
             // Update the data-value attribute with the new total
             checkoutTotal.setAttribute('value', intTotal);
         }
+        var grandtotalQuantity = document.getElementById("subtotal-qty_" + uniqueItemId);
+        console.log(grandtotalQuantity);
+
+        // Parse the quantity as an integer
+        var intQuantity = parseInt(grandtotalQuantity.textContent);
+
+        // Ensure the quantity won't go below zero
+        if (intQuantity > 0) {
+            intQuantity--; // Decrement the quantity
+            console.log('intQuantity:', intQuantity);
+
+            // Update the quantity
+            grandtotalQuantity.textContent = intQuantity;
+
+        }
+        // else {
+        //     var itemDiv = document.getElementById('checkout-item_' + uniqueItemId);
+        //     itemDiv.hidden = true;
+        //     //$('#checkout-item_' + uniqueItemId).hide();
+        // }
+        calculateTotal();
+
     }
 
 </script>
