@@ -4,7 +4,10 @@
     ViewData["Title"] = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div class="message-container">
+    <p class="add-to-cart-message" style="display:none">Item added to cart!</p>
+    <p id="remove-from-cart-message" style="display:none">Item removed from cart!</p>
+</div>
 <div class="checkout-section">
     <h1>Checkout</h1>
     <div class="checkout-container">
@@ -186,6 +189,12 @@
                 // Handle errors if the fetch request fails
                 // Optionally, display an error message to the user
             });
+        // Show the add to cart message
+        $('.add-to-cart-message').fadeIn('slow');
+        // Set a timeout to hide the message after 5 seconds
+        setTimeout(function () {
+            $('.add-to-cart-message').fadeOut('slow');
+        }, 1500);
     }
 
 
@@ -215,6 +224,12 @@
                 // Handle errors if the fetch request fails
                 // Optionally, display an error message to the user
             });
+        // Show the add to cart message
+        $('#remove-from-cart-message').fadeIn('slow');
+        // Set a timeout to hide the message after 5 seconds
+        setTimeout(function () {
+            $('#remove-from-cart-message').fadeOut('slow');
+        }, 1500);
     }
 
 
@@ -371,3 +386,20 @@
         }
     }).render('#paypal-button-container');
 </script>
+<style>
+    .add-to-cart-message, #remove-from-cart-message {
+        display: none;
+        position: absolute;
+        background-color: #E4F2EE;
+        color: #519389;
+        margin-right: 40px;
+        margin-top: 5px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .message-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+</style>

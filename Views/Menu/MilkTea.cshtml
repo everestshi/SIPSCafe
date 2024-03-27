@@ -1,7 +1,7 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
-<div id="message-container">
-    <p id="add-to-cart-message" style="display:none">Item added to cart!</p>
+<div class="message-container">
+    <p class="add-to-cart-message" style="display:none">Item added to cart!</p>
 </div>
 <div class="tea-container">
     <h1>Milk Teas</h1>
@@ -228,10 +228,10 @@
 
         function AddToCart(itemId) {
             // Show the add to cart message
-            $('#add-to-cart-message').fadeIn('slow');
+            $('.add-to-cart-message').fadeIn('slow');
             // Set a timeout to hide the message after 5 seconds
             setTimeout(function () {
-                $('#add-to-cart-message').fadeOut('slow');
+                $('.add-to-cart-message').fadeOut('slow');
             }, 1500);
             // temporarily update the cart total until page is refreshed
             var checkoutTotal = document.getElementById('checkout-icon');
@@ -465,7 +465,7 @@
         background: none;
         cursor: pointer;
     }
-    #add-to-cart-message {
+    .add-to-cart-message {
         display: none;
         position: absolute;
         background-color: #E4F2EE;
@@ -475,17 +475,9 @@
         padding: 10px;
         border-radius: 5px;
     }
-    #message-container {
+    .message-container {
         display: flex;
         justify-content: flex-end;
     }
-    @* #add-to-cart-message {
-        display: block; /* Ensure it's visible */
-        opacity: 0; /* Initially hidden */
-    }
 
-    .show-message {
-        opacity: 1; /* Make the message visible */
-        transition: opacity 0.5s ease-in-out; /* Transition effect */
-    } *@
 </style>
