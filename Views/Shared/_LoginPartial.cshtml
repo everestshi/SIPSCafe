@@ -42,10 +42,14 @@
                 <button type="submit" style="color: #519389;" class="nav-link btn btn-link">Logout</button>
         </form>
     </li>
-        <div class="banner">
-            <span>Welcome back, @firstName!</span>
-            <span class="progress"></span>
-        </div>
+        @if (!Context.Session.TryGetValue("BannerDisplayed", out _))
+        {
+            Context.Session.SetString("BannerDisplayed", "true");
+            <div class="banner">
+                <span>Welcome back, @firstName!</span>
+                <span class="progress"></span>
+            </div>
+        }
 }
 else
 {
