@@ -28,9 +28,20 @@
         @Html.DisplayFor(model => model.StoreId)<br />
 
         @Html.DisplayNameFor(model => model.ItemTypes):
-        @Html.DisplayFor(model => model.ItemTypes)<br />
-
+        @foreach (var itemType in Model.ItemTypes)
+        {
+            @Html.DisplayFor(modelItem => itemType)
+            @:| <!-- Vertical bar -->
+        }
+        <br/>
         @Html.DisplayNameFor(model => model.OrderDetailIds):
+        @foreach (var orderId in Model.OrderDetailIds)
+        {
+            @Html.DisplayFor(modelItem => orderId)
+            @:| <!-- Vertical bar -->
+        }
+@*         @Html.DisplayNameFor(model => model.OrderDetailIds):
+        @Html.DisplayFor(model => model.OrderDetailIds)<br /> *@
         @Html.DisplayFor(model => model.OrderDetailIds)<br />
         <button id="refund-button" class="btn btn-danger">Process PayPal Refund</button>
 

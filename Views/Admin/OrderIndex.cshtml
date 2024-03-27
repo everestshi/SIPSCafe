@@ -8,11 +8,11 @@
 <h1>Orders</h1>
 @ViewBag.Message
 
-<form asp-action="ItemIndex" method="get">
+<form asp-action="OrderIndex" method="get">
     <div class="form-actions no-color">
         <p>
             <div class="form-group" style="display: inline-block">
-                <span>Search on Email-Product-Store ID:</span>
+                <span>Search on Email-Product Type-Store ID-Transaction ID:</span>
                 <input type="text" name="SearchString"
                        value="@ViewData["currentFilter"]" required />
             </div>
@@ -20,7 +20,7 @@
                 <input type="submit" value="Search"
                        class="btn btn-primary" />
             </div>
-            <a asp-action="ItemIndex">Back to Full List</a>
+            <a asp-action="OrderIndex">Back to Full List</a>
         </p>
     </div>
 </form>
