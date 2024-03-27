@@ -1,6 +1,4 @@
-﻿@* @model IEnumerable<Sips.ViewModels.ProductVM> *@
-
-@model PaginatedList<Sips.ViewModels.ItemVM>
+﻿@model PaginatedList<Sips.ViewModels.ItemVM>
 
 @{
     ViewData["Title"] = "ItemIndex";
@@ -82,18 +80,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ItemTypeName)
             </td>
-@*                 <td>
-                    @if (!string.IsNullOrEmpty(item.ImageBase64))
-                    {
-                        <img style="width:100px;height:100px;" src="data:image/jpeg;base64, @item.ImageBase64" alt="Item Image" />
-                    }
-                    else
-                    {
-                        <p>No image available</p>
-                    }
-                    @* @Html.DisplayFor(modelItem => item.UrlString) *@
-@*                 </td> *@
- 
             <td>
                 <a asp-action="ItemEdit" asp-route-id="@item.ItemId">Edit</a> |
                 <a asp-action="ItemDetails" asp-route-id="@item.ItemId">Details</a> |
@@ -122,4 +108,3 @@
 </nav>
 
 <a asp-action="Index">Back</a>
-
