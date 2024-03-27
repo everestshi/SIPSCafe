@@ -1,6 +1,4 @@
-﻿@* @model IEnumerable<Sips.ViewModels.OrderDetailVM> *@
-
-@model PaginatedList<Sips.ViewModels.OrderDetailVM>
+﻿@model PaginatedList<Sips.ViewModels.OrderDetailVM>
 
 @{
     ViewData["Title"] = "OrderIndex";
@@ -27,45 +25,24 @@
     </div>
 </form>
 
-@* <p>
-    <a asp-action="ItemCreate">Create a New Product</a>
-</p> *@
-
-
 <table class="table">
     <thead>
         <tr>
             <th>
-
-                @* TransactionId *@
                 @Html.ActionLink("Transaction ID", "OrderIndex", new { sortOrder = ViewBag.IDSortParm })
-
             </th>
             <th>
-                @* DateOrdered *@
                 @Html.ActionLink("Date Ordered", "OrderIndex", new { sortOrder = ViewBag.DateSortParm })
-
             </th>
-
             <th>
-                @* StoreId *@
                 @Html.ActionLink("Store ID", "OrderIndex", new { sortOrder = ViewBag.StorIDSortParm })
-
             </th>
-
             <th>
-                
-                @* UserEmail *@
                 @Html.ActionLink("Email", "OrderIndex", new { sortOrder = ViewBag.EmailSortParm })
-
             </th>
             <th>
                 @Html.ActionLink("Total Price", "OrderIndex", new { sortOrder = ViewBag.TotalPriceSortParm })
-
             </th>
-
-
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -89,17 +66,13 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.totalPrice)
                 </td>
-
-
                 <td>
-                    @* <a asp-action="OrderEdit" asp-route-id="@item.TransactionId">Edit</a> | *@
                     <a asp-action="OrderDetails" asp-route-id="@item.TransactionId">Details</a> |
                     <a asp-action="OrderDelete" asp-route-id="@item.TransactionId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
-
 </table>
 <nav>
     <ul class="pagination">
@@ -119,4 +92,3 @@
 </nav>
 
 <a asp-action="Index">Back</a>
-
