@@ -141,31 +141,30 @@
                                 // Create elements and append them to the cart container
                                 var itemElement = document.createElement('div');
                                 itemElement.innerHTML = `
-                                <h5>${item.name}</h5>
-                                <p>Sweetness: ${item.sweetnessPercent}</p>
-                                <p>Milk: ${item.milkType}</p>
-                                <p>Ice: ${item.icePercent}</p>
-                                <div class="add-ins">
-                                    <p style="font-weight:bold">Add-Ins: </p>
-                                    ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
-                                </div>
-                                <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
-                                <button type="button" onclick="AddOne('${item.uniqueItemId}')">+</button>
-                                <button type="button" onclick="RemoveOne('${item.uniqueItemId}')">-</button>
-                                `;
+                                    <h5>${item.name}</h5>
+                                    <p>Sweetness: ${item.sweetnessPercent}</p>
+                                    <p>Milk: ${item.milkType}</p>
+                                    <p>Ice: ${item.icePercent}</p>
+                                    <div class="add-ins">
+                                        <p style="font-weight:bold">Add-Ins: </p>
+                                        ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
+                                    </div>
+                                    <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
+                                    <button type="button" onclick="AddOne('${item.uniqueItemId}')">+</button>
+                                    <button type="button" onclick="RemoveOne('${item.uniqueItemId}')">-</button>
+                                    `;
                                 cartContainer.appendChild(itemElement);
                             });
                         }
+
+                        // Display the modal using Bootstrap's modal method
+                        var modal = new bootstrap.Modal(document.getElementById(modalId));
+                        modal.show();
 
                     })
                     .catch(error => {
                         console.error('Error:', error);
                     });
-]
-                    // Display the modal using Bootstrap's modal method
-                    var modal = new bootstrap.Modal(document.getElementById(modalId));
-                    modal.show();
-
             });
         });
     });
@@ -238,7 +237,7 @@
     }
 
 
-// remove same product from cart
+    // remove same product from cart
 
     function RemoveOne(uniqueItemId) {
         // Display a confirmation dialog before removing the item
@@ -271,12 +270,13 @@
         setTimeout(function () {
             $('#remove-from-cart-message').fadeOut('slow');
         }, 1500);
-      
+
         calculateTotal();
 
     }
 
 </script>
+
 
 <script>
     paypal.Buttons({
