@@ -237,39 +237,22 @@
             // temporarily update the cart total until page is refreshed
             var checkoutTotal = document.getElementById('checkout-icon');
             var quantity = checkoutTotal.getAttribute('value');
-            console.log('quantity:', quantity);
 
             var intTotal = parseInt(quantity) + 1;
-            console.log('intTotal:', intTotal);
 
             // Update the data-value attribute with the new total
             checkoutTotal.setAttribute('value', intTotal);
-            // Collect item details
-            // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
+
 
             console.log("AddToCart() itemId ==> " + itemId);
             var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
             var ice = iceLabel ? iceLabel.textContent.trim() : '';
-            // console.log("AddToCart() 1 ==> ");
 
             var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
             var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
-            // console.log("AddToCart() 2 ==> ");
 
             var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
-            // console.log("AddToCart() 3 ==> ");
 
-            // var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
-            // var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
-            // var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
-            // console.log("AddToCart() 4 ==> ");
-
-            //alert ("milkType ==> " + milkType + ", milkPriceModifier ==> " + milkPriceModifier);
-
-            // var addIns = [];
-            // addInOptions.forEach(function (option) {
-            //     addIns.push(option.value);
-            // });
             var addInNames = [];
             addInOptions.forEach(function (option) {
                 var addInLabel = option.nextElementSibling;
@@ -281,7 +264,6 @@
                     });
                 }
             });
-            // alert('#modalPrice_' + itemId + ' ==> ' + $('#modalPrice_' + itemId).html());
 
 
             var uniqueItemId = generateUniqueItemId(
@@ -385,27 +367,6 @@
                 basePrice.textContent = (newTotal).toFixed(2);
             }
         }
-
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     // Get references to the customize and add to cart buttons
-        //     var customizeButtons = document.querySelectorAll('.customize');
-        //     var addToCartButtons = document.querySelectorAll('.add-to-cart');
-        //     // Add event listener for customize button click
-        //     customizeButtons.forEach(function (button) {
-        //         button.addEventListener('click', function () {
-        //             // Show the modal
-        //             document.getElementById('customizeModal').classList.add('show');
-        //             document.getElementById('customizeModal').style.display = 'block';
-        //         });
-        //     });
-        //     // Add event listener for add to cart button click
-        //     addToCartButtons.forEach(function (button) {
-        //         button.addEventListener('click', function () {
-        //             // Add your logic to add item to cart here
-        //             // alert('Item added to cart!');
-        //         });
-        //     });
-        // });
     </script>
 }
 
