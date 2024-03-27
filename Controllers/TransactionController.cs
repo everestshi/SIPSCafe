@@ -10,9 +10,11 @@ using Sips.SipsModels;
 using Sips.ViewModels;
 using Newtonsoft.Json;
 using SendGrid.Helpers.Mail;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sips.Controllers
 {
+    [Authorize]
     public class TransactionController : Controller
     {
         private readonly SipsdatabaseContext _db;

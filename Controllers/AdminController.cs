@@ -6,9 +6,11 @@ using Sips.SipsModels;
 using Sips.ViewModels;
 using Sips.Repositories;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sips.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class AdminController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
