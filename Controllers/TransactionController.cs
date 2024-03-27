@@ -118,6 +118,8 @@ namespace Sips.Controllers
                     Sweetness swettness = _db.Sweetnesses.FirstOrDefault(s => s.SweetnessPercent == cartItem.SweetnessPercent);
                     Ice ice = _db.Ices.FirstOrDefault(I => I.IcePercent == cartItem.IcePercent);
                     MilkChoice milk = _db.MilkChoices.FirstOrDefault(m => m.MilkType == cartItem.MilkType);
+
+
                     // If milk is null, set it to "No Milk" which has ID 5
                     if (milk == null)
                     {
@@ -141,6 +143,32 @@ namespace Sips.Controllers
                     };
                     _db.OrderDetails.Add(cartOrderDetail);
                     _db.SaveChanges();
+
+                    var orderDetailId = cartOrderDetail.OrderDetailId;
+
+                    List<AddIn> addInNames = cartItem.AddInNames;
+
+                    foreach (var item in addInNames)
+                    {
+                        var addIn = _db.AddIns.FirstOrDefault(a => a.AddInName == item.AddInName);
+                        var addInOrderDetail = new AddInOrderDetail
+                        {
+                            //OrderDetailId = orderDetailId,
+                            //AddInId = addIn.AddInId,
+                            //Quantity = 1,
+
+
+                            OrderDetailId = 1,
+                            AddInId = 1,
+                            Quantity = 1,
+
+                        };
+
+                        _db.AddInOrderDetails.Add(addInOrderDetail);
+                        _db.SaveChanges();
+
+                    }
+
                 }
 
 
@@ -181,6 +209,7 @@ namespace Sips.Controllers
 
                         // This action should only be accessed via a server-side redirect, not directly from the client.
                         // If a client tries to access it directly, you may want to handle it appropriately.
+
                         return View("Confirmation", orderDetailModel);
                     }
                     else
