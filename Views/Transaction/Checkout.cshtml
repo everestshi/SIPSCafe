@@ -139,6 +139,7 @@
         });
     });
 
+
     // Calculate total when the page loads
     calculateTotal();
 
@@ -170,11 +171,6 @@
         }
     }
 
-
-
-
-
-
     function AddOne(uniqueItemId) {
         fetch(`/Transaction/AddOneToCart`, {
             method: 'POST',
@@ -198,6 +194,7 @@
                 // Handle errors if the fetch request fails
                 // Optionally, display an error message to the user
             });
+        window.location.reload();
         calculateTotal();
     }
 
