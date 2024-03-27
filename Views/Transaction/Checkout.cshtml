@@ -17,7 +17,7 @@
             <div class="checkout-items">
                 @foreach (var item in Model)
                 {
-                    <div class="checkout-item">
+                    <div class="checkout-item" id="checkout-item_@item.UniqueItemId">
                     <button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button>
                    
                     <div class="item-subqty">
@@ -318,14 +318,19 @@
         var intQuantity = parseInt(grandtotalQuantity.textContent);
 
         // Ensure the quantity won't go below zero
-        if (intQuantity > 0) {
+        if (intQuantity > 1) {
             intQuantity--; // Decrement the quantity
             console.log('intQuantity:', intQuantity);
 
             // Update the quantity
             grandtotalQuantity.textContent = intQuantity;
+            calculateTotal();
+
         }
-        calculateTotal();
+        else {
+            var itemDiv = document.getElementById('checkout-item_' + uniqueItemId);
+            itemDiv.remove();
+        }
     }
 
 </script>
