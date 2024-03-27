@@ -24,7 +24,6 @@
                                  @Convert.ToBase64String(tea.Image?.Image)"
                  alt="@tea.Image?.FileName" class="img-fluid" />
 
-            @* <img src="~/images/boba-02.png" alt="@tea.Name" class="img-fluid"> *@
             <div class="tea-copy">
                 <span id="item-@tea.ItemId-id" style="display: none;">@tea.ItemId</span>
                 <h3 id="item-@tea.ItemId-name">@tea.Name</h3>
@@ -45,16 +44,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        @*                         <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                    <img style="width:100px;height:100px;" src="data:image/jpeg;base64,
-                    @Convert.ToBase64String(tea.Image?.Image)"
-                    alt="@tea.Image?.FileName"  /> *@
-                        @*                         <div style="display: flex;">
-                    <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                    <img style="width:100px;height:100px;" src="data:image/jpeg;base64, @Convert.ToBase64String(tea.Image?.Image)" alt="@tea.Image?.FileName" />
-                    </div> *@
                         <div style="margin: 0 auto;">
-                            @* <h5 class="modal-title" id="customizeModalLabel" style="margin-left: 10px;">Customize Your Drink</h5> *@
                             <img style="width: 200px; height: 200px;" src="data:image/jpeg;base64, @Convert.ToBase64String(tea.Image?.Image)" alt="@tea.Image?.FileName" />
                         </div>
                         <button type="button" class="close" id="closeModal" data-bs-dismiss="modal" aria-label="Close">
@@ -96,25 +86,6 @@
                                     }
                                 </ul>
                             </div>
-
-                            <!-- Milk Choice Options -->
-@*                             <div>
-                                <h4>Milk Choice:</h4>
-                                <ul>
-                                    @foreach (var option in Model.MilkOptions)
-                                    {
-                                        <li>
-                                            <label>
-                                                <input id="item-@tea.ItemId-milk-@option.MilkType" class="item-@tea.ItemId-milk" type="radio" name="milkOptions_@tea.ItemId" onchange="AdjustPrice(@tea.BasePrice, @option.PriceModifier, @tea.ItemId, this)" value="@option.MilkChoiceId" @(option.MilkType == "Regular" ? "checked" : "")>
-                                                <span id="item-@tea.ItemId-milktype-@option.MilkType" class="item-@tea.ItemId-milktype">
-                                                    @option.MilkType
-                                                </span> - <span id="item-@tea.ItemId-milktype-@option.PriceModifier" class="item-@tea.ItemId-milktype">$@option.PriceModifier</span>
-                                            </label>
-                                        </li>
-                                    }
-                                </ul>
-                            </div> *@
-
                             <!-- Addon Options -->
                             <div>
                                 <h4>Add Ins:</h4>
@@ -193,31 +164,10 @@
                     }
                 });
             });
-
-            // Get references to the add to cart buttons
-            var addToCartButtons = document.querySelectorAll('.add-to-cart');
-
-            // Add event listener for add to cart button click
-            addToCartButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    // Add your logic to add item to cart here
-                });
-            });
         });
 
         var totalQuantity = 0;
         var totalAmount = 0;
-        document.addEventListener('DOMContentLoaded', function () {
-            var addToCartButtons = document.querySelectorAll('.add-to-cart');
-            addToCartButtons.forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var itemId = button.getAttribute('data-item-id');
-                    var price = button.getAttribute('data-price');
-                    AddToCart(itemId, price);
-                });
-            });
-        });
-
         function generateUniqueItemId(itemId, ice, sweetness, addInNames) {
             // Convert add-in names array to a string
             let addInNamesStr = addInNames.map(addIn => addIn.AddInName).join(",");
@@ -245,31 +195,16 @@
             // Update the data-value attribute with the new total
             checkoutTotal.setAttribute('value', intTotal);
             // Collect item details
-            // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
 
             console.log("AddToCart() itemId ==> " + itemId);
             var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
             var ice = iceLabel ? iceLabel.textContent.trim() : '';
-            // console.log("AddToCart() 1 ==> ");
 
             var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
             var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
-            // console.log("AddToCart() 2 ==> ");
 
             var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
-            // console.log("AddToCart() 3 ==> ");
 
-            // var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
-            // var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
-            // var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
-            // console.log("AddToCart() 4 ==> ");
-
-            //alert ("milkType ==> " + milkType + ", milkPriceModifier ==> " + milkPriceModifier);
-
-            // var addIns = [];
-            // addInOptions.forEach(function (option) {
-            //     addIns.push(option.value);
-            // });
             var addInNames = [];
             addInOptions.forEach(function (option) {
                 var addInLabel = option.nextElementSibling;
@@ -281,8 +216,6 @@
                     });
                 }
             });
-            // alert('#modalPrice_' + itemId + ' ==> ' + $('#modalPrice_' + itemId).html());
-
 
             var uniqueItemId = generateUniqueItemId(
                 itemId,
@@ -307,7 +240,6 @@
             var modalId = 'customizeModal_' + itemId;
             var iceOptions = document.querySelectorAll('#' + modalId + ' input[name="iceOptions"]:checked');
             var sweetnessOptions = document.querySelectorAll('#' + modalId + ' input[name="sweetnessOptions"]:checked');
-            // var milkOption = document.querySelector('#' + modalId + ' input[name="milkOptions"]:checked');
             var addInOptions = document.querySelectorAll('#' + modalId + ' input[name="addInOptions"]:checked');
             // Update item object with selected options
             if (iceOptions.length > 0) {
@@ -316,10 +248,6 @@
             if (sweetnessOptions.length > 0) {
                 item.sweetness = sweetnessOptions[0].value;
             }
-            // if (milkOption) {
-            //     item.milkType = milkOption.value;
-            //     item.milkPriceModifier = parseFloat(milkOption.getAttribute('data-price-modifier'));
-            // }
             addInOptions.forEach(function (option) {
                 item.addInNames.push(option.value);
                 item.addInPriceModifiers.push(parseFloat(option.getAttribute('data-price-modifier')));
@@ -385,27 +313,6 @@
                 basePrice.textContent = (newTotal).toFixed(2);
             }
         }
-
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     // Get references to the customize and add to cart buttons
-        //     var customizeButtons = document.querySelectorAll('.customize');
-        //     var addToCartButtons = document.querySelectorAll('.add-to-cart');
-        //     // Add event listener for customize button click
-        //     customizeButtons.forEach(function (button) {
-        //         button.addEventListener('click', function () {
-        //             // Show the modal
-        //             document.getElementById('customizeModal').classList.add('show');
-        //             document.getElementById('customizeModal').style.display = 'block';
-        //         });
-        //     });
-        //     // Add event listener for add to cart button click
-        //     addToCartButtons.forEach(function (button) {
-        //         button.addEventListener('click', function () {
-        //             // Add your logic to add item to cart here
-        //             // alert('Item added to cart!');
-        //         });
-        //     });
-        // });
     </script>
 }
 
