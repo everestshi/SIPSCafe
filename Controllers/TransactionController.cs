@@ -148,26 +148,26 @@ namespace Sips.Controllers
 
                     List<AddIn> addInNames = cartItem.AddInNames;
 
-                    foreach (var item in addInNames)
-                    {
-                        var addIn = _db.AddIns.FirstOrDefault(a => a.AddInName == item.AddInName);
-                        var addInOrderDetail = new AddInOrderDetail
-                        {
-                            //OrderDetailId = orderDetailId,
-                            //AddInId = addIn.AddInId,
-                            //Quantity = 1,
+                    //foreach (var item in addInNames)
+                    //{
+                    //    var addIn = _db.AddIns.FirstOrDefault(a => a.AddInName == item.AddInName);
+                    //    var addInOrderDetail = new AddInOrderDetail
+                    //    {
+                    //        //OrderDetailId = orderDetailId,
+                    //        //AddInId = addIn.AddInId,
+                    //        //Quantity = 1,
 
 
-                            OrderDetailId = 1,
-                            AddInId = 1,
-                            Quantity = 1,
+                    //        OrderDetailId = 1,
+                    //        AddInId = 1,
+                    //        Quantity = 1,
 
-                        };
+                    //    };
 
-                        _db.AddInOrderDetails.Add(addInOrderDetail);
-                        _db.SaveChanges();
+                    //    _db.AddInOrderDetails.Add(addInOrderDetail);
+                    //    _db.SaveChanges();
 
-                    }
+                    //}
 
                 }
 
