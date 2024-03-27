@@ -217,6 +217,16 @@
                 });
             });
         });
+
+        function generateUniqueItemId(itemId, ice, sweetness, addInNames) {
+            // Convert add-in names array to a string
+            let addInNamesStr = addInNames.map(addIn => addIn.AddInName).join(",");
+            // Create a unique identifier by combining the item ID with selected options
+            let uniqueItemId = `${itemId}-${ice}-${sweetness}-${addInNamesStr}`;
+            // Use a simple hash function or encoding if necessary to shorten or standardize the unique ID
+            return uniqueItemId;
+        }
+
         function AddToCart(itemId) {
             // Show the add to cart message
             $('#add-to-cart-message').fadeIn('slow');
@@ -274,14 +284,21 @@
             // alert('#modalPrice_' + itemId + ' ==> ' + $('#modalPrice_' + itemId).html());
 
 
+            var uniqueItemId = generateUniqueItemId(
+                itemId,
+                ice,
+                sweetness,
+                addInNames // Make sure this is the array of objects {AddInName: "name"}
+            );
+
             var item = {
                 ItemId: itemId,
+                UniqueItemId: uniqueItemId,
                 BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
                 SubTotal: parseFloat($('#modalPrice_' + itemId).html()),
                 Name: $('#item-' + itemId + '-name').html(),
                 IcePercent: ice,
                 SweetnessPercent: sweetness,
-                // MilkType: milkType,
                 AddInNames: addInNames,
                 Quantity: 1// Assign the populated list of AddInOrderDetail objects
             };
