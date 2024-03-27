@@ -61,15 +61,10 @@ namespace Sips.Controllers
                                                 string message = "")
         {
             UserRoleRepo userRoleRepo = new UserRoleRepo(_userManager);
-            //MyRegisteredUserRepo mruRepo = new MyRegisteredUserRepo(_db, _userManager);
-
-            //var registeredUser = mruRepo.GetUserNameByEmail(userName);
-
             var roles = await userRoleRepo.GetUserRolesAsync(userName);
 
             ViewBag.Message = message;
             ViewBag.UserName = userName;
-            //ViewBag.FullName = registeredUser;
 
             return View(roles);
         }
