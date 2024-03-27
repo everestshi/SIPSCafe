@@ -5,26 +5,26 @@ namespace Sips.Services
     public class PayPalTokenService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _clientId;
-        private readonly string _clientSecret;
+        private readonly IConfiguration _configuration;
 
-        public PayPalTokenService(HttpClient httpClient,
-                                  string clientId, string clientSecret)
+
+        public PayPalTokenService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _clientId = clientId ?? throw new ArgumentNullException(nameof(clientId));
-            _clientSecret = clientSecret ??
-                 throw new ArgumentNullException(nameof(clientSecret));
+            _configuration = configuration;
         }
 
         public string GetAccessToken()
         {
+            var secretKey = _configuration["Recaptcha:SecretKey"];
+            var payPalClient = _configuration["PayPal:ClientId"];
+
             var tokenRequest = new HttpRequestMessage(HttpMethod.Post,
                                    "https://api-m.sandbox.paypal.com/v1/oauth2/token");
             tokenRequest.Headers.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Basic",
-              Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{_clientId}:" +
-                                                                      $"{_clientSecret}")));
+              Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes($"{payPalClient}:" +
+                                                                      $"{secretKey}")));
 
             tokenRequest.Content = new FormUrlEncodedContent(new[]
             {

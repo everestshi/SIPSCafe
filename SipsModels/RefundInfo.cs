@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Sips.ViewModels
+namespace Sips.SipsModels
 {
     public class RefundInfo
     {

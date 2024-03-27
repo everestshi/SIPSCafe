@@ -39,3 +39,114 @@
 <div>
     <a asp-action="OrderIndex">Back to List</a>
 </div>
+
+<div id="refundModal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="refundModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white"
+                 style="background-color:rgba(var(--bs-primary-rgb),
+                     var(--bs-bg-opacity)) !important;">
+                !important;">
+                <h5 class="modal-title" id="refundModalLabel">Refund Successful</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="refundModalBody">
+                <!-- Refund information will be dynamically inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var refundButton = document.getElementById('refund-button');
+
+        if (refundButton) {
+            refundButton.addEventListener('click', function () {
+                var PaymentNotification = {
+                    PaymentId: '@ViewBag.PaymentNotification.PaymentId',
+                    Amount: '@ViewBag.PaymentNotification.Amount',
+                    CurrencyCode: '@ViewBag.PaymentNotification.CurrencyCode',
+                    CurrencySymbol: '@ViewBag.PaymentNotification.CurrencySymbol',
+                    PayerId: '@ViewBag.PaymentNotification.PayerId',
+                    CaptureId: '@ViewBag.PaymentNotification.CaptureId',
+                    PayerFullName: '@ViewBag.PaymentNotification.PayerFullName'
+                };
+
+                console.log();
+                console.log('PaymentNotification ==> ' +
+                    JSON.stringify(PaymentNotification));
+
+
+                // Make fetch request to refund action method
+                fetch('/Admin/RefundAction',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(PaymentNotification)
+                    })
+                    .then(function (response) {
+                        // Parse http response JSON
+                        return response.json();
+                    })
+                    .then(function (data) {
+                        // Check if the necessary properties exist in the response
+                        if (data && data.id && data.status && data.paymentNotification) {
+                            document.getElementById('refundModalLabel').innerHTML =
+                                'Refund Successful';
+
+                            // Construct refund information HTML
+                            var refundInfoHTML =
+                                '<p><strong class="text-primary">Status:</strong>\t\t' +
+                                data.status + '</p>' +
+                                '<p><strong class="text-primary">Refund ID:</strong>\t\t' +
+                                data.id + '</p>' +
+                                '<p><strong class="text-primary">Refund Amount:</strong>' +
+                                data.paymentNotification.currencySymbol +
+                                data.paymentNotification.amount + ' ' +
+                                data.paymentNotification.currencyCode + '</p>' +
+                                '<p><strong class="text-primary">Capture ID:</strong>' +
+                                data.paymentNotification.captureId + '</p>';
+                        } else {
+                            // Handle processing error
+                            document.getElementById('refundModalLabel').innerHTML =
+                                'Refund failed';
+
+                            var errorObject = JSON.parse(data.error);
+
+                            var refundInfoHTML =
+                                '<h5>' + errorObject.message + '</h5><br/>' +
+                                '<p><strong>Status:</strong>\t\t' +
+                                errorObject.name + '</p>' +
+                                '<p><strong>Issue:</strong>\t\t' +
+                                errorObject.details[0].issue + '</p>' +
+                                '<p><strong>Description:</strong>\t\t' +
+                                errorObject.details[0].description + '</p>';
+                        }
+                        // Set refund information HTML to modal body
+                        document.getElementById('refundModalBody').innerHTML =
+                            refundInfoHTML;
+                        // Show the modal
+                        var refundModal =
+                            new bootstrap.Modal(document.getElementById('refundModal'));
+
+                        refundModal.show();
+
+                    }).catch(function (error) {
+
+                        // Handle errors
+                        console.error('Error occurred:', error);
+                        alert(error);
+                    });
+            });
+        }
+    });
+</script>
+

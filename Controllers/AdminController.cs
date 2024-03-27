@@ -435,6 +435,13 @@ namespace Sips.Controllers
         public IActionResult OrderDetails(string id)
         {
             OrderDetailRepo orderRepo = new OrderDetailRepo(_db);
+
+            // Retrieve the PaymentNotification object based on the provided id
+            PaymentNotification paymentNotification = _db.PaymentNotifications.FirstOrDefault(p => p.PaymentID == id);
+
+            // Pass the retrieved PaymentNotification object to the view using ViewBag
+            ViewBag.PaymentNotification = paymentNotification;
+
             return View(orderRepo.GetById(id));
         }
 

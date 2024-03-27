@@ -34,12 +34,12 @@ builder.Services.AddTransient<PayPalTokenService>(provider =>
 {
     var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
     var configuration = provider.GetRequiredService<IConfiguration>();
-    var clientId = configuration["PayPalClientId"];
-    var clientSecret = configuration["PayPalSecret"];
+    var clientId = configuration["PayPal:ClientId"]; // Assuming your configuration follows the format "PayPal:ClientId"
+    var clientSecret = configuration["PayPal:ClientSecret"]; // Assuming your configuration follows the format "PayPal:ClientSecret"
 
-    return new PayPalTokenService(httpClientFactory.CreateClient(),
-               clientId, clientSecret);
+    return new PayPalTokenService(httpClientFactory.CreateClient(), configuration);
 });
+
 
 
 builder.Services.AddTransient<IEmailService, EmailService>();
