@@ -16,7 +16,6 @@
                         <th>Item Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        @* <th></th> *@
                     </tr>
                 </thead>                
             <tbody>
@@ -25,10 +24,7 @@
                     <tr>
                             <td><button class="btn btn-outline-dark" data-modal="myModal" itemid="@item.ItemId">@item.Name</button></td>
                             <td class="subtotal-amount">@item.Subtotal</td>
-                            <td class="subtotal-qty">@item.Quantity</td>
-                             <td><button type="button" onclick="RemoveOne(@item.ItemId)">-</button></td> 
-
-                           
+                            <td class="subtotal-qty">@item.Quantity</td>                         
                     </tr>
                 }
                 </tbody>
