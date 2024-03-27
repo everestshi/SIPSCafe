@@ -173,37 +173,73 @@
     // Calculate total when the page loads
     calculateTotal();
 
+    // function calculateTotal() {
+    //     var subtotalElements = document.querySelectorAll('.subtotal-amount');
+    //     var subtotalQtys = document.querySelectorAll('.subtotal-qty');
+    //     console.log(subtotalElements);
+    //     console.log(subtotalQtys);
+    //     var grandTotalAmount = 0;
+    //     var grandTotalQty = 0;
+
+    //     subtotalElements.forEach(function (subtotalElement, index) {
+    //         var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
+    //         console.log(subtotal);
+    //         var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
+    //         console.log(qty);
+
+    //         var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
+    //         grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
+
+    //         grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
+    //     });
+
+    //     // Update grand total only if the elements exist
+    //     var grandTotalAmountElement = document.getElementById('grandTotalAmount');
+    //     var grandTotalQtyElement = document.getElementById('grandTotalQty');
+
+    //     if (grandTotalAmountElement && grandTotalQtyElement) {
+    //         grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
+    //         grandTotalQtyElement.textContent = grandTotalQty;
+    //     } else {
+    //         console.error("One or both of the grand total elements are not found.");
+    //     }
+    // }
     function calculateTotal() {
-        var subtotalElements = document.querySelectorAll('.subtotal-amount');
-        var subtotalQtys = document.querySelectorAll('.subtotal-qty');
-        console.log(subtotalElements);
-        console.log(subtotalQtys);
-        var grandTotalAmount = 0;
-        var grandTotalQty = 0;
+        try {
+            var subtotalElements = document.querySelectorAll('.subtotal-amount');
+            var subtotalQtys = document.querySelectorAll('.subtotal-qty');
+            console.log(subtotalElements);
+            console.log(subtotalQtys);
+            var grandTotalAmount = 0;
+            var grandTotalQty = 0;
 
-        subtotalElements.forEach(function (subtotalElement, index) {
-            var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
-            console.log(subtotal);
-            var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
-            console.log(qty);
+            subtotalElements.forEach(function (subtotalElement, index) {
+                var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
+                console.log(subtotal);
+                var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
+                console.log(qty);
 
-            var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
-            grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
+                var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
+                grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
 
-            grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
-        });
+                grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
+            });
 
-        // Update grand total only if the elements exist
-        var grandTotalAmountElement = document.getElementById('grandTotalAmount');
-        var grandTotalQtyElement = document.getElementById('grandTotalQty');
+            // Update grand total only if the elements exist
+            var grandTotalAmountElement = document.getElementById('grandTotalAmount');
+            var grandTotalQtyElement = document.getElementById('grandTotalQty');
 
-        if (grandTotalAmountElement && grandTotalQtyElement) {
-            grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
-            grandTotalQtyElement.textContent = grandTotalQty;
-        } else {
-            console.error("One or both of the grand total elements are not found.");
+            if (grandTotalAmountElement && grandTotalQtyElement) {
+                grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
+                grandTotalQtyElement.textContent = grandTotalQty;
+            } else {
+                throw new Error("One or both of the grand total elements are not found.");
+            }
+        } catch (error) {
+            console.error("Error in calculateTotal:", error.message);
         }
     }
+
 
     function AddOne(uniqueItemId) {
         fetch(`/Transaction/AddOneToCart`, {
@@ -318,19 +354,21 @@
         var intQuantity = parseInt(grandtotalQuantity.textContent);
 
         // Ensure the quantity won't go below zero
-        if (intQuantity > 1) {
+        if (intQuantity > 0) {
             intQuantity--; // Decrement the quantity
             console.log('intQuantity:', intQuantity);
 
             // Update the quantity
             grandtotalQuantity.textContent = intQuantity;
-            calculateTotal();
 
         }
-        else {
-            var itemDiv = document.getElementById('checkout-item_' + uniqueItemId);
-            itemDiv.remove();
-        }
+        // else {
+        //     var itemDiv = document.getElementById('checkout-item_' + uniqueItemId);
+        //     itemDiv.hidden = true;
+        //     //$('#checkout-item_' + uniqueItemId).hide();
+        // }
+        calculateTotal();
+
     }
 
 </script>
