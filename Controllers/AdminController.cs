@@ -351,12 +351,12 @@ namespace Sips.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 ordersVM = ordersVM.Where(c => c.UserEmail.ToLower().Contains(searchString.ToLower()) ||
-                                               c.ItemTypes.Select(item => item.ToLower()).Contains(searchString.ToLower()) ||
-                                                c.StoreId.ToString().Contains(searchString)
+                                                c.ItemTypes.Any(item => item.ToLower().Contains(searchString.ToLower())) ||
+                                                c.StoreId.ToString().Contains(searchString) ||
+                                                c.TransactionId.ToString().Contains(searchString)
 
-
-
-                                        ).ToList();
+                                                )
+                    .ToList();
             }
 
             ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
