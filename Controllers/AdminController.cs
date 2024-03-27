@@ -375,6 +375,8 @@ namespace Sips.Controllers
             ViewData["StorIDSortParm"] = sortOrder == "StrorID" ? "StrorIDDesc" : "StrorID";
             ViewData["EmailSortParm"] = sortOrder == "Email" ? "EmailSortDesc" : "Email";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "DateDesc" : "Date";
+            ViewData["TotalPriceSortParm"] = sortOrder == "TotalPrice" ? "TotalPriceDesc" : "TotalPrice";
+
 
             switch (sortOrder)
             {
@@ -386,6 +388,13 @@ namespace Sips.Controllers
                     break;
                 case "StrorID":
                     ordersVM = ordersVM.OrderBy(p => p.StoreId).ToList();
+                    break;
+
+                case "TotalPriceDesc":
+                    ordersVM = ordersVM.OrderByDescending(p => p.totalPrice).ToList();
+                    break;
+                case "TotalPrice":
+                    ordersVM = ordersVM.OrderBy(p => p.totalPrice).ToList();
                     break;
 
                 case "DateDesc":
