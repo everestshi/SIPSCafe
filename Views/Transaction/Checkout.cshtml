@@ -16,6 +16,7 @@
                         <th>Item Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
+<th></th>
                     </tr>
                 </thead>                
             <tbody>
@@ -62,7 +63,6 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Understood</button>
                     </div>
                 </div>
             </div>
@@ -144,22 +144,35 @@
 
     function calculateTotal() {
         var subtotalElements = document.querySelectorAll('.subtotal-amount');
-        var subTotalQty = document.querySelectorAll('.subtotal-qty');
+        var subtotalQtys = document.querySelectorAll('.subtotal-qty');
         var grandTotalAmount = 0;
         var grandTotalQty = 0;
 
         subtotalElements.forEach(function (subtotalElement, index) {
-            var subtotal = parseFloat(subtotalElement.textContent.replace('$', ''));
-            grandTotalAmount += subtotal;
-            var qty = parseInt(subTotalQty[index].textContent);
-            grandTotalQty += qty;
+            var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
+            var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
+
+            var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
+            grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
+
+            grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
         });
 
-        // Display grand total
-        document.getElementById('grandTotalAmount').textContent = '$' + grandTotalAmount.toFixed(2);
-        document.getElementById('grandTotalQty').textContent = grandTotalQty;
+        // Update grand total only if the elements exist
+        var grandTotalAmountElement = document.getElementById('grandTotalAmount');
+        var grandTotalQtyElement = document.getElementById('grandTotalQty');
 
+        if (grandTotalAmountElement && grandTotalQtyElement) {
+            grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
+            grandTotalQtyElement.textContent = grandTotalQty;
+        } else {
+            console.error("One or both of the grand total elements are not found.");
+        }
     }
+
+
+
+
 
 
     function AddOne(uniqueItemId) {
@@ -185,6 +198,7 @@
                 // Handle errors if the fetch request fails
                 // Optionally, display an error message to the user
             });
+        calculateTotal();
     }
 
 
@@ -214,68 +228,8 @@
                 // Handle errors if the fetch request fails
                 // Optionally, display an error message to the user
             });
+        calculateTotal();
     }
-
-
-    // var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
-    // var ice = iceLabel ? iceLabel.textContent.trim() : '';
-
-    // var sweetnessLabel = document.querySelector('input[name="sweetnessOptions_' + itemId + '"]:checked').nextElementSibling;
-    // var sweetness = sweetnessLabel ? sweetnessLabel.textContent.trim() : '';
-
-    // var addInOptions = document.querySelectorAll('input[name="addInOptions_' + itemId + '"]:checked');
-
-    // var milkTypeLabel = document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').nextElementSibling;
-    // var milkType = milkTypeLabel ? milkTypeLabel.textContent.trim() : '';
-    // var milkPriceModifier = parseFloat(document.querySelector('input[name="milkOptions_' + itemId + '"]:checked').getAttribute('data-price-modifier'));
-
-    // var addInNames = [];
-    // addInOptions.forEach(function (option) {
-    //     var addInLabel = option.nextElementSibling;
-    //     if (addInLabel) {
-    //         var addInName = addInLabel.textContent.trim();
-    //         addInNames.push({
-    //             AddInName: addInName,
-    //             // You can add other properties of AddIn here if needed
-    //         });
-    //     }
-    // });
-
-    // var item = {
-    //     ItemId: itemId,
-    //     BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
-    //     SubTotal: parseFloat($('#modalPrice_' + itemId).html()),
-    //     Name: $('#item-' + itemId + '-name').html(),
-    //     IcePercent: ice,
-    //     SweetnessPercent: sweetness,
-    //     MilkType: milkType,
-    //     AddInNames: addInNames,
-    //     Quantity: 1// Assign the populated list of AddInOrderDetail objects
-    // };
-
-    // // Get selected options from the modal
-    // var modalId = 'customizeModal_' + itemId;
-    // var iceOptions = document.querySelectorAll('#' + modalId + ' input[name="iceOptions"]:checked');
-    // var sweetnessOptions = document.querySelectorAll('#' + modalId + ' input[name="sweetnessOptions"]:checked');
-    // var milkOption = document.querySelector('#' + modalId + ' input[name="milkOptions"]:checked');
-    // var addInOptions = document.querySelectorAll('#' + modalId + ' input[name="addInOptions"]:checked');
-    // Update item object with selected options
-    // if (iceOptions.length > 0) {
-    //     item.ice = iceOptions[0].value;
-    // }
-    // if (sweetnessOptions.length > 0) {
-    //     item.sweetness = sweetnessOptions[0].value;
-    // }
-    // if (milkOption) {
-    //     item.milkType = milkOption.value;
-    //     item.milkPriceModifier = parseFloat(milkOption.getAttribute('data-price-modifier'));
-    // }
-    // addInOptions.forEach(function (option) {
-    //     item.addInNames.push(option.value);
-    //     item.addInPriceModifiers.push(parseFloat(option.getAttribute('data-price-modifier')));
-    // });
-    // console.log(item);
-    // Send item details to the server to add to the cart
 
 </script>
 
