@@ -133,6 +133,7 @@ namespace Sips.Controllers
                     UserId = user.UserId
                 };
                 _db.Transactions.Add(transaction);
+                _db.SaveChanges();
 
                 // Retrieve cart data from the session
                 var cartJson = HttpContext.Session.GetString("Cart");
@@ -141,16 +142,27 @@ namespace Sips.Controllers
                 // Parse the cart items and create OrderDetail objects
                 foreach (var cartItem in cartItems)
                 {
+                    Sweetness swettness = _db.Sweetnesses.FirstOrDefault(s => s.SweetnessPercent == cartItem.SweetnessPercent);
+                    Ice ice = _db.Ices.FirstOrDefault(I => I.IcePercent == cartItem.IcePercent);
+                    MilkChoice milk = _db.MilkChoices.FirstOrDefault(m => m.MilkType == cartItem.MilkType);
+
                     var cartOrderDetail = new OrderDetail
                     {
+
                         TransactionId = payPalVM.TransactionId, // Assuming TransactionId is already set in OrderDetail
-                                                                // Map properties from the CartVM to the OrderDetail
                         ItemId = cartItem.ItemId,
                         Price = cartItem.BasePrice,
                         Quantity = cartItem.Quantity,
-                        // Map other properties as needed,
+                        SweetnessId = swettness.SweetnessId,
+                        IceId = ice.IceId,
+                        MilkChoiceId = milk.MilkChoiceId,
+                        IsBirthdayDrink = false, // Assuming this property is not available in CartVM
+                        PromoValue = null, // Assuming this property is not available in CartVM
+                        SizeId = 1, // Assuming this property is not available in CartVM
+
                     };
                     _db.OrderDetails.Add(cartOrderDetail);
+                    _db.SaveChanges();
                 }
 
 
