@@ -11,46 +11,77 @@
 <div class="checkout-section">
     <h1>Checkout</h1>
     <div class="checkout-container">
-        <div class="checkout-items">
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Item Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-<th></th>
-                    </tr>
-                </thead>                
-            <tbody>
+        <!-- Add logic to hide/show cart items based on cart emptiness -->
+        @if (Model.Any())
+        {
+            <div class="checkout-items">
                 @foreach (var item in Model)
                 {
-                    <tr>
-                            <td><button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button></td>
-                            <td class="subtotal-amount">@item.Subtotal</td>
-                            <td class="subtotal-qty">@item.Quantity</td>
-                            <td><button type="button" onclick="AddOne('@item.UniqueItemId')">+</button></td>
-                            <td><button type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button></td> 
-                    </tr>
+                    <div class="checkout-item">
+                    <button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button>
+                   
+                    <div class="item-subqty">
+                        <button class="qty-btn" type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button>
+                        <p class="subtotal-qty">@item.Quantity</p>
+                        <button class="qty-btn" type="button" onclick="AddOne('@item.UniqueItemId')">+</button>
+                    </div>
+                        <p class="subtotal-amount">$@item.Subtotal</p>
+                    </div>
                 }
-                </tbody>
-            </table>
-        </div>
-        <div class="checkout-details">
-            <div class="order-details">
-                <p>Quantity: <span id="grandTotalQty">0</span></p>
-                <p>Total: <span id="grandTotalAmount">$0.00</span></p>
+@*                 <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th></th>
+                            <th>    </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button></td>
+                                <td class="subtotal-amount">@item.Subtotal</td>
+                                <td><button class="qty-btn" type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button></td>
+                                <td class="subtotal-qty">@item.Quantity</td>
+                                <td><button class="qty-btn" type="button" onclick="AddOne('@item.UniqueItemId')">+</button></td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table> *@
+
+@*                 <div class="checkout-box">
+
+                </div> *@
+            </div>
+            <div class="checkout-details">
+                <div class="order-details">
+                    <p>Quantity: <span id="grandTotalQty">0</span></p>
+                    <p>Total: <span id="grandTotalAmount">$0.00</span></p>
+
+                    
+                </div>
                 <input type="hidden" value="USD" id="currency" />
                 <div id="paypal-button-container"></div>
             </div>
-        </div>
+        }
+        else
+        {
+            <div class="empty-cart-message">
+                <p>Cart is Empty!</p>
+            </div>
+        }
+
+
     </div>
 </div>
 
 
+
 <!-- Modals -->
-@* @foreach (var item in Model)
-{ *@
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-dialog cart-dialog">
@@ -71,8 +102,6 @@
             </div>
         </div>
     </div>
-@* }
- *@
 <script src="https://www.paypal.com/sdk/js?client-id=@ViewData["PayPalClientId"]"></script>
 
 <script>
@@ -112,35 +141,34 @@
                                 // Create elements and append them to the cart container
                                 var itemElement = document.createElement('div');
                                 itemElement.innerHTML = `
-                                <h5>${item.name}</h5>
-                                <p>Sweetness: ${item.sweetnessPercent}</p>
-                                <p>Milk: ${item.milkType}</p>
-                                <p>Ice: ${item.icePercent}</p>
-                                <div class="add-ins">
-                                    <p style="font-weight:bold">Add-Ins: </p>
-                                    ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
-                                </div>
-                                <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
-                                <button type="button" onclick="AddOne('${item.uniqueItemId}')">+</button>
-                                <button type="button" onclick="RemoveOne('${item.uniqueItemId}')">-</button>
-                                `;
+                                    <h5>${item.name}</h5>
+                                    <p>Sweetness: ${item.sweetnessPercent}</p>
+                                    <p>Milk: ${item.milkType}</p>
+                                    <p>Ice: ${item.icePercent}</p>
+                                    <div class="add-ins">
+                                        <p style="font-weight:bold">Add-Ins: </p>
+                                        ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
+                                    </div>
+                                    <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
+                                    <button type="button" onclick="AddOne('${item.uniqueItemId}')">+</button>
+                                    <button type="button" onclick="RemoveOne('${item.uniqueItemId}')">-</button>
+                                    `;
                                 cartContainer.appendChild(itemElement);
                             });
                         }
+
+                        // Display the modal using Bootstrap's modal method
+                        var modal = new bootstrap.Modal(document.getElementById(modalId));
+                        modal.show();
 
                     })
                     .catch(error => {
                         console.error('Error:', error);
                     });
-
-
-                    // Display the modal using Bootstrap's modal method
-                    var modal = new bootstrap.Modal(document.getElementById(modalId));
-                    modal.show();
-
             });
         });
     });
+
 
     // Calculate total when the page loads
     calculateTotal();
@@ -172,11 +200,6 @@
             console.error("One or both of the grand total elements are not found.");
         }
     }
-
-
-
-
-
 
     function AddOne(uniqueItemId) {
         fetch(`/Transaction/AddOneToCart`, {
@@ -210,11 +233,21 @@
         }, 1500);
 
         calculateTotal();
+        // temporarily update the cart total until page is refreshed
+        var checkoutTotal = document.getElementById('checkout-icon');
+        var quantity = checkoutTotal.getAttribute('value');
+        console.log('quantity:', quantity);
+
+        var intTotal = parseInt(quantity) + 1;
+        console.log('intTotal:', intTotal);
+
+        // Update the data-value attribute with the new total
+        checkoutTotal.setAttribute('value', intTotal);
 
     }
 
 
-// remove same product from cart
+    // remove same product from cart
 
     function RemoveOne(uniqueItemId) {
         // Display a confirmation dialog before removing the item
@@ -241,18 +274,34 @@
                 // Optionally, display an error message to the user
             });
 
-        // Show the add to cart message
+        // Show the remove from cart message
         $('#remove-from-cart-message').fadeIn('slow');
         // Set a timeout to hide the message after 5 seconds
         setTimeout(function () {
             $('#remove-from-cart-message').fadeOut('slow');
         }, 1500);
-      
-        calculateTotal();
 
+        calculateTotal();
+        // temporarily update the cart total until page is refreshed
+        var checkoutTotal = document.getElementById('checkout-icon');
+        var quantity = checkoutTotal.getAttribute('value');
+        console.log('quantity:', quantity);
+
+        // Parse quantity as an integer
+        var intTotal = parseInt(quantity);
+
+        // Ensure the quantity won't go below 0
+        if (intTotal > 0) {
+            intTotal--; // Decrement the quantity
+            console.log('intTotal:', intTotal);
+
+            // Update the data-value attribute with the new total
+            checkoutTotal.setAttribute('value', intTotal);
+        }
     }
 
 </script>
+
 
 <script>
     paypal.Buttons({

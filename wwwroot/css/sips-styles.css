@@ -415,7 +415,7 @@ footer {
 
 .nav-footer {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: flex-start;
     height: 150px;
@@ -485,8 +485,9 @@ footer {
 
 .banner {
     position: absolute;
-    bottom: 3.125rem;
-    left: 3.125rem;
+    top: -.55rem;
+    right: 5.125rem; 
+
     width: max-content;
     padding: 1.25rem 1rem;
     border-radius: 0.25rem;
@@ -735,7 +736,13 @@ a {
     width: 100%;
     max-width: 170px;
 }
-
+.checkout-container{
+    width:100%;
+    display:flex;
+flex-direction:column;
+justify-content:space-evenly;
+min-height:300px;
+}
 .checkout-section {
     display: flex;
     flex-direction: column;
@@ -750,6 +757,80 @@ a {
         margin-top: 20px;
     }
 
+    .checkout-items{
+        display:flex;
+        flex-direction:column;
+       gap:2vh;
+      width:60%;
+        align-items:center;
+        margin: 0 auto;
+    }
+
+.checkout-item {
+    display: flex;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0 auto;
+}
+
+    .checkout-items p{
+margin:0;
+        padding:0;
+    
+    }
+.checkout-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    -webkit-align-items: center;
+    align-items: center;
+    margin:0 auto;
+    justify-content:space-evenly;
+}
+.order-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    -webkit-align-items: center;
+    align-items: center;
+    margin: 0;
+    gap:2vh;
+    font-weight:bold;
+}
+
+.item-subqty {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0;
+    width:80px;
+    height:30px;
+    border:1px solid #ccc;
+    border-radius:50px;
+}
+
+    .item-subqty button {
+        display: flex;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        border: none;
+        margin: 0;
+        padding: 0;
+        background: none;
+        color:#ccc;
+    }
+
+    .item-subqty p{
+margin:0;
+        padding:0;
+    
+    }
 .navbar-nav {
     display: flex;
     align-items: center;
@@ -792,3 +873,4 @@ a {
     opacity: 0.9;
 }
 }
+

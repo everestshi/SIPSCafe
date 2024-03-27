@@ -10,9 +10,11 @@ using Sips.SipsModels;
 using Sips.ViewModels;
 using Newtonsoft.Json;
 using SendGrid.Helpers.Mail;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sips.Controllers
 {
+    [Authorize]
     public class TransactionController : Controller
     {
         private readonly SipsdatabaseContext _db;
@@ -27,8 +29,6 @@ namespace Sips.Controllers
 
         public IActionResult Index()
         {
-            //DbSet<OrderDetail> items = _db.OrderDetails;
-            //return View(items);
             TransactionRepo transactionRepo = new TransactionRepo(_db);
 
             return View(transactionRepo.GetTransactions());
@@ -42,8 +42,6 @@ namespace Sips.Controllers
         }
         public IActionResult Checkout()
         {
-            //HttpContext.Session.SetString("Cart", User.Identity.Name);
-
             // Other code for PayPal client ID
             var payPalClient = _configuration["PayPal:ClientId"];
             ViewData["PayPalClientId"] = payPalClient;
@@ -79,32 +77,6 @@ namespace Sips.Controllers
             return View(cartItems);
 
         }
-
-        // This method receives and stores
-        // the Paypal transaction details.
-        //[HttpPost]
-        //public IActionResult PaySuccess([FromBody] OrderDetail orderDetail)
-        //{
-        //    try
-        //    {
-        //        _db.OrderDetails.Add(orderDetail);
-        //        _db.SaveChanges();
-
-        //        // Save the PaymentId of the PayPalVM item to the session variable as a string
-        //        HttpContext.Session.SetString("PayPalConfirmationModelId", orderDetail.TransactionId);
-
-        //        // Construct the redirect URL
-        //        var redirectUrl = Url.Action("Transaction", "PayPal");
-
-        //        // Return a JSON response with the redirect URL
-        //        return Json(new { redirectUrl });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //        return StatusCode(500);
-        //    }
-        //}
 
         [HttpPost]
         public IActionResult PaySuccess([FromBody] PayPalVM payPalVM)
@@ -266,17 +238,6 @@ namespace Sips.Controllers
                 cartItems = new List<CartVM>();
             }
 
-            // Check if the item is already in the cart
-            //var existingItem = cartItems.FirstOrDefault(c => c.ItemId == cartVM.ItemId);
-            //if (existingItem != null)
-            //{
-            //    // Update the quantity
-            //    existingItem.Quantity = cartVM.Quantity;
-            //}
-            //else
-            //{
-            // Add the item to the cart
-
             // Assuming UniqueItemId is already set in cartVM based on the item and its selected options
             var existingItem = cartItems.FirstOrDefault(c => c.UniqueItemId == cartVM.UniqueItemId);
             if (existingItem != null)
@@ -290,7 +251,6 @@ namespace Sips.Controllers
                 cartItems.Add(cartVM);
             }
 
-            //}
 
             // Serialize and store the updated cart items in the session
             HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cartItems));
