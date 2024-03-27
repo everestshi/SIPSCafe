@@ -208,7 +208,7 @@ namespace Sips.Controllers
 
                         // This action should only be accessed via a server-side redirect, not directly from the client.
                         // If a client tries to access it directly, you may want to handle it appropriately.
-                        return View("PayPalConfirmation", orderDetailModel);
+                        return View("Transaction", orderDetailModel);
                     }
                     else
                     {

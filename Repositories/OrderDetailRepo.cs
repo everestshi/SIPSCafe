@@ -18,14 +18,14 @@ namespace Sips.Repositories
             var transactions = _db.Transactions
                 .Include(c => c.User)
                 .Include(p => p.OrderDetails)
-                //.Include(p => p.Store)
+                .Include(p => p.Store)
                 .ToList();
             List<OrderDetailVM> OrdersDetailVM = new List<OrderDetailVM>();
 
 
             foreach (var transaction in transactions)
             {
-                
+
                 OrderDetailVM orderVM = new OrderDetailVM()
                 {
                     OrderDetailIds = transaction.OrderDetails.Select(od => od.OrderDetailId).ToList(),
@@ -36,8 +36,10 @@ namespace Sips.Repositories
                     UserId = transaction.UserId,
                     //StatusId = transaction.StatusId,
                     UserEmail = transaction.User.Email,
+                    totalPrice = 0,
+                    totalQuantity = 0,
                     //totalPrice = transaction.OrderDetails.price;
-                };
+            };
                 foreach(var orderID in orderVM.OrderDetailIds)
                 {
                     var order = _db.OrderDetails.Include(c => c.Item).Where(id => id.OrderDetailId == orderID).FirstOrDefault();
@@ -48,7 +50,6 @@ namespace Sips.Repositories
 
                     var itemType = order?.Item.ItemType?.ItemTypeName;
                     orderVM.ItemTypes?.Add(itemType);
-
 
                 }
 
