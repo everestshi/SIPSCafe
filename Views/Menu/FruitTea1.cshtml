@@ -187,13 +187,12 @@
             // temporarily update the cart total until page is refreshed
             var checkoutTotal = document.getElementById('checkout-icon');
             var quantity = checkoutTotal.getAttribute('value');
-            console.log('quantity:', quantity);
 
             var intTotal = parseInt(quantity) + 1;
-            console.log('intTotal:', intTotal);
 
             // Update the data-value attribute with the new total
             checkoutTotal.setAttribute('value', intTotal);
+
             // Collect item details
 
             console.log("AddToCart() itemId ==> " + itemId);
