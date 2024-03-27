@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Sips.ViewModels;
@@ -38,6 +38,8 @@ public partial class SipsdatabaseContext : DbContext
 
     public virtual DbSet<OrderStatus> OrderStatuses { get; set; }
 
+    public virtual DbSet<PaymentNotification> PaymentNotifications { get; set; }
+
     public virtual DbSet<Rating> Ratings { get; set; }
 
     public virtual DbSet<Store> Stores { get; set; }
@@ -46,9 +48,9 @@ public partial class SipsdatabaseContext : DbContext
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
-    public virtual DbSet<PayPalVM> PayPalVMs { get; set; }
-
     public virtual DbSet<CheckoutVM> CheckoutVMs { get; set; }
+
+    public virtual DbSet<PayPalVM> PayPalVMs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -299,6 +301,23 @@ public partial class SipsdatabaseContext : DbContext
 
             entity.Property(e => e.StatusId).HasColumnName("statusID");
             entity.Property(e => e.IsCompleted).HasColumnName("isCompleted");
+        });
+
+        modelBuilder.Entity<PaymentNotification>(entity =>
+        {
+            entity.HasKey(e => e.PaymentId).HasName("PK__PaymentN__9B556A584287C091");
+
+            entity.ToTable("PaymentNotification");
+
+            entity.Property(e => e.PaymentId)
+                .HasMaxLength(30)
+                .HasColumnName("PaymentID");
+            entity.Property(e => e.Amount).HasMaxLength(30);
+            entity.Property(e => e.CaptureId).HasMaxLength(30);
+            entity.Property(e => e.CurrencyCode).HasMaxLength(10);
+            entity.Property(e => e.CurrencySymbol).HasMaxLength(10);
+            entity.Property(e => e.PayerFullName).HasMaxLength(50);
+            entity.Property(e => e.PayerId).HasMaxLength(30);
         });
 
         modelBuilder.Entity<Rating>(entity =>

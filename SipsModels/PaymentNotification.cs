@@ -1,30 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Sips.SipsModels
+namespace Sips.SipsModels;
+
+public partial class PaymentNotification
 {
-    public class PaymentNotification
-    {
-        [Key]
-        [Display(Name = "Payment Id:")]
-        public string PaymentID { get; set; }
+    public string PaymentId { get; set; }
 
-        [Display(Name = "Amount Paid:")]
-        public string Amount { get; set; }
+    public string? Amount { get; set; }
 
-        [Display(Name = "Currency Code:")]
-        public string CurrencyCode { get; set; }
+    public string? CurrencyCode { get; set; }
 
-        [Display(Name = "Currency Symbol:")]
-        public string CurrencySymbol { get; set; }
+    public string? CurrencySymbol { get; set; }
 
-        [Display(Name = "Payer Id:")]
-        public string PayerId { get; set; }
+    public string? PayerId { get; set; }
 
-        [Display(Name = "Payer Name:")]
-        public string PayerFullName { get; set; }
+    public string? PayerFullName { get; set; }
 
-        [Display(Name = "Capture Id:")]
-        public string CaptureId { get; set; }
-    }
-
+    public string? CaptureId { get; set; }
 }

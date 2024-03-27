@@ -98,7 +98,7 @@ namespace Sips.Controllers
 
                 var paymentNotification = new PaymentNotification
                 {
-                    PaymentID = payPalVM.TransactionId,
+                    PaymentId = payPalVM.TransactionId,
                     Amount = payPalVM.Amount,
                     CurrencyCode = payPalVM.Currency,
                     CurrencySymbol = payPalVM.CurrencySymbol,

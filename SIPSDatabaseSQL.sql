@@ -14,6 +14,17 @@ DROP TABLE IF EXISTS Rating;
 DROP TABLE IF EXISTS [Store];
 DROP TABLE IF EXISTS Contact;
 DROP TABLE IF EXISTS MilkChoice;
+DROP TABLE IF EXISTS PaymentNotification;
+
+CREATE TABLE PaymentNotification (
+    PaymentID NVARCHAR(30) PRIMARY KEY,
+    Amount NVARCHAR(30),
+    CurrencyCode NVARCHAR(10),
+    CurrencySymbol NVARCHAR(10),
+    PayerId NVARCHAR(30),
+    PayerFullName NVARCHAR(50),
+    CaptureId NVARCHAR(30)
+)
 
 -- Create ItemType table
 CREATE TABLE ItemType (
