@@ -23,8 +23,6 @@
             <img src="data:image/jpeg;base64,
                                  @Convert.ToBase64String(tea.Image?.Image)"
         alt="@tea.Image?.FileName" class="img-fluid"/>
-
-            @* <img src="~/images/boba-02.png" alt="@tea.Name" class="img-fluid"> *@
             <div class="tea-copy">
                 <span id="item-@tea.ItemId-id" style="display: none;">@tea.ItemId</span>
                 <h3 id="item-@tea.ItemId-name">@tea.Name</h3>
@@ -45,16 +43,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-@*                         <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                        <img style="width:100px;height:100px;" src="data:image/jpeg;base64,
-                                 @Convert.ToBase64String(tea.Image?.Image)"
-                             alt="@tea.Image?.FileName"  /> *@
-@*                         <div style="display: flex;">
-                            <h5 class="modal-title" id="customizeModalLabel">Customize Your Drink</h5>
-                            <img style="width:100px;height:100px;" src="data:image/jpeg;base64, @Convert.ToBase64String(tea.Image?.Image)" alt="@tea.Image?.FileName" />
-                        </div> *@
                         <div style="margin: 0 auto;">
-                            @* <h5 class="modal-title" id="customizeModalLabel" style="margin-left: 10px;">Customize Your Drink</h5> *@
                             <img style="width: 200px; height: 200px;" src="data:image/jpeg;base64, @Convert.ToBase64String(tea.Image?.Image)" alt="@tea.Image?.FileName" />
                         </div>
                         <button type="button" class="close" id="closeModal" data-bs-dismiss="modal" aria-label="Close">
@@ -129,6 +118,13 @@
                                     }
                                 </ul>
                             </div>
+                            <!-- Quantity selection -->
+                            <div class="quantity-selection">
+                                <h4>Quantity:</h4>
+                                <div class="input-group">
+                                    <input type="number" id="quantityInput_@tea.ItemId" class="form-control" min="1" value="1">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -145,6 +141,22 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Function to increment the quantity
+            function incrementQuantity(itemId) {
+                var inputField = document.getElementById('quantityInput_' + itemId);
+                var currentValue = parseInt(inputField.value);
+                inputField.value = currentValue + 1;
+            }
+
+            // Function to decrement the quantity
+            function decrementQuantity(itemId) {
+                var inputField = document.getElementById('quantityInput_' + itemId);
+                var currentValue = parseInt(inputField.value);
+                // Ensure the quantity does not go below 1
+                if (currentValue > 1) {
+                    inputField.value = currentValue - 1;
+                }
+            }
             // Function to reset form elements inside the modal
             function resetModal(modalId) {
                 // Reset radio buttons for ice level
@@ -169,6 +181,11 @@
                 addInOptions.forEach(function (input) {
                     input.checked = input.defaultChecked;
                 });
+
+                var inputField = document.getElementById('quantityInput_' + itemId);
+                var currentValue = parseInt(inputField.value);
+                inputField.value = 1;
+
 
                     // Reset the base price
                 var basePriceElement = document.querySelector('#' + modalId + ' span[id^="modalPrice_"]');
@@ -206,16 +223,6 @@
 
         var totalQuantity = 0;
         var totalAmount = 0;
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     var addToCartButtons = document.querySelectorAll('.add-to-cart');
-        //     addToCartButtons.forEach(function (button) {
-        //         button.addEventListener('click', function () {
-        //             var itemId = button.getAttribute('data-item-id');
-        //             var price = button.getAttribute('data-price');
-        //             AddToCart(itemId, price);
-        //         });
-        //     });
-        // });
 
         function generateUniqueItemId(itemId, ice, sweetness, milkType, addInNames) {
             // Convert add-in names array to a string
@@ -245,7 +252,6 @@
             checkoutTotal.setAttribute('value', intTotal);
 
             // Collect item details
-            // alert("function AddToCart(), itemId ==> " + $('#item-' + itemId + '-name').html() + ", price ==> " + $('#item-' + itemId + '-price').html());
             var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
             var ice = iceLabel ? iceLabel.textContent.trim() : '';
 
@@ -269,7 +275,6 @@
                     });
                 }
             });
-            // alert('#modalPrice_' + itemId + ' ==> ' + $('#modalPrice_' + itemId).html());
             var uniqueItemId = generateUniqueItemId(
                 itemId, 
                 ice, 
@@ -334,8 +339,6 @@
                     console.error('Error:', error);
                     // Handle errors if needed
                 });
-            // var message = document.getElementById('add-to-cart-message');
-            // message.textContent = "Item added to cart!";
 
         }
 
@@ -376,41 +379,6 @@
                 basePrice.textContent = (newTotal).toFixed(2);
             }
         }
-
-        // function showMessage() {
-        //     var message = document.getElementById('add-to-cart-message');
-        //     message.classList.add('show-message');
-
-        //     // After 5 seconds, remove the show-message class to hide the message again
-        //     setTimeout(function () {
-        //         // Delay the removal of the show-message class
-        //         setTimeout(function () {
-        //             message.classList.remove('show-message');
-        //         }, 1000); // Add a delay of 1000 milliseconds (1 second) before removing the class
-        //     }, 5000); // 5000 milliseconds = 5 seconds
-        // }
-
-
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     // Get references to the customize and add to cart buttons
-        //     var customizeButtons = document.querySelectorAll('.customize');
-        //     var addToCartButtons = document.querySelectorAll('.add-to-cart');
-        //     // Add event listener for customize button click
-        //     customizeButtons.forEach(function (button) {
-        //         button.addEventListener('click', function () {
-        //             // Show the modal
-        //             document.getElementById('customizeModal').classList.add('show');
-        //             document.getElementById('customizeModal').style.display = 'block';
-        //         });
-        //     });
-        //     // Add event listener for add to cart button click
-        //     addToCartButtons.forEach(function (button) {
-        //         button.addEventListener('click', function () {
-        //             // Add your logic to add item to cart here
-        //             // alert('Item added to cart!');
-        //         });
-        //     });
-        // });
     </script>
 }
 
