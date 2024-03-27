@@ -1,7 +1,7 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
-<div id="message-container">
-    <p id="add-to-cart-message" style="display:none">Item added to cart!</p>
+<div class="message-container">
+    <p class="add-to-cart-message" style="display:none">Item added to cart!</p>
 </div>
 <div class="tea-container">
     <h1>Milk Teas</h1>
@@ -129,6 +129,13 @@
                                     }
                                 </ul>
                             </div>
+                            <!-- Quantity selection -->
+                            <div class="quantity-selection">
+                                <h4>Quantity:</h4>
+                                <div class="input-group">
+                                    <input type="number" id="quantityInput_@tea.ItemId" class="form-control" min="1" value="1">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -145,6 +152,22 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Function to increment the quantity
+            function incrementQuantity(itemId) {
+                var inputField = document.getElementById('quantityInput_' + itemId);
+                var currentValue = parseInt(inputField.value);
+                inputField.value = currentValue + 1;
+            }
+
+            // Function to decrement the quantity
+            function decrementQuantity(itemId) {
+                var inputField = document.getElementById('quantityInput_' + itemId);
+                var currentValue = parseInt(inputField.value);
+                // Ensure the quantity does not go below 1
+                if (currentValue > 1) {
+                    inputField.value = currentValue - 1;
+                }
+            }
             // Function to reset form elements inside the modal
             function resetModal(modalId) {
                 // Reset radio buttons for ice level
@@ -169,6 +192,11 @@
                 addInOptions.forEach(function (input) {
                     input.checked = input.defaultChecked;
                 });
+
+                var inputField = document.getElementById('quantityInput_' + itemId);
+                var currentValue = parseInt(inputField.value);
+                inputField.value = 1;
+
 
                     // Reset the base price
                 var basePriceElement = document.querySelector('#' + modalId + ' span[id^="modalPrice_"]');
@@ -228,10 +256,10 @@
 
         function AddToCart(itemId) {
             // Show the add to cart message
-            $('#add-to-cart-message').fadeIn('slow');
+            $('.add-to-cart-message').fadeIn('slow');
             // Set a timeout to hide the message after 5 seconds
             setTimeout(function () {
-                $('#add-to-cart-message').fadeOut('slow');
+                $('.add-to-cart-message').fadeOut('slow');
             }, 1500);
             // temporarily update the cart total until page is refreshed
             var checkoutTotal = document.getElementById('checkout-icon');
@@ -465,7 +493,7 @@
         background: none;
         cursor: pointer;
     }
-    #add-to-cart-message {
+    .add-to-cart-message {
         display: none;
         position: absolute;
         background-color: #E4F2EE;
@@ -475,17 +503,9 @@
         padding: 10px;
         border-radius: 5px;
     }
-    #message-container {
+    .message-container {
         display: flex;
         justify-content: flex-end;
     }
-    @* #add-to-cart-message {
-        display: block; /* Ensure it's visible */
-        opacity: 0; /* Initially hidden */
-    }
 
-    .show-message {
-        opacity: 1; /* Make the message visible */
-        transition: opacity 0.5s ease-in-out; /* Transition effect */
-    } *@
 </style>

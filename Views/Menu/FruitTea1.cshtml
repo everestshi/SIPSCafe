@@ -1,7 +1,7 @@
 ﻿@model Sips.ViewModels.MenuItemVM
 
-<div id="message-container" >
-    <p id="add-to-cart-message" style="display:none">Item added to cart!</p>
+<div class="message-container" >
+    <p class="add-to-cart-message" style="display:none">Item added to cart!</p>
 </div>
 <div class="tea-container">
     <h1>Fruit Teas</h1>
@@ -217,12 +217,22 @@
                 });
             });
         });
+
+        function generateUniqueItemId(itemId, ice, sweetness, addInNames) {
+            // Convert add-in names array to a string
+            let addInNamesStr = addInNames.map(addIn => addIn.AddInName).join(",");
+            // Create a unique identifier by combining the item ID with selected options
+            let uniqueItemId = `${itemId}-${ice}-${sweetness}-${addInNamesStr}`;
+            // Use a simple hash function or encoding if necessary to shorten or standardize the unique ID
+            return uniqueItemId;
+        }
+
         function AddToCart(itemId) {
             // Show the add to cart message
-            $('#add-to-cart-message').fadeIn('slow');
+            $('.add-to-cart-message').fadeIn('slow');
             // Set a timeout to hide the message after 5 seconds
             setTimeout(function () {
-                $('#add-to-cart-message').fadeOut('slow');
+                $('.add-to-cart-message').fadeOut('slow');
             }, 1500);
             // temporarily update the cart total until page is refreshed
             var checkoutTotal = document.getElementById('checkout-icon');
@@ -274,14 +284,21 @@
             // alert('#modalPrice_' + itemId + ' ==> ' + $('#modalPrice_' + itemId).html());
 
 
+            var uniqueItemId = generateUniqueItemId(
+                itemId,
+                ice,
+                sweetness,
+                addInNames // Make sure this is the array of objects {AddInName: "name"}
+            );
+
             var item = {
                 ItemId: itemId,
+                UniqueItemId: uniqueItemId,
                 BasePrice: parseFloat($('#item-' + itemId + '-price').html()),
                 SubTotal: parseFloat($('#modalPrice_' + itemId).html()),
                 Name: $('#item-' + itemId + '-name').html(),
                 IcePercent: ice,
                 SweetnessPercent: sweetness,
-                // MilkType: milkType,
                 AddInNames: addInNames,
                 Quantity: 1// Assign the populated list of AddInOrderDetail objects
             };
@@ -444,7 +461,7 @@
         cursor: pointer;
     }
 
-    #add-to-cart-message {
+    .add-to-cart-message {
         display: none;
         position: absolute;
         background-color: #E4F2EE;
@@ -455,7 +472,7 @@
         border-radius: 5px;
     }
 
-    #message-container {
+    .message-container {
         display: flex;
         justify-content: flex-end;
     }
