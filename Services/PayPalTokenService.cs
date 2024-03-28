@@ -16,7 +16,7 @@ namespace Sips.Services
 
         public string GetAccessToken()
         {
-            var secretKey = _configuration["Recaptcha:SecretKey"];
+            var secretKey = _configuration["PayPal:SecretKey"];
             var payPalClient = _configuration["PayPal:ClientId"];
 
             var tokenRequest = new HttpRequestMessage(HttpMethod.Post,

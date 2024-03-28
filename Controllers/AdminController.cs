@@ -458,6 +458,7 @@ namespace Sips.Controllers
             string repoMessage = orderRepo.Delete(orderVM);
             return RedirectToAction("OrderIndex", new { message = repoMessage });
         }
+
         [HttpPost]
         public JsonResult RefundAction([FromBody] PaymentNotification paymentNotification)
         {
@@ -503,6 +504,11 @@ namespace Sips.Controllers
                     RefundInfo refundInfo = JsonConvert.DeserializeObject<RefundInfo>(responseBody);
 
                     refundInfo.PaymentNotification = paymentNotification;
+
+                    AdminRepo adminRepo = new AdminRepo(_db);
+                    adminRepo.DeleteRelatedRecords(paymentNotification.PaymentId);
+
+
 
                     // Return the refund information as JSON
                     return Json(refundInfo);

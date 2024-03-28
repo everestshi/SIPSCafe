@@ -42,7 +42,6 @@
         }
 @*         @Html.DisplayNameFor(model => model.OrderDetailIds):
         @Html.DisplayFor(model => model.OrderDetailIds)<br /> *@
-        @Html.DisplayFor(model => model.OrderDetailIds)<br />
         <button id="refund-button" class="btn btn-danger">Process PayPal Refund</button>
 
     </div>
@@ -67,7 +66,7 @@
                 <!-- Refund information will be dynamically inserted here -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
+                <button type="button" class="btn btn-secondary" id="closeModalButton"
                         data-bs-dismiss="modal">
                     Close
                 </button>
@@ -91,18 +90,18 @@
                     PayerFullName: '@ViewBag.PaymentNotification.PayerFullName'
                 };
 
-                console.log();
                 console.log('PaymentNotification ==> ' +
                     JSON.stringify(PaymentNotification));
 
-
                 // Make fetch request to refund action method
-                fetch('/Admin/RefundAction',
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(PaymentNotification)
-                    })
+                fetch('/Admin/RefundAction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json' // Update Accept header to expect JSON
+                    },
+                    body: JSON.stringify(PaymentNotification)
+                })
                     .then(function (response) {
                         // Parse http response JSON
                         return response.json();
@@ -110,12 +109,10 @@
                     .then(function (data) {
                         // Check if the necessary properties exist in the response
                         if (data && data.id && data.status && data.paymentNotification) {
-                            document.getElementById('refundModalLabel').innerHTML =
-                                'Refund Successful';
+                            document.getElementById('refundModalLabel').innerHTML = 'Refund Successful';
 
                             // Construct refund information HTML
-                            var refundInfoHTML =
-                                '<p><strong class="text-primary">Status:</strong>\t\t' +
+                            var refundInfoHTML = '<p><strong class="text-primary">Status:</strong>\t\t' +
                                 data.status + '</p>' +
                                 '<p><strong class="text-primary">Refund ID:</strong>\t\t' +
                                 data.id + '</p>' +
@@ -125,33 +122,42 @@
                                 data.paymentNotification.currencyCode + '</p>' +
                                 '<p><strong class="text-primary">Capture ID:</strong>' +
                                 data.paymentNotification.captureId + '</p>';
+
+                            // Set refund information HTML to modal body
+                            document.getElementById('refundModalBody').innerHTML = refundInfoHTML;
+
+                            // Show the modal after setting modal content
+                            var refundModal = new bootstrap.Modal(document.getElementById('refundModal'));
+                            refundModal.show();
+
+                            // Add event listener to modal close button
+                            var closeButton = document.getElementById('closeModalButton');
+                            closeButton.addEventListener('click', function () {
+                                // Redirect after modal is closed
+                                window.location.href = '/Admin/OrderIndex';
+                            });
                         } else {
                             // Handle processing error
-                            document.getElementById('refundModalLabel').innerHTML =
-                                'Refund failed';
+                            document.getElementById('refundModalLabel').innerHTML = 'Refund failed';
 
                             var errorObject = JSON.parse(data.error);
-
-                            var refundInfoHTML =
-                                '<h5>' + errorObject.message + '</h5><br/>' +
+                            var refundInfoHTML = '<h5>' + errorObject.message + '</h5><br/>' +
                                 '<p><strong>Status:</strong>\t\t' +
                                 errorObject.name + '</p>' +
                                 '<p><strong>Issue:</strong>\t\t' +
                                 errorObject.details[0].issue + '</p>' +
                                 '<p><strong>Description:</strong>\t\t' +
                                 errorObject.details[0].description + '</p>';
+
+                            // Set refund information HTML to modal body
+                            document.getElementById('refundModalBody').innerHTML = refundInfoHTML;
+
+                            // Show the modal
+                            var refundModal = new bootstrap.Modal(document.getElementById('refundModal'));
+                            refundModal.show();
                         }
-                        // Set refund information HTML to modal body
-                        document.getElementById('refundModalBody').innerHTML =
-                            refundInfoHTML;
-                        // Show the modal
-                        var refundModal =
-                            new bootstrap.Modal(document.getElementById('refundModal'));
-
-                        refundModal.show();
-
-                    }).catch(function (error) {
-
+                    })
+                    .catch(function (error) {
                         // Handle errors
                         console.error('Error occurred:', error);
                         alert(error);
@@ -159,5 +165,6 @@
             });
         }
     });
+
 </script>
 
