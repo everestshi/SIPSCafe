@@ -96,6 +96,21 @@ namespace Sips.Controllers
                     return BadRequest("User not found.");
                 }
 
+                var paymentNotification = new PaymentNotification
+                {
+                    PaymentId = payPalVM.TransactionId,
+                    Amount = payPalVM.Amount,
+                    CurrencyCode = payPalVM.Currency,
+                    CurrencySymbol = payPalVM.CurrencySymbol,
+                    PayerId = payPalVM.PayerId,
+                    PayerFullName = payPalVM.PayerFullName,
+                    CaptureId = payPalVM.CaptureId
+                };
+
+                _db.PaymentNotifications.Add(paymentNotification);
+                _db.SaveChanges();
+
+
                 // Construct the Transaction object using properties from the OrderDetail
                 var transaction = new Transaction
                 {
@@ -144,9 +159,9 @@ namespace Sips.Controllers
                     _db.OrderDetails.Add(cartOrderDetail);
                     _db.SaveChanges();
 
-                    var orderDetailId = cartOrderDetail.OrderDetailId;
+                    //var orderDetailId = cartOrderDetail.OrderDetailId;
 
-                    List<AddIn> addInNames = cartItem.AddInNames;
+                    //List<AddIn> addInNames = cartItem.AddInNames;
 
                     //foreach (var item in addInNames)
                     //{

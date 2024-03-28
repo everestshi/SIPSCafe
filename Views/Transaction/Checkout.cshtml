@@ -28,7 +28,6 @@
                         <p class="subtotal-amount">$@item.Subtotal</p>
                     </div>
                 }
-
             </div>
 
         }
@@ -332,7 +331,11 @@
                     PayerName: "",
                     CreatedDate: details.create_time, // Assuming this is in the correct format
                     PayerEmail: details.payer.email_address,
-                    isFullfilled: false
+                    isFullfilled: false,
+                    CurrencySymbol: "$",
+                    PayerId: details.payer.payer_id,
+                    PayerFullName: details.payer.name.given_name + ' ' + details.payer.name.surname,
+                    CaptureId: details.purchase_units[0].payments.captures[0].id
                 };
 
                 console.log(JSON.stringify(payPalVM));

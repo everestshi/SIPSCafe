@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Sips.Data;
 using Sips.Data.Services;
+using Sips.Services;
 using Sips.SipsModels;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,20 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(10);
 });
+// Add HttpClient and PayPalTokenService
+builder.Services.AddHttpClient();
+
+// Register PayPalTokenService as a transient service
+builder.Services.AddTransient<PayPalTokenService>(provider =>
+{
+    var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var clientId = configuration["PayPal:ClientId"]; // Assuming your configuration follows the format "PayPal:ClientId"
+    var clientSecret = configuration["PayPal:ClientSecret"]; // Assuming your configuration follows the format "PayPal:ClientSecret"
+
+    return new PayPalTokenService(httpClientFactory.CreateClient(), configuration);
+});
+
 
 
 builder.Services.AddTransient<IEmailService, EmailService>();

@@ -21,5 +21,19 @@ namespace Sips.ViewModels
         public string Currency { get; set; }
 
         public bool isFullfilled { get; set; } = false;
+
+        // Nullable properties from PaymentNotification
+
+        [Display(Name = "Currency Symbol")]
+        public string? CurrencySymbol { get; set; }
+
+        [Display(Name = "Payer Id")]
+        public string? PayerId { get; set; }
+
+        [Display(Name = "Payer Name")]
+        public string? PayerFullName { get; set; }
+
+        [Display(Name = "Capture Id")]
+        public string? CaptureId { get; set; }
     }
 }
