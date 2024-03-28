@@ -63,6 +63,12 @@ else
     app.UseHsts();
 }
 
+//handle error
+app.UseExceptionHandler("/Error");
+
+//error handling
+app.UseStatusCodePagesWithReExecute("/Error/StatusCodePage", "?statusCode={0}");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
