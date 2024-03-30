@@ -9,6 +9,8 @@
     <p id="remove-from-cart-message" style="display:none">Item removed from cart!</p>
 </div>
 <div class="checkout-section">
+
+    <div class="checkout-box">
     <h1>Checkout</h1>
     <div class="checkout-container">
         <!-- Add logic to hide/show cart items based on cart emptiness -->
@@ -18,8 +20,9 @@
                 @foreach (var item in Model)
                 {
                     <div class="checkout-item">
-                    <button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button>
-                   
+                    <div class="checkout-item-name">
+                    <button class="btn btn-checkout" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button>
+                   </div>
                     <div class="item-subqty">
                         <button class="qty-btn" type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button>
                             <p class="subtotal-qty" id="subtotal-qty_@item.UniqueItemId">@item.Quantity</p>
@@ -39,8 +42,9 @@
         }
         <div class="checkout-details">
             <div class="order-details">
-                <p>Quantity: <span id="grandTotalQty">0</span></p>
-                <p>Total: <span id="grandTotalAmount">$0.00</span></p>
+                <p>GRAND TOTAL</p>
+                <p><span id="grandTotalQty">0</span></p>
+                <p><span id="grandTotalAmount">$0.00</span></p>
             </div>
             <input type="hidden" value="USD" id="currency" />
             <div id="paypal-button-container"></div>
@@ -48,7 +52,7 @@
 
     </div>
 </div>
-
+</div>
 
 
 <!-- Modals -->
@@ -78,7 +82,7 @@
     document.addEventListener('DOMContentLoaded', function () {
 
         // Get all buttons with the class "btn-outline-dark"
-        var buttons = document.querySelectorAll('.btn-outline-dark');
+        var buttons = document.querySelectorAll('.btn-checkout');
 
         //Add event listener to each button
         buttons.forEach(function (button) {
@@ -389,8 +393,8 @@
         },
         style: {
             layout: 'horizontal', // 'vertical', 'horizontal'
-            color: 'silver',      // 'gold', 'blue', 'silver', 'black'
-            shape: 'rect',        // 'rect', 'pill'
+            color: 'black',      // 'gold', 'blue', 'silver', 'black'
+            shape: 'pill',        // 'rect', 'pill'
             label: 'checkout',    // 'checkout', 'pay', 'buynow', 'paypal'
             fundingicons: false,  // Hide the funding icons (debit/credit card)
         }

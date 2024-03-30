@@ -4,6 +4,7 @@
     ViewData["Title"] = "OrderIndex";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="product-container">
 
 <h1>Orders</h1>
 @ViewBag.Message
@@ -43,6 +44,7 @@
             <th>
                 @Html.ActionLink("Total Price", "OrderIndex", new { sortOrder = ViewBag.TotalPriceSortParm })
             </th>
+<th></th>
         </tr>
     </thead>
     <tbody>
@@ -90,5 +92,7 @@
         </li>
     </ul>
 </nav>
-
+    <div class="back-btn">
 <a asp-action="Index">Back</a>
+</div>
+</div>
