@@ -1056,6 +1056,20 @@ display:flex;
 .paypal-container{
     margin-top:25rem;
 }
+.modal-body{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+}
+.container-sips .customization-options {
+    text-align: left;
+}
+.modal-footer p {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
 
 @media (max-width: 768px) {
 
