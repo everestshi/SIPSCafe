@@ -4,7 +4,7 @@
     ViewData["Title"] = "ContactIndex";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div class="product-container">
 <h1>Contacts</h1>
 @ViewBag.Message
 
@@ -40,12 +40,13 @@
             <th>
                 @Html.ActionLink("Email", "ContactIndex", new { sortOrder = ViewBag.EmailSortParm })
             </th>
-            <th>
+@*             <th>
                 @Html.ActionLink("Province", "ContactIndex", new { sortOrder = ViewBag.ProvinceSortParm })
             </th>
             <th>
                 @Html.ActionLink("City", "ContactIndex", new { sortOrder = ViewBag.CitySortParm })
-            </th>
+            </th> *@
+<th></th>
         </tr>
     </thead>
     <tbody>
@@ -66,12 +67,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
-                <td>
+@*                 <td>
                     @Html.DisplayFor(modelItem => item.Province)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.City)
-                </td>
+                </td> *@
                 <td>
                     <a asp-action="ContactEdit" asp-route-id="@item.UserId">Edit</a> |
                     <a asp-action="ContactDetails" asp-route-id="@item.UserId">Details</a> |
@@ -99,3 +100,4 @@
     </ul>
 </nav>
 <a asp-action="Index">Back</a>
+</div>

@@ -3,12 +3,12 @@
 @{
     ViewData["Title"] = "ContactDetails";
 }
-
+<div class="contact-container">
 <h1>Details</h1>
 
 <div>
     <hr />
-        <div style="text-align:left;margin-left:100px;">
+   
             @Html.DisplayNameFor(model => model.FirstName):
             @Html.DisplayFor(model => model.FirstName)<br/>
             @Html.DisplayNameFor(model => model.LastName):
@@ -29,9 +29,13 @@
             @Html.DisplayFor(model => model.Province)<br />
             @Html.DisplayNameFor(model => model.PostalCode):
             @Html.DisplayFor(model => model.PostalCode)
-    </div>
+
 </div>
-<div>
-    <a asp-action="ContactEdit" asp-route-id="@Model?.UserId">Edit</a> |
+    <div class="back-btn">
+    <a asp-action="ContactEdit" asp-route-id="@Model?.UserId">Edit</a>
+    </div>
+    <div class="back-btn">
+  
     <a asp-action="ContactIndex">Back to List</a>
+</div>
 </div>
