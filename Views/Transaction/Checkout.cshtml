@@ -28,27 +28,31 @@
                             <p class="subtotal-qty" id="subtotal-qty_@item.UniqueItemId">@item.Quantity</p>
                         <button class="qty-btn" type="button" onclick="AddOne('@item.UniqueItemId')">+</button>
                     </div>
-                        <p class="subtotal-amount">$@item.Subtotal</p>
+                    <div class="checkout-subtotals">
+                                <p class="subtotal-amount" id="subtotal-amount_@item.UniqueItemId">$@item.Subtotal</p>
+                                <p class="subtotal-amount-qty" id="subtotal-amount-qty_@item.UniqueItemId">$@((item.Subtotal * item.Quantity).ToString("F2"))</p>
+                    </div>
                     </div>
                 }
             </div>
 
+                <div class="checkout-details">
+                    <div class="order-details">
+                        <p>GRAND TOTAL</p>
+                        <p><span id="grandTotalQty">0</span></p>
+                        <p><span id="grandTotalAmount">$0.00</span></p>
+                    </div>
+                    <input type="hidden" value="USD" id="currency" />
+                    <div id="paypal-button-container"></div>
+                </div>
         }
         else
         {
             <div class="empty-cart-message">
                 <p>Cart is Empty!</p>
-            </div>
+                <a class="empty-card-link" asp-area="" asp-controller="Menu" asp-action="MenuIndex">Add A Drink Now!</a>
+             </div>
         }
-        <div class="checkout-details">
-            <div class="order-details">
-                <p>GRAND TOTAL</p>
-                <p><span id="grandTotalQty">0</span></p>
-                <p><span id="grandTotalAmount">$0.00</span></p>
-            </div>
-            <input type="hidden" value="USD" id="currency" />
-            <div id="paypal-button-container"></div>
-        </div>
 
     </div>
 </div>
@@ -124,8 +128,6 @@
                                         ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
                                     </div>
                                     <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
-                                    <button type="button" onclick="AddOne('${item.uniqueItemId}')">+</button>
-                                    <button type="button" onclick="RemoveOne('${item.uniqueItemId}')">-</button>
                                     `;
                                 cartContainer.appendChild(itemElement);
                             });
@@ -230,6 +232,14 @@
         console.log(grandtotalQuantity);
         var intQuantity = parseInt(grandtotalQuantity.textContent);
         grandtotalQuantity.textContent = intQuantity + 1;
+
+        // Assuming the subtotal-amount is always the price for one unit
+        var subtotalElement = document.getElementById("subtotal-amount_" + uniqueItemId);
+        var updateElement = document.getElementById("subtotal-amount-qty_" + uniqueItemId);
+        var unitPrice = parseFloat(subtotalElement.textContent.replace('$', ''));
+        var currentTotal = parseFloat(updateElement.textContent.replace('$', ''));
+        var newTotal = currentTotal + unitPrice;
+        updateElement.textContent = `$${newTotal.toFixed(2)}`;
         calculateTotal();
     }
 
@@ -298,6 +308,16 @@
 
             // Update the quantity
             grandtotalQuantity.textContent = intQuantity;
+        }
+
+        // Assuming the subtotal-amount is always the price for one unit
+        var subtotalElement = document.getElementById("subtotal-amount_" + uniqueItemId);
+        var updateElement = document.getElementById("subtotal-amount-qty_" + uniqueItemId);
+        var unitPrice = parseFloat(subtotalElement.textContent.replace('$', ''));
+        var currentTotal = parseFloat(updateElement.textContent.replace('$', ''));
+        var newTotal = currentTotal - unitPrice;
+        if (newTotal >= 0) { // Prevents the total from going negative
+            updateElement.textContent = `$${newTotal.toFixed(2)}`;
         }
         calculateTotal();
     }
@@ -388,7 +408,7 @@
             alert('Transaction was cancelled.');
         },
         onError: function (err) {
-            alert('An error occurred during the transaction.');
+            //alert('An error occurred during the transaction.');
             console.log(err);
         },
         style: {

@@ -193,14 +193,17 @@ namespace Sips.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+
+                    string formattedFirstName = Input.FirstName.Substring(0, 1).ToUpper() + Input.FirstName.Substring(1).ToLower();
+                    string formattedLastName = Input.LastName.Substring(0, 1).ToUpper() + Input.LastName.Substring(1).ToLower();
                     //IMPORTANT NOTE: move saving info until after email confirmation?
                     ContactRepo regUserRepo = new ContactRepo(_db);
 
                     Contact registerUser = new Contact()
                     {
                         Email = Input.Email,
-                        FirstName = Input.FirstName,
-                        LastName = Input.LastName,
+                        FirstName = formattedFirstName,
+                        LastName = formattedLastName,
                         BirthDate = Input.Birthday,
                         PhoneNumber = Input.PhoneNumber,
                         Street = Input.Street,
@@ -231,8 +234,8 @@ namespace Sips.Areas.Identity.Pages.Account
 
                     var response = await _emailService.SendSingleEmail(new SipsModels.ComposeEmailModel
                     {
-                        FirstName = "Everest",
-                        LastName = "Shi",
+                        FirstName = formattedFirstName,
+                        LastName = formattedLastName,
                         Subject = "Confirm your email",
                         Email = Input.Email,
                         Body = $"Please confirm your account by " +
