@@ -726,7 +726,6 @@ background:rgba(0,0,0,0.5);*/
             padding: 0;
         }
 
-
     #paypal-button-container {
         margin: 0 auto;
         width: 100%;
@@ -822,8 +821,12 @@ background: #519389;
         border-radius: 50px;
     }
 
+    .checkout-subtotals {
+        display: flex;
+    }
+
     .checkout-items p {
-        margin: 0;
+        margin: 0 3px;
         padding: 0;
     }
 
@@ -849,6 +852,22 @@ background: #519389;
         width: 100%;
         border-top: 1px solid #519389;
         font-size: 1.5rem;
+    }
+
+.empty-card-link {
+    background: #519389;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 150px;
+    margin: 10px;
+    transition: all 0.3s ease;
+}
+
+    .empty-card-link:hover {
+        background: #78AAA7;
+        color: #fff;
     }
 
 .item-subqty {
