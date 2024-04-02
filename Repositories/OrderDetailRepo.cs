@@ -2,6 +2,7 @@
 using Sips.SipsModels;
 using Sips.ViewModels;
 
+
 namespace Sips.Repositories
 {
     public class OrderDetailRepo
@@ -25,10 +26,11 @@ namespace Sips.Repositories
 
             foreach (var transaction in transactions)
             {
+                var orderDetail = transaction.OrderDetails.Where(od => od.TransactionId == transaction.TransactionId).ToList();
 
                 OrderDetailVM orderVM = new OrderDetailVM()
                 {
-                    OrderDetailIds = transaction.OrderDetails.Select(od => od.OrderDetailId).ToList(),
+                    OrderDetailIds = orderDetail.Select(od => od.OrderDetailId).ToList(),
 
                     TransactionId = transaction.TransactionId,
                     DateOrdered = transaction.DateOrdered,
@@ -42,12 +44,34 @@ namespace Sips.Repositories
 
                     //totalPrice = transaction.OrderDetails.price;
                 };
-                foreach(var orderID in orderVM.OrderDetailIds)
+                var addinPrice = 0.0;
+                var addIns = new List<AddInOrderDetail>(); // Assuming AddInOrderDetail is the type of objects in the list
+                foreach (var orderID in orderVM.OrderDetailIds)
                 {
-                    var order = _db.OrderDetails.Include(m => m.MilkChoice).Include(c => c.Item).Where(id => id.OrderDetailId == orderID).FirstOrDefault();
-                    //var addInDetails = order.AddInOrderDetails;
+                    var order = _db.OrderDetails
+                                        .Include(m => m.MilkChoice)
+                                        .Include(c => c.Item)
+                                        .Where(id => id.OrderDetailId == orderID)
+                                        .FirstOrDefault();
+
+                     addIns = _db.AddInOrderDetails
+                                    .Include(ai => ai.AddIn) // Include the AddIn entity
+                                    .Where(a => a.OrderDetailId == orderID)
+                                    .ToList();
+
+                    if (addIns.Any())
+                    {
+                        foreach (var item in addIns)
+                        {
+                            // Check if AddIn is not null and then access its PriceModifier
+                            if (item.AddIn != null)
+                            {
+                                addinPrice += (double)item.AddIn.PriceModifier;
+                            }
+                        }
+                    }
                     var milkPrice = order.MilkChoice.PriceModifier;
-                    var price = order?.Price + milkPrice;
+                    var price = ((double)(order?.Price) + (double)milkPrice + addinPrice)* order?.Quantity;
 
                     var quantity = order?.Quantity;
                     orderVM.totalQuantity += quantity;
@@ -77,9 +101,14 @@ namespace Sips.Repositories
                             .Include(p => p.Store)
                             .FirstOrDefault(p => p.TransactionId == id);
 
+            //var orderDetail = transaction.OrderDetails.Where(od => od.TransactionId == transaction.TransactionId).ToList();
+
+
             var orderVM = new OrderDetailVM
             {
-                OrderDetailIds = transaction?.OrderDetails.Select(od => od.OrderDetailId).ToList(),
+                orderDetail = transaction.OrderDetails
+                    .Where(od => od.TransactionId == transaction.TransactionId)
+                    .ToList(),
 
                 TransactionId = transaction?.TransactionId,
                 DateOrdered = transaction?.DateOrdered,
@@ -90,21 +119,38 @@ namespace Sips.Repositories
                 totalPrice = 0,
                 totalQuantity = 0,
                 ItemTypes = new List<string>() // Initialize ItemTypes as an empty list
-
             };
 
-
-            foreach (var orderID in orderVM?.OrderDetailIds)
+            var orderDetailIds = orderVM.orderDetail.Select(od => od.OrderDetailId).ToList();
+            var addinPrice = 0.0;
+            var addIns = new List<AddInOrderDetail>();
+            foreach (var orderID in orderDetailIds)
             {
-                var order = _db.OrderDetails.Include(m => m.MilkChoice).Include(c => c.Item).Where(id => id.OrderDetailId == orderID).FirstOrDefault();
-                //var orderId = order.OrderDetailId;
-                //var addInDetail = _db.AddInOrderDetails.ToList();//FirstOrDefault(ad => ad.OrderDetailId == orderID);
-                //var addinPrice = addInDetail.AddIn.PriceModifier;
 
-                //var addInDetails = order.AddInOrderDetails;
+                var order = _db.OrderDetails
+                                    .Include(m => m.MilkChoice)
+                                    .Include(c => c.Item)
+                                    .Where(id => id.OrderDetailId == orderID)
+                                    .FirstOrDefault();                //addIns = _db.AddInOrderDetails.Where(a => a.OrderDetailId == orderID).ToList();
+
+                addIns = _db.AddInOrderDetails
+                               .Include(ai => ai.AddIn) // Include the AddIn entity
+                               .Where(a => a.OrderDetailId == orderID)
+                               .ToList();
+
+                if (addIns.Any())
+                {
+                    foreach (var item in addIns)
+                    {
+                        if(item.AddIn != null)
+                        {
+                            addinPrice += (double)(item.AddIn.PriceModifier);
+                        }
+                    }
+                }
 
                 var milkPrice = order.MilkChoice.PriceModifier;
-                var price = order?.Price + milkPrice;
+                var price = ((double)(order?.Price) + (double)milkPrice + addinPrice) * order?.Quantity;
 
                 var quantity = order?.Quantity;
                 orderVM.totalQuantity += quantity;

@@ -162,6 +162,33 @@ namespace Sips.Controllers
                     };
                     _db.OrderDetails.Add(cartOrderDetail);
                     _db.SaveChanges();
+
+
+                    var orderDetailId = cartOrderDetail.OrderDetailId;
+
+                    List<AddIn> addInNames = cartItem.AddInNames;
+
+                    foreach (var item in addInNames)
+                    {
+                        var addIn = _db.AddIns.FirstOrDefault(a => a.AddInName == item.AddInName);
+
+                        if (addIn != null) // Ensure add-in exists
+                        {
+                            var addInOrderDetail = new AddInOrderDetail
+                            {
+                                OrderDetailId = orderDetailId,
+                                AddInId = addIn.AddInId, // Assuming AddInId is the primary key of the AddIn table
+                                Quantity = 1,
+                            };
+
+                            _db.AddInOrderDetails.Add(addInOrderDetail);
+                            //_db.SaveChangesAsync();
+                        }
+                    }
+                    _db.SaveChanges();
+
+
+
                 }
 
                 var response = _emailService.SendSingleEmail(new SipsModels.ComposeEmailModel
