@@ -34,7 +34,7 @@ namespace Sips.Controllers
 
 
         //Product CRUD**********************************************
-        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
+        public IActionResult ItemIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 12)
         {
             message = message ?? string.Empty;
             ViewData["Message"] = message;
@@ -179,7 +179,7 @@ namespace Sips.Controllers
 
 
         //Customer CRUD**********************************************
-        public IActionResult ContactIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
+        public IActionResult ContactIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 10)
         {
             message = message ?? string.Empty;
             ViewData["Message"] = message;
@@ -341,7 +341,7 @@ namespace Sips.Controllers
 
         // Order Detail CRUD********************************************************************
 
-        public IActionResult OrderIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 20)
+        public IActionResult OrderIndex(string message, string sortOrder, string searchString, int? pageNumber, int pageSize = 10)
         {
             message = message ?? string.Empty;
             ViewData["Message"] = message;
@@ -359,18 +359,24 @@ namespace Sips.Controllers
                     .ToList();
             }
 
-            ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
+            //ViewData["IDSortParm"] = string.IsNullOrEmpty(sortOrder) ? "idSortDesc" : "";
             ViewData["StorIDSortParm"] = sortOrder == "StrorID" ? "StrorIDDesc" : "StrorID";
             ViewData["EmailSortParm"] = sortOrder == "Email" ? "EmailSortDesc" : "Email";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "DateDesc" : "Date";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "DateDesc" : "";
             ViewData["TotalPriceSortParm"] = sortOrder == "TotalPrice" ? "TotalPriceDesc" : "TotalPrice";
+            ViewData["IDSortParm"] = sortOrder == "idSort" ? "idSortDec" : "idSort";
+
 
 
             switch (sortOrder)
             {
-                case "idSortDesc":
+                case "idSortDec":
                     ordersVM = ordersVM.OrderByDescending(p => p.TransactionId).ToList();
                     break;
+                case "idSort":
+                    ordersVM = ordersVM.OrderBy(p => p.TransactionId).ToList();
+                    break;
+
                 case "StrorIDDesc":
                     ordersVM = ordersVM.OrderByDescending(p => p.StoreId).ToList();
                     break;
@@ -388,9 +394,6 @@ namespace Sips.Controllers
                 case "DateDesc":
                     ordersVM = ordersVM.OrderByDescending(p => p.DateOrdered).ToList();
                     break;
-                case "Date":
-                    ordersVM = ordersVM.OrderBy(p => p.DateOrdered).ToList();
-                    break;
 
                 case "EmailSortDesc":
                     ordersVM = ordersVM.OrderByDescending(p => p.UserEmail).ToList();
@@ -399,9 +402,9 @@ namespace Sips.Controllers
                     ordersVM = ordersVM.OrderBy(p => p.UserEmail).ToList();
                     break;
 
-
                 default:
-                    ordersVM = ordersVM.OrderBy(p => p.TransactionId).ToList();
+                    ordersVM = ordersVM.OrderBy(p => p.DateOrdered).ToList();
+
                     break;
             }
 
