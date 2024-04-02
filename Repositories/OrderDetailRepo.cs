@@ -120,12 +120,15 @@ namespace Sips.Repositories
                 totalPrice = 0,
                 totalQuantity = 0,
                 ItemTypes = new List<string>(), // Initialize ItemTypes as an empty list
-                addInIds = new List<int>() // Initialize ItemTypes as an empty list
-
+                addInIds = new List<int>(), // Initialize ItemTypes as an empty list
+                //addInIdsDictionary = new Dictionary<int, int>(),
             };
 
             var orderDetailIds = orderVM.orderDetail.Select(od => od.OrderDetailId).ToList();
             var addIns = new List<AddInOrderDetail>();
+
+            orderVM.addInIdsDictionary = new Dictionary<int, List<int>>();
+
             foreach (var orderID in orderDetailIds)
             {
                 var addinPrice = 0.0;
@@ -142,6 +145,9 @@ namespace Sips.Repositories
                                .Where(a => a.OrderDetailId == orderID)
                                .ToList();
 
+                orderVM.addInIds = new List<int>(); // Initialize ItemTypes as an empty list
+
+
                 if (addIns.Any())
                 {
                     foreach (var item in addIns)
@@ -154,6 +160,8 @@ namespace Sips.Repositories
                         }
                     }
                 }
+                orderVM.addInIdsDictionary.Add(orderID, orderVM.addInIds);
+
 
                 var milkPrice = order.MilkChoice.PriceModifier;
                 var price = ((double)(order?.Price) + (double)milkPrice + addinPrice) * order?.Quantity;

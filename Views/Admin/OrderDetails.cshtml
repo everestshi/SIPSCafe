@@ -6,6 +6,8 @@
     string ice = "";
     string milkCoice = "";
     string addIn = "";
+    string addInName = "";
+
 
 }
 <div class="order-container">
@@ -34,8 +36,7 @@
             <p>
         @Html.DisplayNameFor(model => model.StoreId):
             @Html.DisplayFor(model => model.StoreId)</p>
-            <p>
-        </p>
+
             <table>
                 <thead>
                     <tr>
@@ -51,6 +52,8 @@
                 <tbody>
                     @foreach (var itemType in Model.orderDetail)
                     {
+                        addIn = "";
+
                         // Initialize variables for sweetness percent, ice choice, and milk choice
                         sweetnessPercent = itemType.SweetnessId switch
                         {
@@ -88,8 +91,43 @@
                             <td>@sweetnessPercent%</td>
                             <td>@ice</td>
                             <td>@milkCoice</td>
+                            @* <td> *@
+
                             <td>
-                                <!-- Display add-in IDs for the current order detail -->
+                                <!-- Display add-in IDs for the current item type -->
+                                    @if (Model.addInIdsDictionary.ContainsKey(itemType.OrderDetailId))
+                                    {
+                                        var addInIds = Model.addInIdsDictionary[itemType.OrderDetailId];
+                                    if (addInIds.Count > 0)
+                                    {
+                                        foreach (var addInId in addInIds)
+                                        {
+                                            addInName = addInId switch
+                                            {
+                                                1 => "Pearls",
+                                                2 => "Sago",
+                                                3 => "Lyeechy Jelly",
+                                                4 => "Pudding",
+                                                _ => "Unknown Add-In" // Default to "Unknown Add-In" if addInId is not recognized
+                                            };
+                                            @addInName
+                                            @:&nbsp; <!-- Vertical bar with a space -->
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @:No Add-In
+                                    }
+
+                                    }
+                            </td>
+
+
+
+
+
+
+@*                                 <!-- Display add-in IDs for the current order detail -->
                                 @if (Model.addInIds.Count == 0)
                                 {
                                     addIn = "No Add-In";
@@ -113,7 +151,7 @@
                                         @:&nbsp; <!-- Vertical bar with a space -->
                                     }
                                 }
-                            </td>
+                            </td> *@
                         </tr>
                     }
                 </tbody>

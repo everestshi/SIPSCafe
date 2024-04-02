@@ -48,6 +48,7 @@ namespace Sips.ViewModels
         public List<OrderDetail>? orderDetail { get; set; }
         public List<int>? addInIds { get; set; }
 
+        public Dictionary<int, List<int>>? addInIdsDictionary { get; set; }
 
 
         //public string? StoreHours { get; set; } 
