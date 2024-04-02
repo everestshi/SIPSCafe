@@ -7,6 +7,11 @@ using Sips.ViewModels;
 using Sips.Repositories;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using Sips.Services;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Text;
 
 namespace Sips.Controllers
 {
@@ -14,10 +19,17 @@ namespace Sips.Controllers
     public class AdminController : Controller
     {
         private readonly SipsdatabaseContext _db;
+        private readonly PayPalTokenService _paypalTokenService;
+        private readonly HttpClient _httpClient;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(SipsdatabaseContext db)
+
+        public AdminController(SipsdatabaseContext db, PayPalTokenService paypalTokenService, HttpClient httpClient, ILogger<AdminController> logger)
         {
             _db = db;
+            _paypalTokenService = paypalTokenService;
+            _httpClient = httpClient;
+            _logger = logger;
         }
         public IActionResult Index()
         {
@@ -426,6 +438,13 @@ namespace Sips.Controllers
         public IActionResult OrderDetails(string id)
         {
             OrderDetailRepo orderRepo = new OrderDetailRepo(_db);
+
+            // Retrieve the PaymentNotification object based on the provided id
+            PaymentNotification paymentNotification = _db.PaymentNotifications.FirstOrDefault(p => p.PaymentId == id);
+
+            // Pass the retrieved PaymentNotification object to the view using ViewBag
+            ViewBag.PaymentNotification = paymentNotification;
+
             return View(orderRepo.GetById(id));
         }
 
@@ -441,6 +460,75 @@ namespace Sips.Controllers
             OrderDetailRepo orderRepo = new OrderDetailRepo(_db);
             string repoMessage = orderRepo.Delete(orderVM);
             return RedirectToAction("OrderIndex", new { message = repoMessage });
+        }
+
+        [HttpPost]
+        public JsonResult RefundAction([FromBody] PaymentNotification paymentNotification)
+        {
+            try
+            {
+                var accessToken = _paypalTokenService.GetAccessToken();
+                string captureId = paymentNotification.CaptureId;
+
+                _httpClient.DefaultRequestHeaders.Authorization =
+                     new AuthenticationHeaderValue("Bearer", accessToken);
+
+                // Construct the refund request payload
+                var refundRequest = new
+                {
+                    amount = new
+                    {
+                        currency_code = paymentNotification.CurrencyCode,
+                        value = paymentNotification.Amount
+                    }
+                };
+
+                // Serialize the refund request payload to JSON
+                var jsonPayload = JsonConvert.SerializeObject(refundRequest);
+
+                // Set the content type header
+                _httpClient.DefaultRequestHeaders.Accept.Add(
+                     new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // Make the refund request to the PayPal API
+                string refundURL =
+                     $"https://api.sandbox.paypal.com/v2/payments/captures/{captureId}/refund";
+
+                var response = _httpClient.PostAsync(refundURL,
+                    new StringContent(jsonPayload, Encoding.UTF8, "application/json")).Result;
+
+                // Check if the request was successful
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read the response body as a string synchronously
+                    string responseBody = response.Content.ReadAsStringAsync().Result;
+
+                    // Deserialize the JSON response to an object
+                    RefundInfo refundInfo = JsonConvert.DeserializeObject<RefundInfo>(responseBody);
+
+                    refundInfo.PaymentNotification = paymentNotification;
+
+                    AdminRepo adminRepo = new AdminRepo(_db);
+                    adminRepo.DeleteRelatedRecords(paymentNotification.PaymentId);
+
+
+
+                    // Return the refund information as JSON
+                    return Json(refundInfo);
+                }
+                else
+                {
+                    // Error occurred during refund process
+                    var errorMessage = response.Content.ReadAsStringAsync().Result;
+                    return Json(new { error = errorMessage });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error or handle it appropriately
+                _logger.LogError(ex, "An error occurred during refund process");
+                return Json(new { error = "An error occurred during refund process" });
+            }
         }
 
 

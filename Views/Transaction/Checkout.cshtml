@@ -9,6 +9,8 @@
     <p id="remove-from-cart-message" style="display:none">Item removed from cart!</p>
 </div>
 <div class="checkout-section">
+
+    <div class="checkout-box">
     <h1>Checkout</h1>
     <div class="checkout-container">
         <!-- Add logic to hide/show cart items based on cart emptiness -->
@@ -17,68 +19,44 @@
             <div class="checkout-items">
                 @foreach (var item in Model)
                 {
-                    <div class="checkout-item" id="checkout-item_@item.UniqueItemId">
-                    <button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button>
-                   
+                    <div class="checkout-item">
+                    <div class="checkout-item-name">
+                    <button class="btn btn-checkout" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button>
+                   </div>
                     <div class="item-subqty">
                         <button class="qty-btn" type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button>
                             <p class="subtotal-qty" id="subtotal-qty_@item.UniqueItemId">@item.Quantity</p>
                         <button class="qty-btn" type="button" onclick="AddOne('@item.UniqueItemId')">+</button>
                     </div>
-                        <p class="subtotal-amount">$@item.Subtotal</p>
+                    <div class="checkout-subtotals">
+                                <p class="subtotal-amount" id="subtotal-amount_@item.UniqueItemId">$@item.Subtotal</p>
+                                <p class="subtotal-amount-qty" id="subtotal-amount-qty_@item.UniqueItemId">$@((item.Subtotal * item.Quantity).ToString("F2"))</p>
+                    </div>
                     </div>
                 }
-@*                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th></th>
-                            <th>    </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td><button class="btn btn-outline-dark" data-modal="myModal" uniqueitemid="@item.UniqueItemId">@item.Name</button></td>
-                                <td class="subtotal-amount">@item.Subtotal</td>
-                                <td><button class="qty-btn" type="button" onclick="RemoveOne('@item.UniqueItemId')">-</button></td>
-                                <td class="subtotal-qty">@item.Quantity</td>
-                                <td><button class="qty-btn" type="button" onclick="AddOne('@item.UniqueItemId')">+</button></td>
-
-                            </tr>
-                        }
-                    </tbody>
-                </table> *@
-
-@*                 <div class="checkout-box">
-
-                </div> *@
             </div>
-            <div class="checkout-details">
-                <div class="order-details">
-                    <p>Quantity: <span id="grandTotalQty">0</span></p>
-                    <p>Total: <span id="grandTotalAmount">$0.00</span></p>
 
-                    
+                <div class="checkout-details">
+                    <div class="order-details">
+                        <p>GRAND TOTAL</p>
+                        <p><span id="grandTotalQty">0</span></p>
+                        <p><span id="grandTotalAmount">$0.00</span></p>
+                    </div>
+                    <input type="hidden" value="USD" id="currency" />
+                    <div id="paypal-button-container"></div>
                 </div>
-                <input type="hidden" value="USD" id="currency" />
-                <div id="paypal-button-container"></div>
-            </div>
         }
         else
         {
             <div class="empty-cart-message">
                 <p>Cart is Empty!</p>
-            </div>
+                <a class="empty-card-link" asp-area="" asp-controller="Menu" asp-action="MenuIndex">Add A Drink Now!</a>
+             </div>
         }
-
 
     </div>
 </div>
-
+</div>
 
 
 <!-- Modals -->
@@ -108,7 +86,7 @@
     document.addEventListener('DOMContentLoaded', function () {
 
         // Get all buttons with the class "btn-outline-dark"
-        var buttons = document.querySelectorAll('.btn-outline-dark');
+        var buttons = document.querySelectorAll('.btn-checkout');
 
         //Add event listener to each button
         buttons.forEach(function (button) {
@@ -150,8 +128,6 @@
                                         ${item.addInNames.map(addIn => `<p>${addIn.addInName}</p>`).join('')}
                                     </div>
                                     <h5 class="subtotal">Subtotal: $${item.subtotal}</h5>
-                                    <button type="button" onclick="AddOne('${item.uniqueItemId}')">+</button>
-                                    <button type="button" onclick="RemoveOne('${item.uniqueItemId}')">-</button>
                                     `;
                                 cartContainer.appendChild(itemElement);
                             });
@@ -173,73 +149,37 @@
     // Calculate total when the page loads
     calculateTotal();
 
-    // function calculateTotal() {
-    //     var subtotalElements = document.querySelectorAll('.subtotal-amount');
-    //     var subtotalQtys = document.querySelectorAll('.subtotal-qty');
-    //     console.log(subtotalElements);
-    //     console.log(subtotalQtys);
-    //     var grandTotalAmount = 0;
-    //     var grandTotalQty = 0;
-
-    //     subtotalElements.forEach(function (subtotalElement, index) {
-    //         var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
-    //         console.log(subtotal);
-    //         var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
-    //         console.log(qty);
-
-    //         var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
-    //         grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
-
-    //         grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
-    //     });
-
-    //     // Update grand total only if the elements exist
-    //     var grandTotalAmountElement = document.getElementById('grandTotalAmount');
-    //     var grandTotalQtyElement = document.getElementById('grandTotalQty');
-
-    //     if (grandTotalAmountElement && grandTotalQtyElement) {
-    //         grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
-    //         grandTotalQtyElement.textContent = grandTotalQty;
-    //     } else {
-    //         console.error("One or both of the grand total elements are not found.");
-    //     }
-    // }
     function calculateTotal() {
-        try {
-            var subtotalElements = document.querySelectorAll('.subtotal-amount');
-            var subtotalQtys = document.querySelectorAll('.subtotal-qty');
-            console.log(subtotalElements);
-            console.log(subtotalQtys);
-            var grandTotalAmount = 0;
-            var grandTotalQty = 0;
+        var subtotalElements = document.querySelectorAll('.subtotal-amount');
+        var subtotalQtys = document.querySelectorAll('.subtotal-qty');
+        console.log(subtotalElements);
+        console.log(subtotalQtys);
+        var grandTotalAmount = 0;
+        var grandTotalQty = 0;
 
-            subtotalElements.forEach(function (subtotalElement, index) {
-                var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
-                console.log(subtotal);
-                var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
-                console.log(qty);
+        subtotalElements.forEach(function (subtotalElement, index) {
+            var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
+            console.log(subtotal);
+            var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
+            console.log(qty);
 
-                var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
-                grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
+            var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
+            grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
 
-                grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
-            });
+            grandTotalQty += qty; // Add the quantity of the current item to the grand total quantity
+        });
 
-            // Update grand total only if the elements exist
-            var grandTotalAmountElement = document.getElementById('grandTotalAmount');
-            var grandTotalQtyElement = document.getElementById('grandTotalQty');
+        // Update grand total only if the elements exist
+        var grandTotalAmountElement = document.getElementById('grandTotalAmount');
+        var grandTotalQtyElement = document.getElementById('grandTotalQty');
 
-            if (grandTotalAmountElement && grandTotalQtyElement) {
-                grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
-                grandTotalQtyElement.textContent = grandTotalQty;
-            } else {
-                throw new Error("One or both of the grand total elements are not found.");
-            }
-        } catch (error) {
-            console.error("Error in calculateTotal:", error.message);
+        if (grandTotalAmountElement && grandTotalQtyElement) {
+            grandTotalAmountElement.textContent = '$' + grandTotalAmount.toFixed(2);
+            grandTotalQtyElement.textContent = grandTotalQty;
+        } else {
+            console.error("One or both of the grand total elements are not found.");
         }
     }
-
 
     function AddOne(uniqueItemId) {
         fetch(`/Transaction/AddOneToCart`, {
@@ -292,6 +232,14 @@
         console.log(grandtotalQuantity);
         var intQuantity = parseInt(grandtotalQuantity.textContent);
         grandtotalQuantity.textContent = intQuantity + 1;
+
+        // Assuming the subtotal-amount is always the price for one unit
+        var subtotalElement = document.getElementById("subtotal-amount_" + uniqueItemId);
+        var updateElement = document.getElementById("subtotal-amount-qty_" + uniqueItemId);
+        var unitPrice = parseFloat(subtotalElement.textContent.replace('$', ''));
+        var currentTotal = parseFloat(updateElement.textContent.replace('$', ''));
+        var newTotal = currentTotal + unitPrice;
+        updateElement.textContent = `$${newTotal.toFixed(2)}`;
         calculateTotal();
     }
 
@@ -360,15 +308,18 @@
 
             // Update the quantity
             grandtotalQuantity.textContent = intQuantity;
-
         }
-        // else {
-        //     var itemDiv = document.getElementById('checkout-item_' + uniqueItemId);
-        //     itemDiv.hidden = true;
-        //     //$('#checkout-item_' + uniqueItemId).hide();
-        // }
-        calculateTotal();
 
+        // Assuming the subtotal-amount is always the price for one unit
+        var subtotalElement = document.getElementById("subtotal-amount_" + uniqueItemId);
+        var updateElement = document.getElementById("subtotal-amount-qty_" + uniqueItemId);
+        var unitPrice = parseFloat(subtotalElement.textContent.replace('$', ''));
+        var currentTotal = parseFloat(updateElement.textContent.replace('$', ''));
+        var newTotal = currentTotal - unitPrice;
+        if (newTotal >= 0) { // Prevents the total from going negative
+            updateElement.textContent = `$${newTotal.toFixed(2)}`;
+        }
+        calculateTotal();
     }
 
 </script>
@@ -404,7 +355,11 @@
                     PayerName: "",
                     CreatedDate: details.create_time, // Assuming this is in the correct format
                     PayerEmail: details.payer.email_address,
-                    isFullfilled: false
+                    isFullfilled: false,
+                    CurrencySymbol: "$",
+                    PayerId: details.payer.payer_id,
+                    PayerFullName: details.payer.name.given_name + ' ' + details.payer.name.surname,
+                    CaptureId: details.purchase_units[0].payments.captures[0].id
                 };
 
                 console.log(JSON.stringify(payPalVM));
@@ -453,13 +408,13 @@
             alert('Transaction was cancelled.');
         },
         onError: function (err) {
-            alert('An error occurred during the transaction.');
+            //alert('An error occurred during the transaction.');
             console.log(err);
         },
         style: {
             layout: 'horizontal', // 'vertical', 'horizontal'
-            color: 'silver',      // 'gold', 'blue', 'silver', 'black'
-            shape: 'rect',        // 'rect', 'pill'
+            color: 'black',      // 'gold', 'blue', 'silver', 'black'
+            shape: 'pill',        // 'rect', 'pill'
             label: 'checkout',    // 'checkout', 'pay', 'buynow', 'paypal'
             fundingicons: false,  // Hide the funding icons (debit/credit card)
         }
