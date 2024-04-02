@@ -189,18 +189,18 @@ background:rgba(0,0,0,0.5);*/
         border: none;
         width: 180px;
         height: 45px;
-        border-radius: 5px;
+        border-radius: 50px;
         color: #fff;
         font-weight: 700;
     }
 
-    .register-btn {
-        background: #B090C5;
-    }
+.register-btn {
+    background: #3CA6A6;
+}
 
-    .learn-more-btn {
-        background: #A3CCFF;
-    }
+.learn-more-btn {
+    background: #DCEDC1;
+}
 
     .our-teas {
         display: flex;
@@ -988,7 +988,7 @@ font-size:1.2rem;
         background: url(../images/bbt-bg.jpg);
         background-size:cover;
         padding:0;
-        min-height:80vh;
+
         
     }
     .admin-heading{
