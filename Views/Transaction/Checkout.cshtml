@@ -120,7 +120,6 @@
                     })
                     .then(data => {
                         // Process the data returned from the server
-                        console.log(JSON.stringify(data));
                         if (data && data.length > 0) {
                             data.forEach(item => {
                                 // Create elements and append them to the cart container
@@ -159,16 +158,12 @@
     function calculateTotal() {
         var subtotalElements = document.querySelectorAll('.subtotal-amount');
         var subtotalQtys = document.querySelectorAll('.subtotal-qty');
-        console.log(subtotalElements);
-        console.log(subtotalQtys);
         var grandTotalAmount = 0;
         var grandTotalQty = 0;
 
         subtotalElements.forEach(function (subtotalElement, index) {
             var subtotal = parseFloat(subtotalElement.textContent.replace('$', '')); // Get the price per item
-            console.log(subtotal);
             var qty = parseInt(subtotalQtys[index].textContent); // Get the quantity
-            console.log(qty);
 
             var itemSubtotal = subtotal * qty; // Calculate the subtotal for the current item
             grandTotalAmount += itemSubtotal; // Add the item subtotal to the grand total
@@ -198,10 +193,8 @@
         })
             .then(response => response.json()) // Extract JSON from the response
             .then(data => {
-                console.log(data);
                 if (data && data.newItem) {
                     // You can access newItem properties here and update the UI accordingly
-                    console.log(data.newItem);
                     // Example: Update the quantity displayed on the UI
                     //document.getElementById('quantityDisplay').textContent = data.newItem.Quantity;
                 }
@@ -223,16 +216,13 @@
         // temporarily update the cart total until page is refreshed
         var checkoutTotal = document.getElementById('checkout-icon');
         var quantity = checkoutTotal.getAttribute('value');
-        console.log('quantity:', quantity);
 
         var intTotal = parseInt(quantity) + 1;
-        console.log('intTotal:', intTotal);
 
         // Update the data-value attribute with the new total
         checkoutTotal.setAttribute('value', intTotal);
 
         var grandtotalQuantity = document.getElementById("subtotal-qty_" + uniqueItemId);
-        console.log(grandtotalQuantity);
         var intQuantity = parseInt(grandtotalQuantity.textContent);
         grandtotalQuantity.textContent = intQuantity + 1;
 
@@ -285,7 +275,6 @@
         // temporarily update the cart total until page is refreshed
         var checkoutTotal = document.getElementById('checkout-icon');
         var quantity = checkoutTotal.getAttribute('value');
-        console.log('quantity:', quantity);
 
         // Parse quantity as an integer
         var intTotal = parseInt(quantity);
@@ -293,13 +282,11 @@
         // Ensure the quantity won't go below 0
         if (intTotal > 0) {
             intTotal--; // Decrement the quantity
-            console.log('intTotal:', intTotal);
 
             // Update the data-value attribute with the new total
             checkoutTotal.setAttribute('value', intTotal);
         }
         var grandtotalQuantity = document.getElementById("subtotal-qty_" + uniqueItemId);
-        console.log(grandtotalQuantity);
 
         // Parse the quantity as an integer
         var intQuantity = parseInt(grandtotalQuantity.textContent);
@@ -307,7 +294,6 @@
         // Ensure the quantity won't go below zero
         if (intQuantity > 0) {
             intQuantity--; // Decrement the quantity
-            console.log('intQuantity:', intQuantity);
 
             // Update the quantity
             grandtotalQuantity.textContent = intQuantity;
@@ -333,7 +319,6 @@
         // Set up the transaction
         createOrder: function (data, actions) {
             var totalAmount = parseFloat(document.getElementById('grandTotalAmount').innerText.replace(/[^\d.-]/g, ''));
-            console.log('Total Amount:', totalAmount); // Log the total amount for debugging
 
 
             return actions.order.create({
@@ -364,8 +349,6 @@
                     PayerFullName: details.payer.name.given_name + ' ' + details.payer.name.surname,
                     CaptureId: details.purchase_units[0].payments.captures[0].id
                 };
-
-                console.log(JSON.stringify(payPalVM));
 
                 // Send PayPalVM object to the server using fetch
                 fetch('/Transaction/PaySuccess', {

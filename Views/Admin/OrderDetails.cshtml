@@ -106,7 +106,7 @@
                                             {
                                                 1 => "Pearls",
                                                 2 => "Sago",
-                                                3 => "Lyeechy Jelly",
+                                                3 => "Lychee Jelly",
                                                 4 => "Pudding",
                                                 _ => "Unknown Add-In" // Default to "Unknown Add-In" if addInId is not recognized
                                             };
@@ -121,37 +121,6 @@
 
                                     }
                             </td>
-
-
-
-
-
-
-@*                                 <!-- Display add-in IDs for the current order detail -->
-                                @if (Model.addInIds.Count == 0)
-                                {
-                                    addIn = "No Add-In";
-                                    @addIn
-
-                                }
-                                else
-                                {
-                                    foreach (var orderId in Model.addInIds)
-                                    {
-                                        addIn = orderId switch
-                                        {
-                                            1 => "Pearls",
-                                            2 => "Sago",
-                                            3 => "Lychee Jelly",
-                                            4 => "Pudding",
-                                            _ => "Unknown Add-In" // Default to "Unknown Add-In" if orderId is not recognized
-                                        };
-
-                                        @addIn
-                                        @:&nbsp; <!-- Vertical bar with a space -->
-                                    }
-                                }
-                            </td> *@
                         </tr>
                     }
                 </tbody>
@@ -203,9 +172,6 @@
                     CaptureId: '@ViewBag.PaymentNotification.CaptureId',
                     PayerFullName: '@ViewBag.PaymentNotification.PayerFullName'
                 };
-
-                console.log('PaymentNotification ==> ' +
-                    JSON.stringify(PaymentNotification));
 
                 // Make fetch request to refund action method
                 fetch('/Admin/RefundAction', {
