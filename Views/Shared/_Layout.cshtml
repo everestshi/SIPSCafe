@@ -43,14 +43,9 @@
                             <a class="sips-nav-link " asp-area="" asp-controller="Menu" asp-action="MenuIndex">Menu</a>
                         </li>
                         <li class="nav-item">
-                            <a class="sips-nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
+                            <a class="sips-nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                         </li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="sips-nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
-                            </li>
-                        }
+
                     </ul>
                     <div class="logo-container-nav"> <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><img class="sips-logo-nav" src="~/images/sips-logo-sml.png" /></a></div>
                     <partial name="_LoginPartial" />
@@ -72,7 +67,7 @@
                     <li class="footer-copy"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li class="footer-copy"><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li class="footer-copy"><a asp-area="" asp-controller="Menu" asp-action="MenuIndex">Menu</a></li>
-                    <li class ="footer-copy"><a asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a></li>
+                    <li class ="footer-copy"><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
             </div>
             <div class="contact-footer">

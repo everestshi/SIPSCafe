@@ -229,9 +229,6 @@ namespace Sips.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
                     var response = await _emailService.SendSingleEmail(new SipsModels.ComposeEmailModel
                     {
                         FirstName = formattedFirstName,
@@ -242,10 +239,11 @@ namespace Sips.Areas.Identity.Pages.Account
                                 $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
                     });
 
+                    // Assign the user to the "Customer" role
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                         return RedirectToPage("RegisterConfirmation", new
                         {
                             email = Input.Email,

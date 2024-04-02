@@ -19,7 +19,6 @@ namespace Sips.Repositories
         public IEnumerable<ItemVM> GetAll()
         {
             var products = _db.Items.Include(p => p.ItemType).ToList();
-            //var products = _db.Items.ToList();
 
             List<ItemVM> itemsVM = new List<ItemVM>();
 
@@ -164,7 +163,6 @@ namespace Sips.Repositories
                 item.BasePrice = editingItem.BasePrice;
                 item.Inventory = editingItem.Inventory;
                 item.HasMilk = (bool)editingItem.hasMilk;
-                //item.urlString = editingItem.urlString;
 
                 _db.SaveChanges();
                 message = $"{editingItem.Name} updated successfully";
@@ -259,30 +257,5 @@ namespace Sips.Repositories
 
             return imageID;
         }
-
-        //private string SaveImageToFile(byte[] imageData, string fileName)
-        //{
-        //    if (imageData != null && !string.IsNullOrEmpty(fileName))
-        //    {
-        //        // Specify the path where you want to save the image file
-        //        string directoryPath = "YourImagePath";
-        //        string filePath = Path.Combine(directoryPath, fileName);
-
-        //        // Write the byte array to the file
-        //        File.WriteAllBytes(filePath, imageData);
-
-        //        // Optionally, you can perform additional actions or validations here
-
-        //        // Return the file path
-        //        return filePath;
-        //    }
-        //    else
-        //    {
-        //        // Handle the case where either imageData or fileName is null or empty
-        //        Console.WriteLine("Invalid image data or file name");
-        //        return null; // or throw an exception, depending on your application's logic
-        //    }
-        //}
-
     }
 }
