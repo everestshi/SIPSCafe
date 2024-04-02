@@ -29,29 +29,6 @@ namespace Sips.Repositories
                     .ToList();
             return transactions;
         }
-        //public List<CheckoutVM> GetCheckout()
-        //{
-        //    SipsdatabaseContext db = _db;
-        //    List<CheckoutVM> checkouts = _db.CheckoutVMs
-        //            .Select(checkout => new CheckoutVM
-        //            {
-        //                ItemId = checkout.ItemId,
-        //                Name = checkout.Name,
-        //                BasePrice = checkout.BasePrice,
-        //                Quantity = checkout.Quantity,
-        //                AddInName = checkout.AddInName,
-        //                AddInPriceModifier = checkout.AddInPriceModifier,
-        //                SweetnessPercent = checkout.SweetnessPercent,
-        //                IcePercent = checkout.IcePercent,
-        //                Subtotal = checkout.Subtotal,
-        //                MilkType = checkout.MilkType,
-        //                MilkPriceModifier = checkout.MilkPriceModifier,
-        //                AddInNames = checkout.AddInNames,
-        //                AddInPriceModifiers = checkout.AddInPriceModifiers
-        //            })
-        //            .ToList();
-        //    return checkouts;
-        //}
     }
 
 
