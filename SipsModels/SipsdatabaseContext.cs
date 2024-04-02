@@ -48,7 +48,7 @@ public partial class SipsdatabaseContext : DbContext
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
-    public virtual DbSet<CheckoutVM> CheckoutVMs { get; set; }
+    //public virtual DbSet<CheckoutVM> CheckoutVMs { get; set; }
 
     public virtual DbSet<PayPalVM> PayPalVMs { get; set; }
 

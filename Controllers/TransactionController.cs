@@ -159,30 +159,29 @@ namespace Sips.Controllers
                     _db.OrderDetails.Add(cartOrderDetail);
                     _db.SaveChanges();
 
-                    //var orderDetailId = cartOrderDetail.OrderDetailId;
+                    var orderDetailId = cartOrderDetail.OrderDetailId;
 
-                    //List<AddIn> addInNames = cartItem.AddInNames;
+                    List<AddIn> addInNames = cartItem.AddInNames;
 
-                    //foreach (var item in addInNames)
-                    //{
-                    //    var addIn = _db.AddIns.FirstOrDefault(a => a.AddInName == item.AddInName);
-                    //    var addInOrderDetail = new AddInOrderDetail
-                    //    {
-                    //        //OrderDetailId = orderDetailId,
-                    //        //AddInId = addIn.AddInId,
-                    //        //Quantity = 1,
+                    foreach (var item in addInNames)
+                    {
+                        var addIn = _db.AddIns.FirstOrDefault(a => a.AddInName == item.AddInName);
 
+                        if (addIn != null) // Ensure add-in exists
+                        {
+                            var addInOrderDetail = new AddInOrderDetail
+                            {
+                                OrderDetailId = orderDetailId,
+                                AddInId = addIn.AddInId, // Assuming AddInId is the primary key of the AddIn table
+                                Quantity = 1,
+                            };
 
-                    //        OrderDetailId = 1,
-                    //        AddInId = 1,
-                    //        Quantity = 1,
+                            _db.AddInOrderDetails.Add(addInOrderDetail);
+                            //_db.SaveChangesAsync();
+                        }
+                    }
+                    _db.SaveChanges();
 
-                    //    };
-
-                    //    _db.AddInOrderDetails.Add(addInOrderDetail);
-                    //    _db.SaveChanges();
-
-                    //}
 
                 }
 

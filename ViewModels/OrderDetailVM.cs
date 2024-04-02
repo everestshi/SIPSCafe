@@ -17,7 +17,7 @@ namespace Sips.ViewModels
 
         //public string? OrderDetailId { get; set; }
 
-        public decimal? totalPrice { get; set; }
+        public double? totalPrice { get; set; }
 
         //public int? Quantity { get; set; }
         [Display(Name = "Transaction Id")]
@@ -43,6 +43,10 @@ namespace Sips.ViewModels
         [Display(Name = "Total Quantity")]
 
         public int? totalQuantity { get; set; }
+        [Display(Name = "Order Details")]
+
+        public List<OrderDetail>? orderDetail { get; set; }
+
 
 
         //public string? StoreHours { get; set; } 

@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "OrderDetails";
+    int sweetnessPercent = 0; // Default value
+    string ice = "";
+    string milkCoice = "";
+
+
 }
 <div class="order-container">
 
@@ -30,21 +35,131 @@
         @Html.DisplayNameFor(model => model.StoreId):
             @Html.DisplayFor(model => model.StoreId)</p>
             <p>
-        @Html.DisplayNameFor(model => model.ItemTypes):
+
+@*         @Html.DisplayNameFor(model => model.ItemTypes):
         @foreach (var itemType in Model.ItemTypes)
         {
             @Html.DisplayFor(modelItem => itemType)
             @:| <!-- Vertical bar -->
-        }
+        } *@
         </p>
-            <p>
-        @Html.DisplayNameFor(model => model.OrderDetailIds):
+
+@*             @Html.DisplayNameFor(model => model.orderDetail):
+            @foreach (var itemType in Model.orderDetail)
+            {
+                     <div>
+                    <label>Item Name:</label>
+                    @Html.DisplayFor(modelItem => itemType.Item.Name)
+                    <label>Base Price:</label>
+                    @Html.DisplayFor(modelItem => itemType.Price)
+                    <label>Quantity:</label>
+                    @Html.DisplayFor(modelItem => itemType.Quantity)
+                    <label>Sweetness Percent:</label>
+                    @Html.DisplayFor(modelItem => itemType.SweetnessId)
+                    <label>Ice Percent:</label>
+                    @Html.DisplayFor(modelItem => itemType.IceId)
+                    </div>
+            } *@
+
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Base Price</th>
+                        <th>Quantity</th>
+                        <th>Sweetness Percent</th>
+                        <th>Ice Choice</th>
+                        <th>Milk Choice</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var itemType in Model.orderDetail)
+                    {
+                        if (itemType.SweetnessId == 1)
+                        {
+                             sweetnessPercent = 0;
+                        }
+                        if (itemType.SweetnessId == 2)
+                        {
+                            sweetnessPercent = 25;
+                        }
+                        if (itemType.SweetnessId == 3)
+                        {
+                            sweetnessPercent = 50;
+                        }
+                        if (itemType.SweetnessId == 4)
+                        {
+                            sweetnessPercent = 75;
+                        }
+                        if (itemType.SweetnessId == 5)
+                        {
+                            sweetnessPercent = 100;
+                        }
+
+                        if (itemType.IceId == 1)
+                        {
+                            ice = "No Ice";
+                        }
+                        if (itemType.IceId == 2)
+                        {
+                            ice = "Less Ice";
+                        }
+                        if (itemType.IceId == 3)
+                        {
+                            ice = "Regular Ice";
+                        }
+                        if (itemType.IceId == 4)
+                        {
+                            ice = "Extra Ice";
+                        }
+
+
+                        if (itemType.MilkChoiceId == 1)
+                        {
+                            milkCoice = "Regular";
+                        }
+                        if (itemType.MilkChoiceId == 2)
+                        {
+                            milkCoice = "Soy";
+                        }
+                        if (itemType.MilkChoiceId == 3)
+                        {
+                            milkCoice = "Almond";
+                        }
+                        if (itemType.MilkChoiceId == 4)
+                        {
+                            milkCoice = "Oat";
+                        }
+
+                        if (itemType.MilkChoiceId == 5)
+                        {
+                            milkCoice = "No Milk";
+                        }
+
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => itemType.Item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => itemType.Price)</td>
+                            <td>@Html.DisplayFor(modelItem => itemType.Quantity)</td>
+                            <td>@sweetnessPercent%</td>
+                            <td>@ice</td>
+                            <td>@milkCoice</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table><br />
+
+
+            @* <p> *@
+@*         @Html.DisplayNameFor(model => model.OrderDetailIds):
         @foreach (var orderId in Model.OrderDetailIds)
         {
             @Html.DisplayFor(modelItem => orderId)
             @:| <!-- Vertical bar -->
         }
-        </p>
+        </p> *@
 @*         @Html.DisplayNameFor(model => model.OrderDetailIds):
         @Html.DisplayFor(model => model.OrderDetailIds)<br /> *@
         <button id="refund-button" class="btn btn-danger">Process PayPal Refund</button>
@@ -173,4 +288,17 @@
     });
 
 </script>
+
+<style>
+    table {
+        width: 100%; /* Set the table width to 100% of its container */
+        border-collapse: collapse; /* Collapse table borders */
+    }
+
+    th, td {
+        padding: 8px; /* Add padding to table cells */
+        text-align: left; /* Align cell content to the left */
+        border: 1px solid #ddd; /* Add border to cells */
+    }
+</style>
 

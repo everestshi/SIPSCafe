@@ -403,8 +403,8 @@ namespace Sips.Controllers
                     ordersVM = ordersVM.OrderBy(p => p.totalPrice).ToList();
                     break;
 
-                case "DateDesc":
-                    ordersVM = ordersVM.OrderByDescending(p => p.DateOrdered).ToList();
+                case "Date":
+                    ordersVM = ordersVM.OrderBy(p => p.DateOrdered).ToList();
                     break;
 
                 case "EmailSortDesc":
@@ -415,7 +415,7 @@ namespace Sips.Controllers
                     break;
 
                 default:
-                    ordersVM = ordersVM.OrderBy(p => p.DateOrdered).ToList();
+                    ordersVM = ordersVM.OrderByDescending(p => p.DateOrdered).ToList();
 
                     break;
             }
