@@ -5,7 +5,6 @@
         margin-bottom: 0;
     }
 
-
     html {
     }
 
@@ -17,8 +16,6 @@
         overflow: hidden;
         /*background: rgba(236,219,215, 0.2);*/
     }
-
-
 
     #login-page {
         display: flex;
@@ -34,7 +31,7 @@
 
     .sips-logo-nav {
         width: 100px;
-/*        position: absolute;
+/*      position: absolute;
         left: 50%;
         transform: translateX(-50%);
         top: 0;*/
@@ -70,9 +67,9 @@
     .nav-item {
         display:flex;
         flex-direction:row;
-justify-content:flex-start;
-align-items:center;
-width:auto;
+        justify-content:flex-start;
+        align-items:center;
+        width:auto;
     }
 
     .banner-btns {
@@ -119,11 +116,11 @@ width:auto;
             height: 100%;
         }
 
-            .slick-carousel img {
+        .slick-carousel img {
                 width: 100%;
                 height: 100%; /* Maintain aspect ratio */
                 object-fit: cover;
-            }
+        }
 
     .banner-overlay {
         height: 100%;
@@ -149,10 +146,10 @@ width:auto;
         border-radius:50px;
         color: white;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); /* Add text shadow */
-/*        width:70%;
-margin:0 auto;
-background:rgba(0,0,0,0.5);*/
-    bottom:50px;
+        /*        width:70%;
+        margin:0 auto;
+        background:rgba(0,0,0,0.5);*/
+        bottom:50px;
     }
 
     .banner-heading h1{
@@ -336,11 +333,11 @@ background:rgba(0,0,0,0.5);*/
         width: 100%;
     }
 
-        .about-info p {
-            color: #403C34;
-        }
+    .about-info p {
+        color: #403C34;
+    }
     /*Admin page style****************************/
-.admin-buttons {
+    .admin-buttons {
     width: 200px;
     height: 200px;
     border: 200px;
@@ -368,9 +365,9 @@ background:rgba(0,0,0,0.5);*/
         text-align: left;
     }
 
-        .home-copy p {
-            color: #403C34;
-        }
+    .home-copy p {
+       color: #403C34;
+    }
     /*REG page style****************************/
     .sip-reg {
         display: flex;
@@ -488,9 +485,9 @@ background:rgba(0,0,0,0.5);*/
         text-decoration: none;
     }
 
-        .footer-copy a:hover {
-            color: #fff;
-        }
+    .footer-copy a:hover {
+        color: #fff;
+     }
 
     /* Banner Animation */
 
@@ -599,13 +596,13 @@ background:rgba(0,0,0,0.5);*/
         gap: 1vh;
     }
 
-        .tea-item p {
-            padding: 5px;
-        }
+     .tea-item p {
+       padding: 5px;
+     }
 
-        .tea-item img {
+    .tea-item img {
             width: 200px;
-        }
+    }
 
     .tea-copy {
         text-align: left;
@@ -627,13 +624,13 @@ background:rgba(0,0,0,0.5);*/
             color: #fff;
         }
 
-            .tea-btns button:nth-child(2) {
-                background: #A3CCFF;
-            }
+       .tea-btns button:nth-child(2) {
+          background: #A3CCFF;
+       }
 
-            .tea-btns button:hover {
-                background: #F58D7A;
-            }
+      .tea-btns button:hover {
+         background: #F58D7A;
+      }
 
 
     /*#user-role-index {
@@ -988,7 +985,7 @@ font-size:1.2rem;
         background: url(../images/bbt-bg.jpg);
         background-size:cover;
         padding:0;
-
+        min-height:80vh;
         
     }
     .admin-heading{
