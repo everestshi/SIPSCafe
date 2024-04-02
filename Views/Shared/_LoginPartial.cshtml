@@ -37,6 +37,12 @@
     <li class="nav-item">
             <a class="sips-nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@helloLink</a>
     </li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a class="sips-nav-link" asp-controller="Admin" asp-action="Index">Admin</a>
+        </li>
+        }
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" style="color: #519389;" class="nav-link btn btn-link">Logout</button>

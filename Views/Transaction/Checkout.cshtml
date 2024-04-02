@@ -14,6 +14,13 @@
     <h1>Checkout</h1>
     <div class="checkout-container">
         <!-- Add logic to hide/show cart items based on cart emptiness -->
+
+        <div class="checkout-headers">
+                <p class="checkout-item-name">Item</p>
+            <p>Quantity</p>
+            <p>Price</p>
+            <p>Subtotal</p>
+        </div>
         @if (Model.Any())
         {
             <div class="checkout-items">
@@ -28,17 +35,17 @@
                             <p class="subtotal-qty" id="subtotal-qty_@item.UniqueItemId">@item.Quantity</p>
                         <button class="qty-btn" type="button" onclick="AddOne('@item.UniqueItemId')">+</button>
                     </div>
-                    <div class="checkout-subtotals">
-                                <p class="subtotal-amount" id="subtotal-amount_@item.UniqueItemId">$@item.Subtotal</p>
+                    @* <div class="checkout-subtotals"> *@
+                                <p class="subtotal-amount" id="subtotal-amount_@item.UniqueItemId">$@item.Subtotal</p> 
                                 <p class="subtotal-amount-qty" id="subtotal-amount-qty_@item.UniqueItemId">$@((item.Subtotal * item.Quantity).ToString("F2"))</p>
-                    </div>
+                   
                     </div>
                 }
             </div>
 
                 <div class="checkout-details">
                     <div class="order-details">
-                        <p>GRAND TOTAL</p>
+                        <p>Grand Total:</p>
                         <p><span id="grandTotalQty">0</span></p>
                         <p><span id="grandTotalAmount">$0.00</span></p>
                     </div>
