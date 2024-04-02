@@ -44,10 +44,11 @@ namespace Sips.Repositories
 
                     //totalPrice = transaction.OrderDetails.price;
                 };
-                var addinPrice = 0.0;
                 var addIns = new List<AddInOrderDetail>(); // Assuming AddInOrderDetail is the type of objects in the list
                 foreach (var orderID in orderVM.OrderDetailIds)
                 {
+                    var addinPrice = 0.0; // Reset addinPrice for each order detail
+
                     var order = _db.OrderDetails
                                         .Include(m => m.MilkChoice)
                                         .Include(c => c.Item)
@@ -122,10 +123,11 @@ namespace Sips.Repositories
             };
 
             var orderDetailIds = orderVM.orderDetail.Select(od => od.OrderDetailId).ToList();
-            var addinPrice = 0.0;
             var addIns = new List<AddInOrderDetail>();
             foreach (var orderID in orderDetailIds)
             {
+                var addinPrice = 0.0;
+
 
                 var order = _db.OrderDetails
                                     .Include(m => m.MilkChoice)

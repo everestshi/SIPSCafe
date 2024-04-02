@@ -195,8 +195,6 @@
             checkoutTotal.setAttribute('value', intTotal);
 
             // Collect item details
-
-            console.log("AddToCart() itemId ==> " + itemId);
             var iceLabel = document.querySelector('input[name="iceOptions_' + itemId + '"]:checked').nextElementSibling;
             var ice = iceLabel ? iceLabel.textContent.trim() : '';
 
