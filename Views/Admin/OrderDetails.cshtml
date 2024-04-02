@@ -5,7 +5,7 @@
     int sweetnessPercent = 0; // Default value
     string ice = "";
     string milkCoice = "";
-
+    string addIn = "";
 
 }
 <div class="order-container">
@@ -71,72 +71,41 @@
                         <th>Sweetness Percent</th>
                         <th>Ice Choice</th>
                         <th>Milk Choice</th>
-
+                        <th>Add-In IDs</th> <!-- New column header -->
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var itemType in Model.orderDetail)
                     {
-                        if (itemType.SweetnessId == 1)
+                        // Initialize variables for sweetness percent, ice choice, and milk choice
+                        sweetnessPercent = itemType.SweetnessId switch
                         {
-                             sweetnessPercent = 0;
-                        }
-                        if (itemType.SweetnessId == 2)
-                        {
-                            sweetnessPercent = 25;
-                        }
-                        if (itemType.SweetnessId == 3)
-                        {
-                            sweetnessPercent = 50;
-                        }
-                        if (itemType.SweetnessId == 4)
-                        {
-                            sweetnessPercent = 75;
-                        }
-                        if (itemType.SweetnessId == 5)
-                        {
-                            sweetnessPercent = 100;
-                        }
+                            1 => 0,
+                            2 => 25,
+                            3 => 50,
+                            4 => 75,
+                            5 => 100,
+                            _ => 0 // Default to 0 if SweetnessId is not recognized
+                        };
 
-                        if (itemType.IceId == 1)
+                        ice = itemType.IceId switch
                         {
-                            ice = "No Ice";
-                        }
-                        if (itemType.IceId == 2)
-                        {
-                            ice = "Less Ice";
-                        }
-                        if (itemType.IceId == 3)
-                        {
-                            ice = "Regular Ice";
-                        }
-                        if (itemType.IceId == 4)
-                        {
-                            ice = "Extra Ice";
-                        }
+                            1 => "No Ice",
+                            2 => "Less Ice",
+                            3 => "Regular Ice",
+                            4 => "Extra Ice",
+                            _ => "Unknown" // Default to "Unknown" if IceId is not recognized
+                        };
 
-
-                        if (itemType.MilkChoiceId == 1)
+                        milkCoice = itemType.MilkChoiceId switch
                         {
-                            milkCoice = "Regular";
-                        }
-                        if (itemType.MilkChoiceId == 2)
-                        {
-                            milkCoice = "Soy";
-                        }
-                        if (itemType.MilkChoiceId == 3)
-                        {
-                            milkCoice = "Almond";
-                        }
-                        if (itemType.MilkChoiceId == 4)
-                        {
-                            milkCoice = "Oat";
-                        }
-
-                        if (itemType.MilkChoiceId == 5)
-                        {
-                            milkCoice = "No Milk";
-                        }
+                            1 => "Regular",
+                            2 => "Soy",
+                            3 => "Almond",
+                            4 => "Oat",
+                            5 => "No Milk",
+                            _ => "Unknown" // Default to "Unknown" if MilkChoiceId is not recognized
+                        };
 
                         <tr>
                             <td>@Html.DisplayFor(modelItem => itemType.Item.Name)</td>
@@ -145,12 +114,36 @@
                             <td>@sweetnessPercent%</td>
                             <td>@ice</td>
                             <td>@milkCoice</td>
+                            <td>
+                                <!-- Display add-in IDs for the current order detail -->
+                                @if (Model.addInIds.Count == 0)
+                                {
+                                    addIn = "No Add-In";
+                                    @addIn
 
+                                }
+                                else
+                                {
+                                    foreach (var orderId in Model.addInIds)
+                                    {
+                                        addIn = orderId switch
+                                        {
+                                            1 => "Pearls",
+                                            2 => "Sago",
+                                            3 => "Lyeechy Jelly",
+                                            4 => "Pudding",
+                                            _ => "Unknown Add-In" // Default to "Unknown Add-In" if orderId is not recognized
+                                        };
+
+                                        @addIn
+                                        @:&nbsp; <!-- Vertical bar with a space -->
+                                    }
+                                }
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table><br />
-
 
             @* <p> *@
 @*         @Html.DisplayNameFor(model => model.OrderDetailIds):

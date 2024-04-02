@@ -46,6 +46,7 @@ namespace Sips.ViewModels
         [Display(Name = "Order Details")]
 
         public List<OrderDetail>? orderDetail { get; set; }
+        public List<int>? addInIds { get; set; }
 
 
 

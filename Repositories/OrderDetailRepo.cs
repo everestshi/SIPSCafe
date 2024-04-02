@@ -119,7 +119,9 @@ namespace Sips.Repositories
                 UserEmail = transaction?.User.Email,
                 totalPrice = 0,
                 totalQuantity = 0,
-                ItemTypes = new List<string>() // Initialize ItemTypes as an empty list
+                ItemTypes = new List<string>(), // Initialize ItemTypes as an empty list
+                addInIds = new List<int>() // Initialize ItemTypes as an empty list
+
             };
 
             var orderDetailIds = orderVM.orderDetail.Select(od => od.OrderDetailId).ToList();
@@ -146,6 +148,8 @@ namespace Sips.Repositories
                     {
                         if(item.AddIn != null)
                         {
+                            var addinId = (item.AddIn.AddInId);
+                            orderVM.addInIds.Add(addinId);
                             addinPrice += (double)(item.AddIn.PriceModifier);
                         }
                     }
