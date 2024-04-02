@@ -11,6 +11,8 @@ using Sips.ViewModels;
 using Newtonsoft.Json;
 using SendGrid.Helpers.Mail;
 using Microsoft.AspNetCore.Authorization;
+using Sips.Data.Services;
+using System.Text.Encodings.Web;
 
 namespace Sips.Controllers
 {
@@ -20,11 +22,13 @@ namespace Sips.Controllers
         private readonly SipsdatabaseContext _db;
         private PayPalVM payPalVM;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public TransactionController(SipsdatabaseContext db, IConfiguration configuration)
+        public TransactionController(SipsdatabaseContext db, IConfiguration configuration, IEmailService emailService)
         {
             _db = db;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -159,6 +163,7 @@ namespace Sips.Controllers
                     _db.OrderDetails.Add(cartOrderDetail);
                     _db.SaveChanges();
 
+
                     var orderDetailId = cartOrderDetail.OrderDetailId;
 
                     List<AddIn> addInNames = cartItem.AddInNames;
@@ -183,8 +188,17 @@ namespace Sips.Controllers
                     _db.SaveChanges();
 
 
+
                 }
 
+                var response = _emailService.SendSingleEmail(new SipsModels.ComposeEmailModel
+                {
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Subject = "Thank you for your SIPS purchase!",
+                    Email = user.Email,
+                    Body = $"Thank you for supporting your local SIPS store! Here is your transaction ID: {payPalVM.TransactionId}. We hope you enjoy your drink, and visit us again soon!"
+                });
 
                 // Save the PaymentId of the PayPalVM item to the session variable as a string
                 HttpContext.Session.SetString("PayPalConfirmationModelId", payPalVM.TransactionId);
