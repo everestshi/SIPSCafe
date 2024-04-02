@@ -148,13 +148,11 @@
                 // Reset radio buttons for sweetness level
                 var sweetnessOptions = document.querySelectorAll('#' + modalId + ' input[name^="sweetnessOptions_"]');
                 sweetnessOptions.forEach(function (input) {
-                    console.log(input)
                     input.checked = input.value === "5"; // Check if the value matches "100% Sweet"
                 });
                 // Reset radio buttons for milk choice
                 var milkOptions = document.querySelectorAll('#' + modalId + ' input[name^="milkOptions_"]');
                 milkOptions.forEach(function (input) {
-                    console.log(input)
                     input.checked = input.value === "1"; // Check if the value matches "Regular"
                 });
                 // Reset checkboxes for add-ins
@@ -290,7 +288,6 @@
                 item.addInNames.push(option.value);
                 item.addInPriceModifiers.push(parseFloat(option.getAttribute('data-price-modifier')));
             });
-            console.log(item);
             // Send item details to the server to add to the cart
             fetch('/Transaction/AddToCart', {
                 method: 'POST',
@@ -333,13 +330,10 @@
 
         //function to handle add on price modifiers
         function AddOnPrice(priceModifier, id, checkbox) {
-            console.log(checkbox.checked)
             // if checkbox is checked, add the price modifier to the total
             if (checkbox.checked) {
                 var basePrice = document.getElementById('modalPrice_' + id);
-                console.log(basePrice.textContent);
                 var price = parseFloat(basePrice.textContent);
-                console.log(price == 4.99);
                 var newTotal = price + parseFloat(priceModifier);
                 basePrice.textContent = (newTotal).toFixed(2)
             }
