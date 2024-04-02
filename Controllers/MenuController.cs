@@ -9,7 +9,6 @@ namespace Sips.Controllers
 {
     public class MenuController : Controller
     {
-        //private readonly IRepository _menuRepo;
         private readonly SipsdatabaseContext _db;
 
         public MenuController(SipsdatabaseContext db)
