@@ -239,6 +239,8 @@ namespace Sips.Areas.Identity.Pages.Account
                                 $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
                     });
 
+                    // Assign the user to the "Customer" role
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
